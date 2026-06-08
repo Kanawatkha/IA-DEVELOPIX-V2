@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@utility no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #000000; /* Pure black canvas */
+    color: #ffffff; /* White primary text */
+    font-family: theme('fontFamily.body');
+    /* Hide scrollbars to maintain the cinematic feel */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "IA DEVELOPIX V2",
+  "description": "IA DEVELOPIX V2",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
