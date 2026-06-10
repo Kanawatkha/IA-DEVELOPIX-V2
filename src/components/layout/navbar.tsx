@@ -16,6 +16,9 @@ import { NavLink } from "@/src/components/ui/nav-link";
 import { NavItem } from "@/src/types";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { useWindowSize, useScrollDetection } from "@/src/hooks";
+import { useCart } from "@/src/context/cart-context";
+import { CartDrawer } from "./cart-drawer";
+import { QuoteModal } from "./quote-modal";
 
 
 // ==========================================
@@ -47,6 +50,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
   // Integrate custom platform hooks (Phase 1)
   const { isMobile } = useWindowSize();
   const { isAtBottom } = useScrollDetection();
+  const { cartCount, setIsCartOpen } = useCart();
 
   // Reference hooks & Scroll handlers
   const triggerScrollUpdate = () => {
@@ -292,8 +296,17 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
             <button className="hidden min-[1025px]:flex text-primary transition-opacity hover:opacity-70" aria-label="User Account">
               <User className="h-5 w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
             </button>
-            <button className="text-primary transition-opacity hover:opacity-70" aria-label="Shopping Cart">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="text-primary transition-opacity hover:opacity-70 relative flex items-center justify-center p-1 outline-none" 
+              aria-label="Shopping Cart"
+            >
               <ShoppingCart className="h-5 w-5 md:h-5 md:w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-canvas font-mono font-bold text-[9px] w-4.5 h-4.5 flex items-center justify-center rounded-full leading-none scale-90">
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -527,8 +540,18 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
             <ShoppingBag size={24} strokeWidth={1} />
             <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">STORE</span>
           </Link>
-          <button className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
-            <ShoppingCart size={24} strokeWidth={1} />
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16 relative outline-none"
+          >
+            <div className="relative">
+              <ShoppingCart size={24} strokeWidth={1} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-2.5 bg-primary text-canvas font-mono font-bold text-[9px] w-4.5 h-4.5 flex items-center justify-center rounded-full leading-none">
+                  {cartCount}
+                </span>
+              )}
+            </div>
             <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">CART</span>
           </button>
           <button className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
@@ -537,6 +560,8 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
           </button>
         </div>
       </nav>
+      <CartDrawer />
+      <QuoteModal />
     </>
   );
 }

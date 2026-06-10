@@ -19,6 +19,7 @@ import { Facebook, Twitter, Instagram, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { childVariants, parentVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
+import { useCart } from '@/src/context/cart-context';
 
 interface ProductInfoFormProps {
   /** Full display name, e.g. "NOFAN 15CM" */
@@ -44,6 +45,49 @@ export function ProductInfoForm({
   inStock = true,
 }: ProductInfoFormProps) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart, setIsCartOpen, setIsQuoteOpen } = useCart();
+
+  const handleAddToCart = () => {
+    const numericPrice = parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
+    const isMission = category.toLowerCase().includes("mission");
+    const id = name.toLowerCase().includes("nofan 15") ? "nofan-15"
+             : name.toLowerCase().includes("nofan 18") ? "nofan-18"
+             : name.toLowerCase().includes("go") ? "mission-go"
+             : "mission-pro";
+    const image = isMission 
+      ? "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
+      : "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop";
+
+    addToCart({
+      id,
+      name,
+      price: numericPrice,
+      image,
+      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
+    }, quantity);
+    setIsCartOpen(true);
+  };
+
+  const handleOrderNow = () => {
+    const numericPrice = parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
+    const isMission = category.toLowerCase().includes("mission");
+    const id = name.toLowerCase().includes("nofan 15") ? "nofan-15"
+             : name.toLowerCase().includes("nofan 18") ? "nofan-18"
+             : name.toLowerCase().includes("go") ? "mission-go"
+             : "mission-pro";
+    const image = isMission 
+      ? "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
+      : "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop";
+
+    addToCart({
+      id,
+      name,
+      price: numericPrice,
+      image,
+      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
+    }, quantity);
+    setIsQuoteOpen(true);
+  };
 
   return (
     <motion.div
@@ -127,13 +171,19 @@ export function ProductInfoForm({
           </div>
 
           {/* Add to Cart */}
-          <button className={`flex-grow ${ty.ctaButton} py-3 px-8 hover:bg-primary hover:text-canvas whitespace-nowrap overflow-hidden text-ellipsis`}>
+          <button 
+            onClick={handleAddToCart}
+            className={`flex-grow ${ty.ctaButton} py-3 px-8 hover:bg-primary hover:text-canvas whitespace-nowrap overflow-hidden text-ellipsis`}
+          >
             ADD TO CART
           </button>
         </div>
 
         {/* Order Now */}
-        <button className={`w-full ${ty.ctaButton} py-3 px-8 hover:bg-primary hover:text-canvas`}>
+        <button 
+          onClick={handleOrderNow}
+          className={`w-full ${ty.ctaButton} py-3 px-8 hover:bg-primary hover:text-canvas`}
+        >
           ORDER NOW
         </button>
       </motion.div>
