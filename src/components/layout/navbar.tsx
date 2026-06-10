@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "@/src/components/ui/nav-link";
+import { usePathname } from "next/navigation";
 
 // Phase 1 imports: Shared Types, Constants, and Hooks
 import { NavItem } from "@/src/types";
@@ -51,6 +52,15 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
   const { isMobile } = useWindowSize();
   const { isAtBottom } = useScrollDetection();
   const { cartCount, setIsCartOpen } = useCart();
+  const pathname = usePathname();
+
+  const handleCartClick = () => {
+    if (pathname === "/cart") {
+      window.location.reload();
+    } else {
+      setIsCartOpen(true);
+    }
+  };
 
   // Reference hooks & Scroll handlers
   const triggerScrollUpdate = () => {
@@ -297,7 +307,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
               <User className="h-5 w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
             </button>
             <button 
-              onClick={() => setIsCartOpen(true)}
+              onClick={handleCartClick}
               className="text-primary transition-opacity hover:opacity-70 relative flex items-center justify-center p-1 outline-none" 
               aria-label="Shopping Cart"
             >
@@ -541,7 +551,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
             <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">STORE</span>
           </Link>
           <button 
-            onClick={() => setIsCartOpen(true)}
+            onClick={handleCartClick}
             className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16 relative outline-none"
           >
             <div className="relative">

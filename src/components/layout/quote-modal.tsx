@@ -1,16 +1,29 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { X, Download, Copy, MessageCircle } from "lucide-react";
 import { useCart } from "@/src/context/cart-context";
 
 export function QuoteModal() {
-  const { cartItems, cartSubtotal, isQuoteOpen, setIsQuoteOpen } = useCart();
+  const { cartItems, cartSubtotal, isQuoteOpen, setIsQuoteOpen, clearCart } = useCart();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const formatPrice = (amount: number) => {
     return `฿${amount.toLocaleString()} THB`;
   };
+
+  // Prevent background window scrolling when QuoteModal is open
+  useEffect(() => {
+    if (isQuoteOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isQuoteOpen]);
 
   useEffect(() => {
     if (!isQuoteOpen || !canvasRef.current) return;
@@ -44,7 +57,7 @@ export function QuoteModal() {
 
     ctx.fillStyle = "#999999";
     ctx.font = "normal 14px var(--font-space-mono), monospace";
-    ctx.fillText("QUOTE STATEMENT / ใบเสนอราคา", canvas.width / 2, 115);
+    ctx.fillText("QUOTE STATEMENT", canvas.width / 2, 115);
 
     // Date
     const today = new Date().toLocaleDateString("en-US", {
@@ -114,23 +127,22 @@ export function QuoteModal() {
     ctx.textAlign = "left";
     ctx.fillStyle = "#999999";
     ctx.font = "normal 14px var(--font-space-mono), monospace";
-    ctx.fillText("SUBTOTAL / ยอดรวม", 60, currentY);
+    ctx.fillText("SUBTOTAL", 60, currentY);
 
     ctx.textAlign = "right";
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 22px var(--font-space-mono), monospace";
     ctx.fillText(formatPrice(cartSubtotal), 740, currentY);
 
-    // Terms and info
+    // Terms and info - ENGLISH ONLY
     ctx.textAlign = "center";
     ctx.fillStyle = "#999999";
     ctx.font = "normal 11px var(--font-space-mono), monospace";
-    ctx.fillText("PLEASE SEND THIS QUOTE IMAGE TO OUTBOX VIA FACEBOOK PAGE", canvas.width / 2, 860);
-    ctx.fillText("กรุณาส่งภาพใบเสนอราคานี้ไปยังกล่องข้อความ Facebook เพื่อสั่งซื้อสินค้า", canvas.width / 2, 885);
+    ctx.fillText("PLEASE SEND THIS QUOTE IMAGE TO OUTBOX VIA FACEBOOK PAGE", canvas.width / 2, 870);
 
     ctx.fillStyle = "#666666";
     ctx.font = "italic 14px var(--font-garamond), serif";
-    ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 930);
+    ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 920);
 
   }, [isQuoteOpen, cartItems, cartSubtotal]);
 
@@ -166,38 +178,37 @@ export function QuoteModal() {
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-canvas/90 backdrop-blur-sm">
       <div 
-        className="relative flex flex-col w-full max-w-[500px] md:max-w-[700px] max-h-[95vh] bg-[#000000] border border-hairline p-6 text-primary shadow-2xl rounded-none overflow-y-auto"
+        className="relative flex flex-col w-full max-w-[550px] md:max-w-[750px] max-h-[95vh] bg-[#000000] border border-hairline p-8 text-primary shadow-2xl rounded-none overflow-y-auto"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-hairline mb-4">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">QUOTE SHEET / ใบเสนอราคา</span>
+        {/* Header - Enlarge labels & pure English */}
+        <div className="flex items-center justify-between pb-4 border-b border-hairline mb-6">
+          <span className="font-mono text-sm uppercase tracking-[2.5px] text-primary font-bold">QUOTE SHEET</span>
           <button 
-            onClick={() => setIsQuoteOpen(false)} 
+            onClick={() => setShowClearConfirm(true)} 
             className="text-muted hover:text-primary transition-colors outline-none"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 
-        {/* Info */}
-        <p className="font-serif text-xs text-body mb-4 leading-relaxed">
-          Please download this quote image or copy its summary to send to our Facebook inbox to manually finalize your order.
-          <span className="block mt-1 text-muted text-[11px]">(กรุณาดาวน์โหลดรูปภาพใบเสนอราคาหรือคัดลอกรายละเอียดไปแจ้งทาง Inbox ใน Facebook ของเรา)</span>
+        {/* Info text - Enlarge size & English only */}
+        <p className="font-serif text-sm text-body mb-6 leading-relaxed">
+          Please download this quote image or copy its text details below. You can send this summary to our Facebook page manually to process your order.
         </p>
 
         {/* Canvas Display Container */}
-        <div className="flex justify-center border border-hairline bg-surface-soft p-4 mb-6 overflow-hidden">
+        <div className="flex justify-center border border-hairline bg-surface-soft p-6 mb-6 overflow-hidden">
           <canvas 
             ref={canvasRef} 
-            className="w-full max-w-[340px] md:max-w-[440px] border border-hairline-strong shadow-lg aspect-[8/10]" 
+            className="w-full max-w-[360px] md:max-w-[460px] border border-hairline-strong shadow-lg aspect-[8/10]" 
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {/* Action Buttons - Enlarge fonts */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={handleDownload}
-            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-3 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
+            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2.5px] py-4 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
           >
             <Download size={16} />
             <span>DOWNLOAD IMAGE</span>
@@ -205,20 +216,51 @@ export function QuoteModal() {
           
           <button
             onClick={handleCopyText}
-            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-3 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
+            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2.5px] py-4 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
           >
             <Copy size={16} />
             <span>COPY DETAILS</span>
           </button>
 
           <button
-            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-3 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
+            className="flex items-center justify-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2.5px] py-4 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
           >
             <MessageCircle size={16} />
             <span>SEND TO FACEBOOK</span>
           </button>
         </div>
       </div>
+
+      {/* Confirmation Popup */}
+      {showClearConfirm && (
+        <div className="fixed inset-0 z-[210] flex items-center justify-center bg-[#000000]/50 backdrop-blur-sm">
+          <div className="bg-[#000000] border border-hairline p-8 max-w-[400px] w-full mx-4 rounded-none text-center space-y-6">
+            <h3 className="font-display text-lg uppercase tracking-[2px] text-primary">Clear Cart?</h3>
+            <p className="font-serif text-xs text-muted leading-relaxed">Do you want to clear your cart?</p>
+            <div className="flex justify-center space-x-4">
+              <button 
+                onClick={() => {
+                  clearCart();
+                  setShowClearConfirm(false);
+                  setIsQuoteOpen(false);
+                }}
+                className="border border-primary bg-primary text-canvas font-mono text-xs uppercase tracking-[2px] py-2.5 px-6 rounded-pill hover:opacity-85 transition-opacity outline-none font-bold"
+              >
+                Yes
+              </button>
+              <button 
+                onClick={() => {
+                  setShowClearConfirm(false);
+                  setIsQuoteOpen(false);
+                }}
+                className="border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-2.5 px-6 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
