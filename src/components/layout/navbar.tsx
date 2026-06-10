@@ -161,7 +161,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
           <div className="block min-[1025px]:hidden items-center">
             <button 
               onClick={() => setIsMobileMenuOpen(true)}
-              className="text-[#ffffff] transition-opacity hover:opacity-70" 
+              className="text-primary transition-opacity hover:opacity-70" 
               aria-label="Open Menu"
             >
               <Menu className="h-6 w-6" strokeWidth={1.5} />
@@ -174,7 +174,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
             {/* 4K Support Integration: min-[2000px]:text-6xl */}
             <Link
               href="/"
-              className="font-display text-2xl sm:text-4xl tracking-[3px] text-[#ffffff] transition-opacity hover:opacity-70 whitespace-nowrap min-[2000px]:text-6xl"
+              className="font-display text-2xl sm:text-4xl tracking-[3px] text-primary transition-opacity hover:opacity-70 whitespace-nowrap min-[2000px]:text-6xl"
             >
               IA DEVELOPIX
             </Link>
@@ -198,14 +198,14 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                   <div className="relative flex items-center justify-center py-2 px-4">
                     {hasSub ? (
                       <motion.div 
-                        className="absolute inset-0 bg-[#ffffff] rounded-full z-0"
+                        className="absolute inset-0 bg-primary rounded-full z-0"
                         initial={false}
                         animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.95 }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as any }}
                       />
                     ) : (
                       <motion.div 
-                        className="absolute bottom-1 left-4 right-4 h-[1px] bg-[#ffffff] z-0"
+                        className="absolute bottom-1 left-4 right-4 h-[1px] bg-primary z-0"
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: isHovered ? 1 : 0 }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as any }}
@@ -217,11 +217,11 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                       href={link.href}
                       className={`
                         relative z-10 font-mono text-xs font-normal uppercase tracking-[2px] whitespace-nowrap transition-colors duration-300 min-[2000px]:text-sm
-                        ${isHovered && hasSub ? 'text-[#000000]' : isHovered ? 'text-[#ffffff]' : 'text-[#999999]'}
+                        ${isHovered && hasSub ? 'text-canvas' : isHovered ? 'text-primary' : 'text-muted'}
                       `}
                     >
                       {link.label}
-                      {link.isComingSoon && <span className="text-[9px] text-white/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
+                      {link.isComingSoon && <span className="text-[9px] text-primary/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
                     </Link>
                   </div>
 
@@ -242,12 +242,12 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                             <motion.div key={sub} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                               <Link
                                 href={getVariantHref(link.label, sub)}
-                                className="block px-4 py-4 text-xs font-normal uppercase tracking-[2px] text-[#999999] hover:text-[#ffffff] hover:bg-white/5 rounded-none transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-6"
+                                className="block px-4 py-4 text-xs font-normal uppercase tracking-[2px] text-muted hover:text-primary hover:bg-primary/5 rounded-none transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-6"
                               >
                                 {sub.includes('FANPULL') ? (
                                   <>
                                     {formatModelName(sub)}
-                                    <div className="text-[9px] text-white/40 mt-1 tracking-widest">(COMING SOON)</div>
+                                    <div className="text-[9px] text-primary/40 mt-1 tracking-widest">(COMING SOON)</div>
                                   </>
                                 ) : (
                                   formatModelName(sub)
@@ -269,7 +269,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
           {/* Absolute aligned on desktop to preserve perfect screen centering for wrapped relative nav items. */}
           <div className="flex items-center space-x-4 sm:space-x-6 flex-shrink-0 min-[1025px]:absolute min-[1025px]:right-12 min-[1025px]:top-1/2 min-[1025px]:-translate-y-1/2 min-[2000px]:right-24 min-[2000px]:space-x-10">
             <div className="hidden min-[1025px]:flex relative" ref={desktopLangRef}>
-              <button onClick={() => setIsDesktopLangOpen(!isDesktopLangOpen)} className="text-[#ffffff] transition-opacity hover:opacity-70" aria-label="Language">
+              <button onClick={() => setIsDesktopLangOpen(!isDesktopLangOpen)} className="text-primary transition-opacity hover:opacity-70" aria-label="Language">
                 <Globe className="h-5 w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
               </button>
               
@@ -279,20 +279,20 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
                     className="absolute top-full mt-4 left-1/2 -translate-x-1/2 w-[180px] bg-canvas border border-hairline rounded-none p-2 z-[60] flex flex-col shadow-none"
                   >
-                    <button onClick={() => setIsDesktopLangOpen(false)} className="text-left font-mono text-xs uppercase tracking-[2px] text-[#999999] hover:text-[#ffffff] hover:bg-white/10 p-3 rounded-none transition-colors whitespace-nowrap">
+                    <button onClick={() => setIsDesktopLangOpen(false)} className="text-left font-mono text-xs uppercase tracking-[2px] text-muted hover:text-primary hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap">
                       EN - ENGLISH
                     </button>
-                    <button onClick={() => setIsDesktopLangOpen(false)} className="text-left font-mono text-xs uppercase tracking-[2px] text-[#999999] hover:text-[#ffffff] hover:bg-white/10 p-3 rounded-none transition-colors whitespace-nowrap">
+                    <button onClick={() => setIsDesktopLangOpen(false)} className="text-left font-mono text-xs uppercase tracking-[2px] text-muted hover:text-primary hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap">
                       TH - THAI
                     </button>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-            <button className="hidden min-[1025px]:flex text-[#ffffff] transition-opacity hover:opacity-70" aria-label="User Account">
+            <button className="hidden min-[1025px]:flex text-primary transition-opacity hover:opacity-70" aria-label="User Account">
               <User className="h-5 w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
             </button>
-            <button className="text-[#ffffff] transition-opacity hover:opacity-70" aria-label="Shopping Cart">
+            <button className="text-primary transition-opacity hover:opacity-70" aria-label="Shopping Cart">
               <ShoppingCart className="h-5 w-5 md:h-5 md:w-5 min-[2000px]:h-8 min-[2000px]:w-8" strokeWidth={1.5} />
             </button>
           </div>
@@ -361,13 +361,13 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
           <div 
             className="w-full block md:hidden pt-4 pb-2 cursor-grab active:cursor-grabbing shrink-0"
           >
-            <div className="w-12 h-1.5 bg-[#ffffff]/30 rounded-full mx-auto" />
+            <div className="w-12 h-1.5 bg-primary/30 rounded-full mx-auto" />
           </div>
           <div className="flex items-center justify-between px-6 pb-6 pt-2 md:pt-6 border-b border-hairline shrink-0">
-            <span className="font-display text-2xl text-[#ffffff] md:text-3xl tracking-[3px]">MENU</span>
+            <span className="font-display text-2xl text-primary md:text-3xl tracking-[3px]">MENU</span>
             <button 
               onClick={closeMenu}
-              className="flex items-center justify-center h-10 w-10 text-[#ffffff] hover:bg-white/10 transition-colors md:scale-150"
+              className="flex items-center justify-center h-10 w-10 text-primary hover:bg-primary/10 transition-colors md:scale-150"
               aria-label="Close Menu"
             >
               <X className="h-6 w-6" strokeWidth={1.5} />
@@ -382,7 +382,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
           onMouseLeave={handleScrollMouseLeave}
           onMouseUp={handleScrollMouseUp}
           onMouseMove={handleScrollMouseMove}
-          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto min-h-0 cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40 [&::-webkit-scrollbar-thumb]:transition-colors"
+          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto min-h-0 cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-primary/40 [&::-webkit-scrollbar-thumb]:transition-colors"
         >
           <div className="relative flex flex-col pt-0 max-[950px]:landscape:pt-0">
             <AnimatePresence initial={false} mode="wait">
@@ -397,7 +397,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                     <Link
                       href="/"
                       onClick={closeMenu}
-                      className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-[#999999] hover:text-[#ffffff] transition-colors text-left"
+                      className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-muted hover:text-primary transition-colors text-left"
                     >
                       HOME
                     </Link>
@@ -407,22 +407,22 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                       {link.hasSubmenu ? (
                         <button
                           onClick={() => setActiveSubmenu(link.label)}
-                          className="flex items-center justify-between w-full py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-[#999999] hover:text-[#ffffff] transition-colors text-left group"
+                          className="flex items-center justify-between w-full py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-muted hover:text-primary transition-colors text-left group"
                         >
                           <span>
                             {link.label}
-                            {link.isComingSoon && <span className="text-[10px] text-white/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
+                            {link.isComingSoon && <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
                           </span>
-                          <ChevronRight className="text-gray-600 group-hover:text-[#ffffff] transition-colors md:scale-125 md:origin-center md:ml-4" size={18} />
+                          <ChevronRight className="text-gray-600 group-hover:text-primary transition-colors md:scale-125 md:origin-center md:ml-4" size={18} />
                         </button>
                       ) : (
                         <Link
                           href={link.href}
                           onClick={closeMenu}
-                          className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-[#999999] hover:text-[#ffffff] transition-colors text-left"
+                          className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-muted hover:text-primary transition-colors text-left"
                         >
                           {link.label}
-                          {link.isComingSoon && <span className="text-[10px] text-white/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
+                          {link.isComingSoon && <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>}
                         </Link>
                       )}
                     </div>
@@ -437,7 +437,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                 >
                   <button 
                     onClick={() => setActiveSubmenu(null)}
-                    className="flex items-center gap-3 text-[#999999] uppercase font-normal text-xs tracking-[2px] mb-6 hover:text-[#ffffff] transition-colors"
+                    className="flex items-center gap-3 text-muted uppercase font-normal text-xs tracking-[2px] mb-6 hover:text-primary transition-colors"
                   >
                     <ChevronLeft size={24} /> BACK
                   </button>
@@ -445,7 +445,7 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                     <Link
                       href={`/products/${activeSubmenu.toLowerCase()}`}
                       onClick={closeMenu}
-                      className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-[#ffffff] transition-colors text-left border-b border-hairline"
+                      className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-primary transition-colors text-left border-b border-hairline"
                     >
                       ALL {activeSubmenu}
                     </Link>
@@ -454,10 +454,10 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                         key={subpage}
                         href={getVariantHref(activeSubmenu, subpage)}
                         onClick={closeMenu}
-                        className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-[#999999] hover:text-[#ffffff] transition-colors text-left"
+                        className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-muted hover:text-primary transition-colors text-left"
                       >
                         {subpage.includes('FANPULL') ? (
-                          <>{formatModelName(subpage)} <span className="text-[10px] text-white/40 block tracking-widest">(COMING SOON)</span></>
+                          <>{formatModelName(subpage)} <span className="text-[10px] text-primary/40 block tracking-widest">(COMING SOON)</span></>
                         ) : (
                           formatModelName(subpage)
                         )}
@@ -480,32 +480,32 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
                   className="absolute bottom-full mb-2 left-0 w-full mb-2 bg-canvas border border-hairline rounded-none p-4 z-50 whitespace-nowrap"
                 >
                   <div className="flex flex-col space-y-4">
-                    <button className="text-left font-mono text-xs text-[#ffffff] py-2 hover:bg-white/5 px-3 rounded-none transition-colors whitespace-nowrap">EN - ENGLISH</button>
-                    <button className="text-left font-mono text-xs text-[#999999] py-2 hover:bg-white/5 px-3 rounded-none transition-colors whitespace-nowrap">TH - THAI</button>
+                    <button className="text-left font-mono text-xs text-primary py-2 hover:bg-primary/5 px-3 rounded-none transition-colors whitespace-nowrap">EN - ENGLISH</button>
+                    <button className="text-left font-mono text-xs text-muted py-2 hover:bg-primary/5 px-3 rounded-none transition-colors whitespace-nowrap">TH - THAI</button>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
             <button 
               onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
-              className="flex items-center justify-between w-full border border-hairline bg-canvas rounded-pill px-5 py-3 hover:bg-white/5 transition-colors group whitespace-nowrap"
+              className="flex items-center justify-between w-full border border-hairline bg-canvas rounded-pill px-5 py-3 hover:bg-primary/5 transition-colors group whitespace-nowrap"
             >
               <div className="flex items-center space-x-3">
-                <Globe size={18} className="text-[#999999]" />
-                <span className="text-xs text-[#ffffff] whitespace-nowrap font-mono tracking-[2px]">THAI / ENGLISH</span>
+                <Globe size={18} className="text-muted" />
+                <span className="text-xs text-primary whitespace-nowrap font-mono tracking-[2px]">THAI / ENGLISH</span>
               </div>
-              <ChevronDown size={16} className="text-[#999999]" />
+              <ChevronDown size={16} className="text-muted" />
             </button>
           </div>
 
-          <button className="bg-transparent border border-white text-white text-xs font-normal tracking-[2.5px] uppercase rounded-pill px-8 py-3 hover:bg-white hover:text-black transition-colors w-auto order-2 [@media(max-height:500px)]:order-1 [@media(max-height:500px)]:scale-90 [@media(max-height:500px)]:origin-left md:transform md:scale-110 md:origin-left">
+          <button className="bg-transparent border border-primary text-primary text-xs font-normal tracking-[2.5px] uppercase rounded-pill px-8 py-3 hover:bg-primary hover:text-canvas transition-colors w-auto order-2 [@media(max-height:500px)]:order-1 [@media(max-height:500px)]:scale-90 [@media(max-height:500px)]:origin-left md:transform md:scale-110 md:origin-left">
             LOGIN
           </button>
           
           <div className="flex items-center space-x-5 w-auto order-3 ml-auto [@media(max-height:500px)]:ml-0 [@media(max-height:500px)]:scale-90 [@media(max-height:500px)]:origin-right md:transform md:scale-110 md:origin-right">
-            <Instagram size={24} className="text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
-            <Youtube size={24} className="text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
-            <MessageCircle size={24} className="text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
+            <Instagram size={24} className="text-muted hover:text-primary transition-colors cursor-pointer" />
+            <Youtube size={24} className="text-muted hover:text-primary transition-colors cursor-pointer" />
+            <MessageCircle size={24} className="text-muted hover:text-primary transition-colors cursor-pointer" />
           </div>
         </div>
       </motion.div>
@@ -515,25 +515,25 @@ export function Navbar({ isVisible = true, scrollDirection = 'up' }: { isVisible
       {/* ========================================== */}
       <nav className={`flex md:hidden fixed bottom-0 left-0 right-0 w-full max-w-[100%] z-[60] bg-canvas border-t border-hairline pb-safe transition-transform duration-300 ease-in-out ${(scrollDirection === 'down' || isAtBottom) ? 'translate-y-0' : 'translate-y-full'}`}>
         <div className="flex justify-around items-center w-full px-2 py-3">
-          <button className="flex flex-col items-center justify-center text-[#999999] hover:text-[#ffffff] transition-colors w-16">
+          <button className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
             <Home size={24} strokeWidth={1} />
-            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-[#999999]">HOME</span>
+            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">HOME</span>
           </button>
-          <button onClick={() => setIsMobileMenuOpen(true)} className="flex flex-col items-center justify-center text-[#999999] hover:text-[#ffffff] transition-colors w-16">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
             <Menu size={24} strokeWidth={1} />
-            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-[#999999]">MENU</span>
+            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">MENU</span>
           </button>
-          <Link href="/store" className="flex flex-col items-center justify-center text-[#999999] hover:text-[#ffffff] transition-colors w-16">
+          <Link href="/store" className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
             <ShoppingBag size={24} strokeWidth={1} />
-            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-[#999999]">STORE</span>
+            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">STORE</span>
           </Link>
-          <button className="flex flex-col items-center justify-center text-[#999999] hover:text-[#ffffff] transition-colors w-16">
+          <button className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
             <ShoppingCart size={24} strokeWidth={1} />
-            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-[#999999]">CART</span>
+            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">CART</span>
           </button>
-          <button className="flex flex-col items-center justify-center text-[#999999] hover:text-[#ffffff] transition-colors w-16">
+          <button className="flex flex-col items-center justify-center text-muted hover:text-primary transition-colors w-16">
             <User size={24} strokeWidth={1} />
-            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-[#999999]">ACCOUNT</span>
+            <span className="text-[10px] uppercase mt-1 font-mono tracking-[2px] whitespace-nowrap text-muted">ACCOUNT</span>
           </button>
         </div>
       </nav>

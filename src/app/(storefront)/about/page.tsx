@@ -945,7 +945,7 @@ export default function AboutPage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setActiveAchievement(null)}
-                className="fixed inset-0 bg-[#000000]/75 backdrop-blur-md z-50 cursor-pointer"
+                className="fixed inset-0 bg-canvas/75 backdrop-blur-md z-50 cursor-pointer"
               />
 
               {/* Viewport-Centered Overlay Details Modal */}
@@ -961,7 +961,7 @@ export default function AboutPage() {
                   <button
                     type="button"
                     onClick={() => setActiveAchievement(null)}
-                    className="border border-hairline text-muted bg-transparent rounded-none p-2 transition-all duration-200 hover:border-hairline-strong hover:text-primary cursor-pointer flex items-center justify-center outline-none focus:border-white"
+                    className="border border-hairline text-muted bg-transparent rounded-none p-2 transition-all duration-200 hover:border-hairline-strong hover:text-primary cursor-pointer flex items-center justify-center outline-none focus:border-primary"
                     aria-label="Close details"
                   >
                     <X size={16} />

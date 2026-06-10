@@ -314,7 +314,7 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
             >
               <button
                 onClick={(e) => { e.stopPropagation(); openLightbox(idx); }}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#111111]/80 backdrop-blur-md border border-[#333333] text-white flex items-center justify-center hover:bg-[#222222] transition-colors z-10"
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-canvas/80 backdrop-blur-md border border-hairline text-primary flex items-center justify-center hover:bg-surface-card transition-colors z-10"
               >
                 <Maximize2 className="w-5 h-5" />
               </button>
@@ -337,7 +337,7 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
               key={idx}
               onClick={() => scrollToIndex(idx)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                activeIndex === idx ? 'w-4 bg-[#ffffff]' : 'w-1.5 bg-[#444444]'
+                activeIndex === idx ? 'w-4 bg-primary' : 'w-1.5 bg-muted-soft'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
@@ -427,7 +427,7 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 z-[9999] bg-canvas/95 backdrop-blur-sm flex items-center justify-center"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -466,7 +466,7 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
                   {/* Close button */}
                   <button
                     onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
-                    className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10 pointer-events-auto"
+                    className="absolute top-4 right-4 w-12 h-12 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors z-10 pointer-events-auto"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -475,7 +475,7 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
                   {images.length > 1 && (
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors pointer-events-auto"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors pointer-events-auto"
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
@@ -485,14 +485,14 @@ export function ProductImageGallery({ images, modelName, className = '' }: Produ
                   {images.length > 1 && (
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors pointer-events-auto"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors pointer-events-auto"
                     >
                       <ChevronRight className="w-6 h-6" />
                     </button>
                   )}
 
                   {/* Counter */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[11px] tracking-[2px] text-white/60 uppercase pointer-events-none">
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[11px] tracking-[2px] text-muted uppercase pointer-events-none">
                     {lightboxIndex + 1} / {images.length}
                   </div>
                 </motion.div>

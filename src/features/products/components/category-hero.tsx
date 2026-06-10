@@ -37,7 +37,7 @@ export function CategoryHero({
   isComingSoon = false,
 }: CategoryHeroProps) {
   return (
-    <section className="relative w-full min-h-[calc(100dvh-80px)] flex flex-col justify-start min-[1025px]:justify-center bg-[#000000] overflow-hidden">
+    <section className="relative w-full min-h-[calc(100dvh-80px)] flex flex-col justify-start min-[1025px]:justify-center bg-canvas overflow-hidden">
       
       {/* Cinematic Background Layer */}
       <motion.div
@@ -66,7 +66,7 @@ export function CategoryHero({
       </motion.div>
 
       {/* Atmospheric Radial & Vertical Gradients */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#000000] via-[#000000]/40 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-canvas via-canvas/40 to-transparent" />
       <div className="absolute inset-0 z-10 bg-radial-vignette opacity-60 pointer-events-none" />
 
       {/* Main Structural Content Grid */}
@@ -79,7 +79,7 @@ export function CategoryHero({
         >
           <motion.h1
             variants={childVariants}
-            className={`${ty.displayXl} text-[60px] sm:text-[84px] md:text-[110px] min-[1025px]:text-[100px] xl:text-[130px] min-[2000px]:text-[200px] text-[#ffffff] mb-1 md:mb-2`}
+            className={`${ty.displayXl} text-[60px] sm:text-[84px] md:text-[110px] min-[1025px]:text-[100px] xl:text-[130px] min-[2000px]:text-[200px] text-primary mb-1 md:mb-2`}
           >
             {name}
           </motion.h1>
@@ -107,9 +107,9 @@ export function CategoryHero({
           initial={scrollIndicatorInitial}
           animate={scrollIndicatorAnimate}
           transition={scrollIndicatorTransition}
-          className="flex flex-col items-center text-[#999999]"
+          className="flex flex-col items-center text-muted"
         >
-          <ChevronDown strokeWidth={1} className="w-8 h-8 opacity-70 text-[#999999]" />
+          <ChevronDown strokeWidth={1} className="w-8 h-8 opacity-70 text-muted" />
         </motion.div>
       </div>
     </section>

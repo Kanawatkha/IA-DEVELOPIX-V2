@@ -92,7 +92,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
   return (
     <section
       ref={sectionRef}
-      className="w-full py-10 md:py-12 border-t border-hairline overflow-hidden bg-[#000000] px-6 lg:px-12"
+      className="w-full py-10 md:py-12 border-t border-hairline overflow-hidden bg-canvas px-6 lg:px-12"
     >
       <motion.div
         initial="hidden"
@@ -105,7 +105,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
         <div className="mb-6">
           <motion.h2
             variants={childVariants}
-            className="font-display text-4xl md:text-5xl lg:text-[60px] min-[2000px]:text-[80px] font-normal uppercase tracking-[4px] text-[#ffffff] mb-4"
+            className="font-display text-4xl md:text-5xl lg:text-[60px] min-[2000px]:text-[80px] font-normal uppercase tracking-[4px] text-primary mb-4"
           >
             {title}
           </motion.h2>
@@ -120,12 +120,12 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
               className="absolute inset-0 pointer-events-none z-10 md:hidden"
             >
               <div
-                className={`absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/30 to-transparent transition-opacity duration-300 ${
+                className={`absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-primary/30 to-transparent transition-opacity duration-300 ${
                   shadowLeft ? 'opacity-100' : 'opacity-0'
                 }`}
               />
               <div
-                className={`absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/30 to-transparent transition-opacity duration-300 ${
+                className={`absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-primary/30 to-transparent transition-opacity duration-300 ${
                   shadowRight ? 'opacity-100' : 'opacity-0'
                 }`}
               />
@@ -145,7 +145,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                   onClick={() => handleFilterClick(f)}
                   className={`shrink-0 font-mono text-[10px] md:text-[12px] leading-[1.43] uppercase tracking-[2px] px-3 md:px-6 py-2 md:py-2.5 rounded-pill transition-colors duration-300 outline-none focus:ring-1 focus:ring-white whitespace-nowrap font-normal border ${
                     activeFilter === f
-                      ? 'bg-[#ffffff] text-[#000000] border-[#ffffff]'
+                      ? 'bg-primary text-canvas border-primary'
                       : 'bg-transparent text-muted border-hairline hover:border-hairline-strong hover:text-primary'
                   }`}
                 >
@@ -254,7 +254,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                           }}
                         />
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                          <span className="border border-white/30 px-6 py-2 text-white font-normal tracking-[2px] uppercase rounded-none bg-canvas/60">
+                          <span className="border border-primary/30 px-6 py-2 text-primary font-normal tracking-[2px] uppercase rounded-none bg-canvas/60">
                             COMING SOON
                           </span>
                         </div>
@@ -262,7 +262,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                     )}
 
                     {/* Gradient overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent pointer-events-none z-0" />
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-canvas/90 to-transparent pointer-events-none z-0" />
 
                     {/* Layer 2: Text Overlay */}
                     <div className="absolute bottom-0 left-0 right-0 px-6 md:px-8 pb-8 md:pb-10 flex flex-col lg:flex-row lg:justify-between lg:items-end z-10 pointer-events-none">

@@ -131,7 +131,7 @@ export default function HomePage() {
             transition={scrollIndicatorTransition}
             className="flex flex-col items-center text-[#999999]"
           >
-            <ChevronDown strokeWidth={1} className="w-8 h-8 opacity-70 text-[#999999]" />
+            <ChevronDown strokeWidth={1} className="w-8 h-8 opacity-70 text-muted" />
           </motion.div>
         </div>
       </section>
@@ -192,13 +192,13 @@ export default function HomePage() {
                   )}
 
                   <div className="absolute top-6 left-0 right-0 text-center z-20 px-4">
-                    <h3 className={`${displayMd} text-[1.5rem] sm:text-2xl md:text-3xl lg:text-4xl text-white text-center`}>
+                    <h3 className={`${displayMd} text-[1.5rem] sm:text-2xl md:text-3xl lg:text-4xl text-primary text-center`}>
                       {category}
                     </h3>
                   </div>
 
                   <div className="absolute bottom-6 left-0 right-0 flex justify-center z-20">
-                    <span className={`${captionUpper} text-[#cccccc] border-b border-white/40 pb-1 hover:text-white transition-colors`}>
+                    <span className={`${captionUpper} text-body border-b border-primary/40 pb-1 group-hover:text-primary transition-colors`}>
                       EXPLORE SERIES
                     </span>
                   </div>
@@ -222,9 +222,9 @@ export default function HomePage() {
           variants={awardsParentVariants}
         >
           <motion.div variants={awardsChildVariants}>
-            <div className="inline-block border-b border-white/20 pb-4 mb-6 lg:mb-8 min-[2000px]:pb-8 min-[2000px]:mb-20 min-[2000px]:border-b-4 text-center">
+            <div className="inline-block border-b border-primary/20 pb-4 mb-6 lg:mb-8 min-[2000px]:pb-8 min-[2000px]:mb-20 min-[2000px]:border-b-4 text-center">
               {/* Awards Section heading */}
-              <h2 className={`${displayLg} text-[20px] sm:text-[28px] md:text-[45px] lg:text-[60px] text-white min-[2000px]:text-[100px]`}>
+              <h2 className={`${displayLg} text-[20px] sm:text-[28px] md:text-[45px] lg:text-[60px] text-primary min-[2000px]:text-[100px]`}>
                 INTERNATIONAL PARTICIPATIONS & VICTORIES
               </h2>
             </div>
@@ -323,10 +323,10 @@ export default function HomePage() {
           {/* 1. Header Section */}
           <motion.div variants={childVariants}>
             <div className="text-center mb-6 min-[2000px]:mb-10">
-              <h2 className={`${displayXl} text-[32px] sm:text-[46px] md:text-[55px] lg:text-[80px] text-white mb-2 min-[2000px]:text-[100px] whitespace-nowrap`}>
+              <h2 className={`${displayXl} text-[32px] sm:text-[46px] md:text-[55px] lg:text-[80px] text-primary mb-2 min-[2000px]:text-[100px] whitespace-nowrap`}>
                 DISCOVER OUR
               </h2>
-              <h2 className={`${displayLg} text-[22px] sm:text-[34px] md:text-[40px] lg:text-[50px] text-[#999999] min-[2000px]:text-[60px] whitespace-nowrap lg:whitespace-normal`}>
+              <h2 className={`${displayLg} text-[22px] sm:text-[34px] md:text-[40px] lg:text-[50px] text-muted min-[2000px]:text-[60px] whitespace-nowrap lg:whitespace-normal`}>
                 DEVELOPMENT ENVIRONMENTS
               </h2>
             </div>
@@ -334,7 +334,7 @@ export default function HomePage() {
 
           {/* 2. Divider Segment */}
           <motion.div variants={childVariants}>
-            <div className="h-[1px] w-full max-w-[300px] md:max-w-xl mx-auto bg-[#999999] mb-12 min-[2000px]:mb-20" />
+            <div className="h-[1px] w-full max-w-[300px] md:max-w-xl mx-auto bg-muted mb-12 min-[2000px]:mb-20" />
           </motion.div>
 
           {/* 3. Tools Grid Section */}
@@ -362,9 +362,9 @@ export default function HomePage() {
               >
                 <div className="flex flex-col items-center p-4 md:p-8 rounded-none bg-surface-card border border-hairline hover:bg-surface-elevated transition-all duration-500 ease-out aspect-square md:aspect-auto overflow-hidden min-[2000px]:p-12">
                   <div className="mb-2 md:mb-6 min-[2000px]:mb-10">
-                    <tool.icon className="w-8 h-8 md:w-12 md:h-12 min-[2000px]:w-20 min-[2000px]:h-20 text-white" strokeWidth={1.5} />
+                    <tool.icon className="w-8 h-8 md:w-12 md:h-12 min-[2000px]:w-20 min-[2000px]:h-20 text-primary" strokeWidth={1.5} />
                   </div>
-                  <span className={`${captionUpper} text-center mt-4 text-muted transition-colors duration-500 ease-out group-hover:text-white min-[2000px]:text-lg`}>
+                  <span className={`${captionUpper} text-center mt-4 text-muted transition-colors duration-500 ease-out group-hover:text-primary min-[2000px]:text-lg`}>
                     {tool.title}
                   </span>
                 </div>

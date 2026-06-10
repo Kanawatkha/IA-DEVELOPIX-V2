@@ -19,7 +19,7 @@ const formatModelName = (name: string) => {
       return (
           <div className="flex flex-row items-center gap-1.5 whitespace-nowrap md:flex-col md:items-start md:gap-0 md:whitespace-normal lg:flex-row lg:items-center lg:gap-1.5 lg:whitespace-nowrap">
              <span className="leading-tight text-[13px]">{name}</span>
-             <span className="text-[13px] md:text-[9px] text-white/40 tracking-widest font-normal">(COMING SOON)</span>
+             <span className="text-[13px] md:text-[9px] text-primary/40 tracking-widest font-normal">(COMING SOON)</span>
           </div>
       )
   }
@@ -33,7 +33,7 @@ const formatModelName = (name: string) => {
       return (
           <div className="flex flex-row items-center gap-1.5 whitespace-nowrap md:flex-col md:items-start md:gap-0 md:whitespace-normal lg:flex-row lg:items-center lg:gap-1.5 lg:whitespace-nowrap">
              <span className="leading-tight text-[13px]">{formatted}</span>
-             <span className="text-[13px] md:text-[9px] text-white/40 tracking-widest font-normal">(COMING SOON)</span>
+             <span className="text-[13px] md:text-[9px] text-primary/40 tracking-widest font-normal">(COMING SOON)</span>
           </div>
       )
   }
@@ -83,7 +83,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#000000] border-t border-hairline flex flex-col justify-between h-auto max-md:min-h-[100dvh] max-md:pb-[80px]">
+    <footer className="w-full bg-canvas border-t border-hairline flex flex-col justify-between h-auto max-md:min-h-[100dvh] max-md:pb-[80px]">
       <div className="max-w-[1720px] min-[2000px]:max-w-[1920px] mx-auto w-full px-6 md:px-12">
         {/* ============================== */}
         {/* 4.1 Top Banner */}
@@ -92,12 +92,12 @@ export function Footer() {
           {TOP_BANNERS.map((banner, idx) => (
             <div key={idx} className="flex flex-col items-start pr-8">
               <div className="flex items-center space-x-4 mb-2 min-[1920px]:mb-6">
-                <banner.icon className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-[#ffffff]" strokeWidth={1.5} />
-                <h3 className="font-mono text-xs min-[1920px]:text-sm uppercase tracking-[2px] text-[#ffffff] font-normal">
+                <banner.icon className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
+                <h3 className="font-mono text-xs min-[1920px]:text-sm uppercase tracking-[2px] text-primary font-normal">
                   {banner.title}
                 </h3>
               </div>
-              <p className="font-serif text-xs min-[1920px]:text-sm text-[#cccccc] pl-10 min-[1920px]:pl-14 leading-relaxed">
+              <p className="font-serif text-xs min-[1920px]:text-sm text-body pl-10 min-[1920px]:pl-14 leading-relaxed">
                 {banner.desc}
               </p>
             </div>
@@ -106,7 +106,7 @@ export function Footer() {
 
         <div className="md:hidden flex flex-col items-center justify-center py-4 px-2 h-auto overflow-hidden shrink-0 mt-4">
           <div className="flex items-center justify-between w-full mb-2 relative min-h-[90px]">
-            <button onClick={prevBanner} className="p-2 text-[#999999] hover:text-[#ffffff] transition-colors outline-none z-10 absolute left-0">
+            <button onClick={prevBanner} className="p-2 text-muted hover:text-primary transition-colors outline-none z-10 absolute left-0">
               <ChevronLeft strokeWidth={1} size={28} />
             </button>
             
@@ -121,17 +121,17 @@ export function Footer() {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="flex flex-col items-center text-center flex-1 px-10 absolute w-full"
               >
-                {React.createElement(TOP_BANNERS[currentBanner].icon, { className: "w-7 h-7 text-[#ffffff] mb-2", strokeWidth: 1 })}
-                <h3 className="font-mono text-xs uppercase tracking-[2px] text-[#ffffff] font-normal mb-1">
+                {React.createElement(TOP_BANNERS[currentBanner].icon, { className: "w-7 h-7 text-primary mb-2", strokeWidth: 1 })}
+                <h3 className="font-mono text-xs uppercase tracking-[2px] text-primary font-normal mb-1">
                   {TOP_BANNERS[currentBanner].title}
                 </h3>
-                <p className="font-serif text-xs text-[#cccccc] leading-tight">
+                <p className="font-serif text-xs text-body leading-tight">
                   {TOP_BANNERS[currentBanner].desc}
                 </p>
               </motion.div>
             </AnimatePresence>
 
-            <button onClick={nextBanner} className="p-2 text-[#999999] hover:text-[#ffffff] transition-colors outline-none z-10 absolute right-0">
+            <button onClick={nextBanner} className="p-2 text-muted hover:text-primary transition-colors outline-none z-10 absolute right-0">
               <ChevronRight strokeWidth={1} size={28} />
             </button>
           </div>
@@ -143,7 +143,7 @@ export function Footer() {
                   setSlideDirection(idx > currentBanner ? 1 : -1);
                   setCurrentBanner(idx);
                 }}
-                className={`w-1.5 h-1.5 rounded-full transition-colors ${currentBanner === idx ? 'bg-[#ffffff]' : 'bg-[#444444]'}`}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${currentBanner === idx ? 'bg-primary' : 'bg-muted-soft'}`}
               />
             ))}
           </div>
@@ -158,13 +158,13 @@ export function Footer() {
             <div className="hidden md:contents">
               {FOOTER_LINKS.map((col) => (
                 <div key={col.title} className="flex flex-col space-y-6 min-[1920px]:space-y-10">
-                  <h4 className="font-mono text-xs min-[1920px]:text-sm font-normal text-[#ffffff] tracking-[2px] uppercase">
+                  <h4 className="font-mono text-xs min-[1920px]:text-sm font-normal text-primary tracking-[2px] uppercase">
                     {col.title}
                   </h4>
                   <ul className={col.title === 'ROBOT MODELS' ? 'columns-1 min-[1025px]:columns-2 gap-x-6' : 'flex flex-col space-y-3 min-[1920px]:space-y-6'}>
                     {col.links.map((link) => (
                       <li key={link.label} className={col.title === 'ROBOT MODELS' ? 'mb-1.5 break-inside-avoid' : ''}>
-                        <Link href={link.href} className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-[#999999] hover:text-[#ffffff] transition-colors duration-300 block">
+                        <Link href={link.href} className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block">
                           {formatModelName(link.label)}
                         </Link>
                       </li>
@@ -178,9 +178,9 @@ export function Footer() {
               {FOOTER_LINKS.map((col) => (
                 <div key={col.title} className="w-full border-b border-hairline">
                   <button onClick={() => toggleAccordion(col.title)} className="flex items-center justify-between w-full py-3 text-left outline-none">
-                    <span className="font-mono text-xs font-normal text-[#ffffff] tracking-[2px] uppercase">{col.title}</span>
+                    <span className="font-mono text-xs font-normal text-primary tracking-[2px] uppercase">{col.title}</span>
                     <motion.div animate={{ rotate: openAccordion === col.title ? 180 : 0 }}>
-                      <ChevronDown size={16} className="text-[#999999]" />
+                      <ChevronDown size={16} className="text-muted" />
                     </motion.div>
                   </button>
                   <AnimatePresence>
@@ -189,7 +189,7 @@ export function Footer() {
                         <ul className={col.title === 'ROBOT MODELS' ? 'columns-1 min-[1025px]:columns-2 gap-x-4 pb-4 pl-2' : 'flex flex-col space-y-4 pb-4 pl-2'}>
                           {col.links.map((link) => (
                             <li key={link.label} className={col.title === 'ROBOT MODELS' ? 'mb-2 break-inside-avoid' : ''}>
-                              <Link href={link.href} className="font-serif text-xs tracking-normal text-[#999999] hover:text-[#ffffff] block py-1.5">
+                              <Link href={link.href} className="font-serif text-xs tracking-normal text-muted hover:text-primary block py-1.5">
                                 {formatModelName(link.label)}
                               </Link>
                             </li>
@@ -204,25 +204,25 @@ export function Footer() {
           </div>
 
           <div className="w-full md:w-[350px] lg:w-[450px] min-[1920px]:w-[700px] flex flex-col space-y-4 md:space-y-6 min-[1920px]:space-y-12 shrink-0">
-            <h2 className="font-display text-xl md:text-2xl min-[1920px]:text-4xl uppercase tracking-[2px] text-[#ffffff] leading-tight font-normal">
+            <h2 className="font-display text-xl md:text-2xl min-[1920px]:text-4xl uppercase tracking-[2px] text-primary leading-tight font-normal">
               JOIN OUR MAILING LIST FOR EXCLUSIVE UPDATES
             </h2>
-            <div className="flex items-center border-b border-hairline-strong pb-2 md:pb-3 min-[1920px]:pb-6 group hover:border-[#ffffff] transition-colors">
+            <div className="flex items-center border-b border-hairline-strong pb-2 md:pb-3 min-[1920px]:pb-6 group hover:border-primary transition-colors">
               <input 
                 type="email" 
                 placeholder="ENTER YOUR EMAIL" 
-                className="bg-transparent flex-1 outline-none font-serif text-xs md:text-sm min-[1920px]:text-lg text-[#ffffff] placeholder:text-[#999999] tracking-normal"
+                className="bg-transparent flex-1 outline-none font-serif text-xs md:text-sm min-[1920px]:text-lg text-primary placeholder:text-muted tracking-normal"
               />
-              <button className="text-[#999999] group-focus-within:text-[#ffffff] hover:text-[#ffffff] transition-colors pl-4 outline-none">
+              <button className="text-muted group-focus-within:text-primary hover:text-primary transition-colors pl-4 outline-none">
                 <ArrowRight strokeWidth={1.5} className="min-[1920px]:w-8 min-[1920px]:h-8" />
               </button>
             </div>
             
             <div className="hidden md:flex items-center space-x-6 min-[1920px]:space-x-10 pt-4 min-[1920px]:pt-8">
-              <Facebook strokeWidth={1} className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
-              <span className="font-display font-normal text-lg min-[1920px]:text-2xl text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer">X</span>
-              <Instagram strokeWidth={1} className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
-              <Youtube strokeWidth={1} className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-[#999999] hover:text-[#ffffff] transition-colors cursor-pointer" />
+              <Facebook strokeWidth={1} className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-muted hover:text-primary transition-colors cursor-pointer" />
+              <span className="font-display font-normal text-lg min-[1920px]:text-2xl text-muted hover:text-primary transition-colors cursor-pointer">X</span>
+              <Instagram strokeWidth={1} className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-muted hover:text-primary transition-colors cursor-pointer" />
+              <Youtube strokeWidth={1} className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-muted hover:text-primary transition-colors cursor-pointer" />
             </div>
           </div>
         </div>
@@ -235,13 +235,13 @@ export function Footer() {
         <div className="px-6 md:px-12 min-[1920px]:px-24 py-4 md:py-6 min-[1920px]:py-10 flex flex-col md:flex-row flex-wrap justify-between items-center gap-4 shrink-0">
           
           <div className="flex md:hidden items-center space-x-8 w-full justify-center order-1">
-            <Facebook strokeWidth={1} className="w-4 h-4 text-[#999999]" />
-            <span className="font-display font-normal text-base text-[#999999]">X</span>
-            <Instagram strokeWidth={1} className="w-4 h-4 text-[#999999]" />
-            <Youtube strokeWidth={1} className="w-5 h-5 text-[#999999]" />
+            <Facebook strokeWidth={1} className="w-4 h-4 text-muted" />
+            <span className="font-display font-normal text-base text-muted">X</span>
+            <Instagram strokeWidth={1} className="w-4 h-4 text-muted" />
+            <Youtube strokeWidth={1} className="w-5 h-5 text-muted" />
           </div>
 
-          <p className="font-serif text-xs text-[#999999] tracking-normal text-center md:text-left order-3 md:order-1 w-full md:w-auto mt-2 md:mt-0">
+          <p className="font-serif text-xs text-muted tracking-normal text-center md:text-left order-3 md:order-1 w-full md:w-auto mt-2 md:mt-0">
             © 2026 IA DEVELOPIX. ALL RIGHTS RESERVED.
           </p>
 
@@ -253,17 +253,17 @@ export function Footer() {
                   animate={{ opacity: 1, y: 0 }} 
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute bottom-full mb-2 left-0 w-full bg-[#000000] border border-hairline rounded-none p-2 z-50 flex flex-col space-y-1 shadow-none"
+                  className="absolute bottom-full mb-2 left-0 w-full bg-canvas border border-hairline rounded-none p-2 z-50 flex flex-col space-y-1 shadow-none"
                 >
                   <button 
                     onClick={() => setIsLangOpen(false)} 
-                    className="text-left font-mono text-xs text-[#ffffff] uppercase tracking-[2px] hover:bg-white/5 p-2.5 rounded-none transition-colors whitespace-nowrap"
+                    className="text-left font-mono text-xs text-primary uppercase tracking-[2px] hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap"
                   >
                     EN - ENGLISH
                   </button>
                   <button 
                     onClick={() => setIsLangOpen(false)} 
-                    className="text-left font-mono text-xs text-[#999999] uppercase tracking-[2px] hover:text-[#ffffff] hover:bg-white/5 p-2.5 rounded-none transition-colors whitespace-nowrap"
+                    className="text-left font-mono text-xs text-muted uppercase tracking-[2px] hover:text-primary hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap"
                   >
                     TH - THAI
                   </button>
@@ -273,20 +273,20 @@ export function Footer() {
 
             <button 
               onClick={() => setIsLangOpen(!isLangOpen)} 
-              className="flex items-center justify-between w-full border border-hairline rounded-pill px-5 py-2 hover:bg-white/5 transition-colors outline-none"
+              className="flex items-center justify-between w-full border border-hairline rounded-pill px-5 py-2 hover:bg-primary/5 transition-colors outline-none"
             >
-              <Globe className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-[#999999]" strokeWidth={1.5} />
-              <span className="font-mono text-[10px] min-[1920px]:text-sm text-[#ffffff] uppercase tracking-[2px] whitespace-nowrap mx-2">
+              <Globe className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-muted" strokeWidth={1.5} />
+              <span className="font-mono text-[10px] min-[1920px]:text-sm text-primary uppercase tracking-[2px] whitespace-nowrap mx-2">
                 THAI / ENGLISH
               </span>
-              <ChevronDown className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-[#999999]" strokeWidth={1.5} />
+              <ChevronDown className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-muted" strokeWidth={1.5} />
             </button>
           </div>
 
           <div className="flex items-center justify-center space-x-3 md:space-x-4 min-[1920px]:space-x-6 order-4 md:order-3 w-full md:w-auto">
-            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-[#999999] tracking-widest uppercase">VISA</span>
-            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-[#999999] tracking-widest uppercase">MASTERCARD</span>
-            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-[#999999] tracking-widest uppercase">PROMPTPAY</span>
+            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-muted tracking-widest uppercase">VISA</span>
+            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-muted tracking-widest uppercase">MASTERCARD</span>
+            <span className="font-mono text-[8px] md:text-[9px] min-[1920px]:text-xs text-muted tracking-widest uppercase">PROMPTPAY</span>
           </div>
         </div>
       </div>

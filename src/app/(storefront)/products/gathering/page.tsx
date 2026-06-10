@@ -22,7 +22,7 @@ export default function GatheringPage() {
   }
 
   return (
-    <main className="w-full bg-[#000000] min-h-screen text-[#ffffff] overflow-hidden">
+    <main className="w-full bg-canvas min-h-screen text-primary overflow-hidden">
       
       {/* SECTION 1: THE HERO */}
       <CategoryHero
@@ -48,7 +48,7 @@ export default function GatheringPage() {
             className="w-full max-w-[1920px] mx-auto px-6 md:px-12 2xl:px-24 flex justify-center items-center"
           >
             <div className="w-full border border-hairline bg-transparent py-12 px-10 md:py-32 md:px-32 flex justify-center items-center">
-              <h2 className={`${ty.displayLg} text-2xl sm:text-3xl md:text-5xl lg:text-7xl 2xl:text-[6rem] text-white text-center whitespace-nowrap`}>
+              <h2 className={`${ty.displayLg} text-2xl sm:text-3xl md:text-5xl lg:text-7xl 2xl:text-[6rem] text-primary text-center whitespace-nowrap`}>
                 COMING SOON
               </h2>
             </div>

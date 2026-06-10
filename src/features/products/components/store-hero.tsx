@@ -248,7 +248,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
               }}
             >
               {/* Pure dark bottom overlay fade */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-canvas/80 via-canvas/10 to-transparent pointer-events-none" />
             </motion.div>
 
             {/* Structured slide header copy overlay */}
@@ -279,7 +279,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
               <motion.div variants={childVariants}>
                 <Link
                   href={cat.isComingSoon ? '#' : `/products/${cat.name.toLowerCase()}`}
-                  className={`${ty.ctaButton} text-[10px] sm:text-[12px] md:text-[14px] px-5 py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-white hover:text-black transition-all`}
+                  className={`${ty.ctaButton} text-[10px] sm:text-[12px] md:text-[14px] px-5 py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-primary hover:text-canvas transition-all`}
                   onClick={(e) => cat.isComingSoon && e.preventDefault()}
                 >
                   DISCOVER {cat.name}
@@ -297,7 +297,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           onClick={handlePrevSlide}
-          className="p-2 md:p-4 text-muted hover:text-primary transition-colors outline-none pointer-events-auto border border-hairline rounded-full bg-black/40 backdrop-blur-sm"
+          className="p-2 md:p-4 text-muted hover:text-primary transition-colors outline-none pointer-events-auto border border-hairline rounded-full bg-canvas/40 backdrop-blur-sm"
           aria-label="Previous slide"
         >
           <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1} />
@@ -313,7 +313,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
             <button
               key={idx}
               onClick={() => handleDotClickWrapper(idx)}
-              className={`transition-all duration-300 rounded-full outline-none focus:ring-1 focus:ring-white ${
+              className={`transition-all duration-300 rounded-full outline-none focus:ring-1 focus:ring-primary ${
                 activeIndex % categories.length === idx
                   ? 'w-10 h-1.5 bg-primary'
                   : 'w-2 h-1.5 bg-muted-soft hover:bg-muted'
@@ -328,7 +328,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           onClick={handleNextSlide}
-          className="p-2 md:p-4 text-muted hover:text-primary transition-colors outline-none pointer-events-auto border border-hairline rounded-full bg-black/40 backdrop-blur-sm"
+          className="p-2 md:p-4 text-muted hover:text-primary transition-colors outline-none pointer-events-auto border border-hairline rounded-full bg-canvas/40 backdrop-blur-sm"
           aria-label="Next slide"
         >
           <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1} />

@@ -42,7 +42,7 @@ export function SeriesLineup({ series }: SeriesLineupProps) {
             {hasVisibleTitle && (
               <motion.h2
                 variants={childVariants}
-                className={`${ty.displayLg} text-[48px] md:text-[72px] lg:text-[96px] text-[#ffffff] mb-6 md:mb-8 flex flex-wrap items-baseline gap-2`}
+                className={`${ty.displayLg} text-[48px] md:text-[72px] lg:text-[96px] text-primary mb-6 md:mb-8 flex flex-wrap items-baseline gap-2`}
               >
                 {group.name}
                 {group.isComingSoon && (

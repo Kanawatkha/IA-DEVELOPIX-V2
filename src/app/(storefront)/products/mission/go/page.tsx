@@ -19,7 +19,7 @@ export default function MissionGoPage() {
   ];
 
   return (
-    <main className="bg-[#000000] text-[#ffffff] w-full min-h-screen font-serif">
+    <main className="bg-canvas text-primary w-full min-h-screen font-serif">
       
       {/* -------------------------------------------------------------
           SECTION 1: Product Gallery and Info Form
@@ -44,7 +44,7 @@ export default function MissionGoPage() {
       {/* -------------------------------------------------------------
           Phase 2 - Product Details Section
           ------------------------------------------------------------- */}
-      <section id="product-details-section" className="pt-10 pb-12 lg:pt-16 lg:pb-12 px-6 lg:px-12 bg-[#000000] text-[#ffffff] max-w-[1720px] mx-auto border-t border-hairline">
+      <section id="product-details-section" className="pt-10 pb-12 lg:pt-16 lg:pb-12 px-6 lg:px-12 bg-canvas text-primary max-w-[1720px] mx-auto border-t border-hairline">
         <motion.h2 
           initial="hidden"
           whileInView="visible"
@@ -107,7 +107,7 @@ export default function MissionGoPage() {
                 viewport={{ once: true, amount: 0.1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1.0, ease: [0.215, 0.610, 0.355, 1] }}
-                className="absolute bottom-0 w-full h-[200px] bg-gradient-to-t from-black via-black/80 to-transparent flex items-end justify-center z-20 pointer-events-none pb-0"
+                className="absolute bottom-0 w-full h-[200px] bg-gradient-to-t from-canvas via-canvas/80 to-transparent flex items-end justify-center z-20 pointer-events-none pb-0"
               >
                 <button
                   onClick={() => setIsExpanded(true)}
@@ -354,7 +354,7 @@ export default function MissionGoPage() {
                 ATLAS has set new standards in performance and stability. Not only has it achieved speeds never seen before, but it also improved its turning capabilities even at high levels of inertia.
               </motion.p>
             </div>
-            <motion.div variants={childVariants} className="w-full max-w-5xl mx-auto aspect-video rounded-none overflow-hidden bg-zinc-900 border border-hairline">
+            <motion.div variants={childVariants} className="w-full max-w-5xl mx-auto aspect-video rounded-none overflow-hidden bg-surface-card border border-hairline">
               {isExpanded ? (
                 <iframe 
                   src="https://www.youtube.com/embed/MgTHnjR4zoU" 

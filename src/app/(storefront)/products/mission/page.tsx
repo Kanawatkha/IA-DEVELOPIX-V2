@@ -23,7 +23,7 @@ export default function MissionPage() {
   }
 
   return (
-    <main className="w-full bg-[#000000] min-h-screen text-[#ffffff] overflow-hidden">
+    <main className="w-full bg-canvas min-h-screen text-primary overflow-hidden">
       
       {/* SECTION 1: THE HERO */}
       <CategoryHero

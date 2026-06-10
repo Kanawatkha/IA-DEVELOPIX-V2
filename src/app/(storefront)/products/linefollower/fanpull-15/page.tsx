@@ -8,7 +8,7 @@ import { ShopCollections } from '@/src/features/products';
 
 export default function Fanpull15Page() {
   return (
-    <main className="w-full bg-[#000000] min-h-screen text-[#ffffff] overflow-hidden font-body">
+    <main className="w-full bg-canvas min-h-screen text-primary overflow-hidden font-body">
 
       {/* ===================================== */}
       {/* SECTION 1: COMING SOON BANNER         */}
@@ -25,7 +25,7 @@ export default function Fanpull15Page() {
           className="w-full max-w-[1920px] mx-auto px-6 md:px-12 2xl:px-24 flex justify-center items-center"
         >
           <div className="w-full border border-hairline bg-transparent py-12 px-10 md:py-32 md:px-32 flex justify-center items-center">
-            <h2 className={`${ty.displayXl} text-2xl sm:text-3xl md:text-5xl lg:text-7xl 2xl:text-[6rem] text-white text-center whitespace-nowrap`}>
+            <h2 className={`${ty.displayXl} text-2xl sm:text-3xl md:text-5xl lg:text-7xl 2xl:text-[6rem] text-primary text-center whitespace-nowrap`}>
               COMING SOON
             </h2>
           </div>

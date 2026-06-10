@@ -37,7 +37,7 @@ export function PerformanceMatchup({
     >
       <motion.h2
         variants={childVariants}
-        className={`${ty.displayLg} max-[376px]:text-3xl text-[48px] md:text-[72px] lg:text-[96px] text-[#ffffff] mb-6 md:mb-8`}
+        className={`${ty.displayLg} max-[376px]:text-3xl text-[48px] md:text-[72px] lg:text-[96px] text-primary mb-6 md:mb-8`}
       >
         {title}
       </motion.h2>
@@ -63,7 +63,7 @@ export function PerformanceMatchup({
               />
             </div>
 
-            <h3 className={`${ty.displayMd} text-[36px] md:text-[48px] text-[#ffffff] mb-8`}>
+            <h3 className={`${ty.displayMd} text-[36px] md:text-[48px] text-primary mb-8`}>
               {col.name}
             </h3>
 
@@ -79,7 +79,7 @@ export function PerformanceMatchup({
             </div>
 
             {/* Model Philosophy Description */}
-            <p className={`${ty.bodyMd} text-[16px] md:text-[18px] text-[#cccccc]`}>
+            <p className={`${ty.bodyMd} text-[16px] md:text-[18px] text-body`}>
               {col.description}
             </p>
           </motion.div>
