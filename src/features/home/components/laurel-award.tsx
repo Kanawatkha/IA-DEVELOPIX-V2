@@ -106,14 +106,14 @@ export const LaurelAward: React.FC<LaurelAwardProps> = ({ award }) => {
 
   const sizeStyles = {
     lg: {
-      containerW: 'w-[136px] sm:w-[180px] md:w-[200px] lg:w-[160px] xl:w-[210px] 2xl:w-[20.5vw]', 
-      branchW: 'w-[38px] sm:w-[52px] md:w-[58px] lg:w-[46px] xl:w-[64px] 2xl:w-[6.2vw] max-md:w-[25%]',
-      contentW: 'w-[58px] sm:w-[76px] md:w-[84px] lg:w-[70px] xl:w-[80px] 2xl:w-[8vw] max-md:w-[48%]',
-      rankText: 'text-3xl sm:text-4xl md:text-5xl lg:text-[2rem] xl:text-4xl 2xl:text-[5vw]',
-      ordinalText: 'text-xs sm:text-lg md:text-xl lg:text-base xl:text-xl 2xl:text-[2.6vw]',
-      categoryText: 'text-[5.5px] sm:text-[7.5px] md:text-[9px] lg:text-[6px] xl:text-[7px] 2xl:text-[0.9vw]',
-      eventText: 'text-[4.5px] sm:text-[5.5px] md:text-[7px] lg:text-[4.5px] xl:text-[5.5px] 2xl:text-[0.7vw]',
-      yearText: 'text-[7px] sm:text-[9.5px] md:text-xs lg:text-[8px] xl:text-[10px] 2xl:text-[1.1vw]',
+      containerW: 'w-[136px] sm:w-[180px] md:w-[200px] lg:w-[184px] xl:w-[242px] 2xl:w-[280px] min-[2000px]:w-[380px]', 
+      branchW: 'w-[38px] sm:w-[52px] md:w-[58px] lg:w-[53px] xl:w-[74px] 2xl:w-[82px] min-[2000px]:w-[110px] max-md:w-[25%]',
+      contentW: 'w-[58px] sm:w-[76px] md:w-[84px] lg:w-[80px] xl:w-[92px] 2xl:w-[110px] min-[2000px]:w-[150px] max-md:w-[48%]',
+      rankText: 'text-3xl sm:text-4xl md:text-5xl lg:text-[2.3rem] xl:text-[2.9rem] 2xl:text-[3.2rem] min-[2000px]:text-[4.2rem]',
+      ordinalText: 'text-xs sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-[1.4rem] 2xl:text-[1.5rem] min-[2000px]:text-[2rem]',
+      categoryText: 'text-[5.5px] sm:text-[7.5px] md:text-[9px] lg:text-[7px] xl:text-[8px] 2xl:text-[9.5px] min-[2000px]:text-[13px]',
+      eventText: 'text-[4.5px] sm:text-[5.5px] md:text-[7px] lg:text-[5.2px] xl:text-[6.3px] 2xl:text-[7.2px] min-[2000px]:text-[10px]',
+      yearText: 'text-[7px] sm:text-[9.5px] md:text-xs lg:text-[9.2px] xl:text-[11.5px] 2xl:text-[13px] min-[2000px]:text-[18px]',
     },
     md: {
       containerW: 'w-[124px] sm:w-[140px] md:w-[160px] lg:w-[130px] xl:w-[150px] 2xl:w-[12vw] max-md:w-full', 
@@ -126,14 +126,14 @@ export const LaurelAward: React.FC<LaurelAwardProps> = ({ award }) => {
       yearText: 'text-[6.5px] sm:text-[8px] md:text-[10px] lg:text-[7px] xl:text-[9px] 2xl:text-[0.9vw]',
     },
     sm: {
-      containerW: 'w-[136px] sm:w-[120px] md:w-[140px] lg:w-[130px] xl:w-[150px] 2xl:w-[11vw] max-md:w-auto', 
-      branchW: 'w-[38px] sm:w-[34px] md:w-[40px] lg:w-[38px] xl:w-[44px] 2xl:w-[3vw] max-md:w-[23px]',
-      contentW: 'w-[58px] sm:w-[52px] md:w-[60px] lg:w-[58px] xl:w-[66px] 2xl:w-[4.8vw] max-md:w-[40px]',
-      rankText: 'text-[1.75rem] sm:text-[1.6rem] md:text-3xl lg:text-[1.75rem] xl:text-3xl 2xl:text-[2.3vw] max-md:text-lg',
-      ordinalText: 'text-xs sm:text-[11px] md:text-sm lg:text-xs xl:text-sm 2xl:text-[1.3vw] max-md:text-[8px]',
-      categoryText: 'text-[5.5px] sm:text-[5px] md:text-[7px] lg:text-[5.5px] xl:text-[6.5px] 2xl:text-[0.5vw] max-md:text-[3.5px]',
-      eventText: 'text-[4.5px] sm:text-[4px] md:text-[5px] lg:text-[4.5px] xl:text-[5px] 2xl:text-[0.4vw] max-md:text-[2.5px]',
-      yearText: 'text-[7.5px] sm:text-[7px] md:text-[9px] lg:text-[7.5px] xl:text-[9px] 2xl:text-[0.8vw] max-md:text-[4px]',
+      containerW: 'w-[136px] sm:w-[120px] md:w-[140px] lg:w-[150px] xl:w-[172px] 2xl:w-[200px] min-[2000px]:w-[275px] max-md:w-auto', 
+      branchW: 'w-[38px] sm:w-[34px] md:w-[40px] lg:w-[44px] xl:w-[50px] 2xl:w-[58px] min-[2000px]:w-[80px] max-md:w-[23px]',
+      contentW: 'w-[58px] sm:w-[52px] md:w-[60px] lg:w-[67px] xl:w-[76px] 2xl:w-[88px] min-[2000px]:w-[120px] max-md:w-[40px]',
+      rankText: 'text-[1.75rem] sm:text-[1.6rem] md:text-3xl lg:text-[2.05rem] xl:text-[2.2rem] 2xl:text-[2.5rem] min-[2000px]:text-[3.2rem] max-md:text-lg',
+      ordinalText: 'text-xs sm:text-[11px] md:text-sm lg:text-[14px] xl:text-[16px] 2xl:text-[18px] min-[2000px]:text-[24px] max-md:text-[8px]',
+      categoryText: 'text-[5.5px] sm:text-[5px] md:text-[7px] lg:text-[6.3px] xl:text-[7.5px] 2xl:text-[8.5px] min-[2000px]:text-[11.5px] max-md:text-[3.5px]',
+      eventText: 'text-[4.5px] sm:text-[4px] md:text-[5px] lg:text-[5.2px] xl:text-[5.8px] 2xl:text-[6.5px] min-[2000px]:text-[9px] max-md:text-[2.5px]',
+      yearText: 'text-[7.5px] sm:text-[7px] md:text-[9px] lg:text-[8.6px] xl:text-[10.4px] 2xl:text-[12px] min-[2000px]:text-[16.5px] max-md:text-[4px]',
     }
   };
 

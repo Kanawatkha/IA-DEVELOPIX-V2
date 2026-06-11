@@ -1,19 +1,13 @@
-// Existing components
-export * from './split-lineup';
-export * from './product-column';
-export * from './engineering-grid';
-export * from './alternating-row';
-export * from './category-hub';
-export * from './draggable-carousel';
+// Product Category View Components
+export * from './category-view/split-lineup';
+export * from './category-view/category-hub';
+export * from './category-view/category-hero';
+export * from './category-view/series-lineup';
+export * from './category-view/performance-matchup';
 
-// New shared components (Phase B refactoring)
-export * from './stat-bar';
-export * from './product-block';
-export * from './shop-collections';
-export * from './product-image-gallery';
-export * from './product-info-form';
-export * from './store-hero';
-export * from './parts-section';
-export * from './category-hero';
-export * from './series-lineup';
-export * from './performance-matchup';
+// Product Detail View Components
+export * from './detail-view/alternating-row';
+export * from './detail-view/stat-bar';
+export * from './detail-view/product-image-gallery';
+export * from './detail-view/product-info-form';
+export * from './detail-view/parts-section';

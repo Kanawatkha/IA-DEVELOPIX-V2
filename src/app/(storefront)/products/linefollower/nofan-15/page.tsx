@@ -5,7 +5,8 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
-import { ShopCollections, ProductImageGallery, ProductInfoForm } from '@/src/features/products';
+import { ShopCollections } from '@/src/features/store';
+import { ProductImageGallery, ProductInfoForm } from '@/src/features/products';
 
 export default function Nofan15Page() {
   const [isExpanded, setIsExpanded] = useState(false);

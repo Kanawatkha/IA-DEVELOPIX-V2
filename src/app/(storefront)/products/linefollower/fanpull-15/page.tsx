@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
-import { ShopCollections } from '@/src/features/products';
+import { ShopCollections } from '@/src/features/store';
 
 export default function Fanpull15Page() {
   return (

@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, Undo2 } from "lucide-react";
 import { useCart } from "@/src/context/cart-context";
-import { ShopCollections } from "@/src/features/products/components/shop-collections";
+import { ShopCollections } from "@/src/features/store";
 
 export default function CartPage() {
   const { 

@@ -172,8 +172,12 @@ export const imageRevealVariants: Variants = {
  */
 export const heroImageVariants = {
   initial: { opacity: 0, filter: 'blur(15px)', scale: 1.1 },
-  animate: { opacity: 1, filter: 'blur(0px)', scale: 1.0 },
-  transition: { duration: 2, ease: EASE.luxury },
+  animate: {
+    opacity: 1,
+    filter: 'blur(0px)',
+    scale: 1.0,
+    transition: { duration: 2, ease: EASE.luxury },
+  },
 } as const;
 
 /**

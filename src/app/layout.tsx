@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import { Saira_Condensed, EB_Garamond, Space_Mono } from 'next/font/google';
+import { ScrollToTop } from '@/src/components/layout/scroll-to-top';
 import './globals.css';
 
 const garamond = EB_Garamond({
@@ -29,6 +30,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${garamond.variable} ${sairaCondensed.variable} ${spaceMono.variable} bg-canvas text-primary font-body antialiased`}>
+        <ScrollToTop />
         {children}
       </body>
     </html>

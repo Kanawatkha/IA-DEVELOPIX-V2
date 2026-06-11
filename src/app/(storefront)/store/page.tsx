@@ -9,7 +9,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ShopCollections, StoreHero, PartsSection } from '@/src/features/products';
+import { ShopCollections, StoreHero } from '@/src/features/store';
+import { PartsSection } from '@/src/features/products';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
 

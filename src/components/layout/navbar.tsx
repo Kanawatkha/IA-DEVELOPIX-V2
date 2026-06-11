@@ -18,8 +18,8 @@ import { NavItem } from "@/src/types";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { useWindowSize, useScrollDetection } from "@/src/hooks";
 import { useCart } from "@/src/context/cart-context";
-import { CartDrawer } from "./cart-drawer";
-import { QuoteModal } from "./quote-modal";
+import { CartDrawer } from "@/src/features/cart";
+import { QuoteModal } from "@/src/features/quotes";
 
 
 // ==========================================

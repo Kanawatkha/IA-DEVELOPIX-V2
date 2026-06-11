@@ -11,7 +11,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
-import { ProductBlock } from './product-block';
+import { ProductBlock } from '@/src/features/store';
 import { SeriesItem } from '@/src/features/products/types/Category';
 
 interface SeriesLineupProps {
