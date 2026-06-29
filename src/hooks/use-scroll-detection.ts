@@ -11,7 +11,7 @@ interface ScrollData {
  * Encapsulates direction checks ('up' | 'down'), viewport vertical layout Y height, 
  * and bottom distance threshold detection. Optimized via requestAnimationFrame throttling.
  */
-export function useScrollDetection(bottomThresholdBuffer: number = 250): ScrollData {
+export function useScrollDetection(bottomThresholdBuffer: number = 20): ScrollData {
   const [scrollData, setScrollData] = useState<ScrollData>({
     scrollDirection: "up",
     isAtBottom: false,
@@ -27,14 +27,14 @@ export function useScrollDetection(bottomThresholdBuffer: number = 250): ScrollD
     const updateScrollState = () => {
       const currentScrollY = window.pageYOffset;
 
-      setScrollData((prev) => {
-        // Calculate scroll direction with a 10px buffer to prevent jittering
-        let direction = prev.scrollDirection;
-        if (Math.abs(currentScrollY - lastScrollY) >= 10) {
-          direction = currentScrollY > lastScrollY ? "down" : "up";
-        }
+      // Accumulate scroll delta with a minimal 2px buffer to prevent jittering
+      if (Math.abs(currentScrollY - lastScrollY) < 2) {
+        ticking = false;
+        return;
+      }
 
-        // Detect if viewport is at or near the bottom boundary
+      setScrollData((prev) => {
+        const direction = currentScrollY > lastScrollY ? "down" : "up";
         const isBottom = Math.ceil(window.innerHeight + currentScrollY) >= document.documentElement.scrollHeight - bottomThresholdBuffer;
 
         return {

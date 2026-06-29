@@ -240,3 +240,14 @@ export const scrollIndicatorTransition = {
   filter:   { duration: 0.6, delay: 0.5 } as const,
   y:        { duration: 2, delay: 1.1, repeat: Infinity, ease: 'easeInOut' as const },
 };
+
+/**
+ * drawerTransition
+ * Standard motion configuration for premium sliding panels, drawers, and overlays.
+ * Combines the custom luxury ease curve with fast timing for responsive yet elegant weight.
+ */
+export const drawerTransition = {
+  type: "tween" as const,
+  duration: 0.65,          // 0.65 seconds to showcase speed changes clearly
+  ease: [0.16, 1, 0.3, 1], // Highly dynamic curve with rapid start and long cushioned deceleration tail
+} as const;

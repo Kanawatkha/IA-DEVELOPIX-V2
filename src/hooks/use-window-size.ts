@@ -32,8 +32,8 @@ export function useWindowSize() {
   }, []);
 
   const isMobile = typeof windowSize.width === "number" ? windowSize.width < 768 : false;
-  const isTablet = typeof windowSize.width === "number" ? windowSize.width >= 768 && windowSize.width < 1025 : false;
-  const isDesktop = typeof windowSize.width === "number" ? windowSize.width >= 1025 : true;
+  const isTablet = typeof windowSize.width === "number" ? windowSize.width >= 768 && windowSize.width < 950 : false;
+  const isDesktop = typeof windowSize.width === "number" ? windowSize.width >= 950 : true;
 
   return { ...windowSize, isMobile, isTablet, isDesktop };
 }
