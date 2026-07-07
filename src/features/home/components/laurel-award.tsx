@@ -89,9 +89,7 @@ export const LaurelBranchLeft: React.FC<LaurelBranchLeftProps> = ({ className })
   );
 };
 
-interface LaurelAwardProps {
-  award: AwardData;
-}
+import { LaurelAwardProps } from '../types';
 
 /**
  * Renders an official international victory medallion flanked by organic laurel branches.

@@ -6,31 +6,18 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { SKY_IMAGES } from '@/src/constants/home-data';
+import { galleryVariants } from '../animations';
+import { useSwipe, useTabVisibility, useAutoplay } from '../hooks';
 
 /**
  * Autoplay slide interval duration (in milliseconds) used to cycle graphics.
  */
 const GALLERY_AUTOPLAY_INTERVAL = 4000;
-
-/**
- * Custom adjacent slide transition animation variants.
- */
-const galleryVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-  }),
-  center: {
-    x: '0%',
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
-  }),
-};
 
 /**
  * Image gallery showing international field deployments of robotics platforms.
@@ -40,33 +27,26 @@ export const DeploymentGallery: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
-  const [isTabVisible, setIsTabVisible] = useState(true);
-  const [elapsedTime, setElapsedTime] = useState(0); 
   const [isAnimating, setIsAnimating] = useState(false); 
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { margin: "200px 0px" });
-  
-  const minSwipeDistance = 50;
 
   const triggerNext = useCallback(() => {
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % SKY_IMAGES.length);
-    setElapsedTime(0);
   }, []);
 
   const triggerPrev = useCallback(() => {
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + SKY_IMAGES.length) % SKY_IMAGES.length);
-    setElapsedTime(0);
   }, []);
 
   const onNextClick = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     triggerNext();
+    resetAutoplay();
     setTimeout(() => setIsAnimating(false), 800);
   };
 
@@ -74,6 +54,7 @@ export const DeploymentGallery: React.FC = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     triggerPrev();
+    resetAutoplay();
     setTimeout(() => setIsAnimating(false), 800);
   };
 
@@ -82,79 +63,27 @@ export const DeploymentGallery: React.FC = () => {
     setIsAnimating(true);
     setDirection(idx > currentIndex ? 1 : -1);
     setCurrentIndex(idx);
-    setElapsedTime(0);
+    resetAutoplay();
     setTimeout(() => setIsAnimating(false), 800);
   };
 
-  const onTouchStartEvent = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-    setIsHovered(true); 
-  };
+  // Custom hook to observe page tab focus state.
+  const isTabVisible = useTabVisibility();
 
-  const onTouchMoveEvent = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
+  // Custom hook to coordinate touch swipe drag coordinates.
+  const swipeHandlers = useSwipe({
+    onSwipeLeft: onNextClick,
+    onSwipeRight: onPrevClick,
+    onTouchStartTrigger: () => setIsHovered(true),
+    onTouchEndTrigger: () => setIsHovered(false),
+  });
 
-  const onTouchEndEvent = () => {
-    setIsHovered(false); 
-    if (!touchStart || !touchEnd || isAnimating) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      setIsAnimating(true);
-      triggerNext();
-      setTimeout(() => setIsAnimating(false), 800);
-    } else if (isRightSwipe) {
-      setIsAnimating(true);
-      triggerPrev();
-      setTimeout(() => setIsAnimating(false), 800);
-    }
-  };
-
-  useEffect(() => {
-    const handleVisibility = () => {
-      setIsTabVisible(document.visibilityState === 'visible');
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibility);
-    };
-  }, []);
-
-  useEffect(() => {
-    const isPaused = isHovered || !isTabVisible || !isInView;
-    if (isPaused) return;
-
-    let lastTime = performance.now();
-    let animationFrameId: number;
-
-    const tick = (now: number) => {
-      const delta = now - lastTime;
-      lastTime = now;
-
-      setElapsedTime((prev) => {
-        const next = prev + delta;
-        return next >= GALLERY_AUTOPLAY_INTERVAL ? GALLERY_AUTOPLAY_INTERVAL : next;
-      });
-
-      animationFrameId = requestAnimationFrame(tick);
-    };
-
-    animationFrameId = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isHovered, isTabVisible, isInView]);
-
-  useEffect(() => {
-    if (elapsedTime >= GALLERY_AUTOPLAY_INTERVAL) {
-      triggerNext();
-    }
-  }, [elapsedTime, triggerNext]);
+  // Custom hook to coordinate requestAnimationFrame slide progression timers.
+  const { elapsedTime, resetAutoplay } = useAutoplay({
+    interval: GALLERY_AUTOPLAY_INTERVAL,
+    isActive: !isHovered && isTabVisible && isInView,
+    onIntervalComplete: triggerNext,
+  });
 
   return (
     <div 
@@ -162,9 +91,9 @@ export const DeploymentGallery: React.FC = () => {
       className="relative w-full h-[60vh] lg:h-[70vh] group overflow-hidden bg-[#000000] cursor-default"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={onTouchStartEvent}
-      onTouchMove={onTouchMoveEvent}
-      onTouchEnd={onTouchEndEvent}
+      onTouchStart={swipeHandlers.onTouchStart}
+      onTouchMove={swipeHandlers.onTouchMove}
+      onTouchEnd={swipeHandlers.onTouchEnd}
     >
       <motion.div
         initial={{ scaleX: 1 }}
