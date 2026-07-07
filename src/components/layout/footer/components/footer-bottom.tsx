@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
+import { LANGUAGES } from "@/src/constants/navigation";
 
 /**
  * Renders the bottom footer bar containing metadata, copyright notices,
@@ -56,18 +57,15 @@ export function FooterBottom() {
                 transition={{ duration: 0.2 }}
                 className="absolute bottom-full mb-2 left-0 w-full bg-[#0d0d0d] border border-hairline rounded-2xl p-2 z-50 flex flex-col space-y-1 shadow-lg"
               >
-                <button
-                  onClick={() => setIsLangOpen(false)}
-                  className="text-left font-mono text-xs text-primary uppercase tracking-[2px] hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  EN - ENGLISH
-                </button>
-                <button
-                  onClick={() => setIsLangOpen(false)}
-                  className="text-left font-mono text-xs text-muted uppercase tracking-[2px] hover:text-primary hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  TH - THAI
-                </button>
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => setIsLangOpen(false)}
+                    className="text-left font-mono text-xs text-primary uppercase tracking-[2px] hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap cursor-pointer"
+                  >
+                    {lang.code} - {lang.label}
+                  </button>
+                ))}
               </motion.div>
             )}
           </AnimatePresence>

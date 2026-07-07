@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { DURATION, EASE } from "@/src/lib/design/variants";
+import { LANGUAGES } from "@/src/constants/navigation";
 
 interface LanguageSelectorProps {
   isOpen: boolean;
@@ -122,20 +122,16 @@ export function LanguageSelector({
     >
       <div className={isMobile ? "flex flex-col" : "bg-[#0d0d0d] border border-hairline rounded-2xl p-2 flex flex-col shadow-lg"}>
         <div className={isMobile ? "flex flex-col space-y-4" : "flex flex-col"}>
-          <motion.button
-            variants={isMobile ? languageItemVariants : itemVariants}
-            onClick={onClose}
-            className="text-left font-mono text-xs uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap cursor-pointer"
-          >
-            EN - ENGLISH
-          </motion.button>
-          <motion.button
-            variants={isMobile ? languageItemVariants : itemVariants}
-            onClick={onClose}
-            className="text-left font-mono text-xs uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap cursor-pointer"
-          >
-            TH - THAI
-          </motion.button>
+          {LANGUAGES.map((lang) => (
+            <motion.button
+              key={lang.code}
+              variants={isMobile ? languageItemVariants : itemVariants}
+              onClick={onClose}
+              className="text-left font-mono text-xs uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {lang.code} - {lang.label}
+            </motion.button>
+          ))}
         </div>
       </div>
     </motion.div>

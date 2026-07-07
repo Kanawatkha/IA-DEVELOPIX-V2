@@ -7,6 +7,7 @@ import { X, ChevronRight, ChevronLeft, ChevronDown, Globe, Instagram, Youtube, M
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { DURATION, EASE, fastParentVariants, drawerTransition } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
+import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
 
 interface MobileDrawerProps {
   isMobileMenuOpen: boolean;
@@ -21,7 +22,6 @@ interface MobileDrawerProps {
   activeSubmenu: string | null;
   setActiveSubmenu: (menu: string | null) => void;
   activeSubpages: string[];
-  formatModelName: (name: string) => React.ReactNode;
   isLanguagePopupOpen: boolean;
   setIsLanguagePopupOpen: (open: boolean) => void;
   langDropdownRef: React.RefObject<HTMLDivElement | null>;
@@ -80,7 +80,6 @@ export function MobileDrawer({
   activeSubmenu,
   setActiveSubmenu,
   activeSubpages,
-  formatModelName,
   isLanguagePopupOpen,
   setIsLanguagePopupOpen,
   langDropdownRef,
@@ -238,7 +237,7 @@ export function MobileDrawer({
                 </motion.div>
                 <motion.div variants={drawerItemVariants}>
                   <Link
-                    href={`/products/${activeSubmenu.toLowerCase()}`}
+                    href={getCategoryPath(activeSubmenu)}
                     onClick={closeMenu}
                     className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-primary hover:opacity-70 transition-colors text-left border-b border-hairline mb-2 cursor-pointer"
                   >
@@ -252,7 +251,7 @@ export function MobileDrawer({
                       onClick={closeMenu}
                       className="block py-2 text-[18px] md:text-[20px] font-normal uppercase tracking-[2px] leading-none text-primary hover:opacity-70 transition-all text-left cursor-pointer"
                     >
-                      {subpage.includes("FANPULL") ? (
+                      {isModelComingSoon(subpage) ? (
                         <>
                           {formatModelName(subpage)}{" "}
                           <span className="text-[10px] text-primary/40 block tracking-widest">(COMING SOON)</span>

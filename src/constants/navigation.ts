@@ -87,3 +87,16 @@ export const getVariantHref = (main: string, sub: string): string => {
   };
   return map[sub] || `/products/${main.toLowerCase()}/${sub.toLowerCase().replace(" ", "-")}`;
 };
+
+export interface LanguageOption {
+  code: string;
+  label: string;
+}
+
+/**
+ * Centrally registered language options for Navbar & Footer bottom dropdowns.
+ */
+export const LANGUAGES: readonly LanguageOption[] = [
+  { code: "EN", label: "ENGLISH" },
+  { code: "TH", label: "THAI" },
+] as const;

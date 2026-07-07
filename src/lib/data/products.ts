@@ -216,3 +216,12 @@ export function getCategoryPath(cat: string): string {
   };
   return map[cat.toUpperCase()] ?? "/store";
 }
+
+/**
+ * Checks if a specific product model is flagged as Coming Soon.
+ */
+export function isModelComingSoon(name: string): boolean {
+  return SHOP_MODELS.some(
+    (model) => model.name.toUpperCase() === name.toUpperCase() && model.isComingSoon
+  );
+}

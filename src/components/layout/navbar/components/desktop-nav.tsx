@@ -7,6 +7,7 @@ import { Globe, User, ShoppingCart, Menu, ShoppingBag } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { DURATION, EASE } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
+import { formatModelName, isModelComingSoon } from "@/src/lib/data/products";
 
 const submenuVariants: Variants = {
   hidden: {
@@ -61,7 +62,6 @@ interface DesktopNavProps {
   cartCount: number;
   handleCartClick: () => void;
   setIsMobileMenuOpen: (open: boolean) => void;
-  formatModelName: (name: string) => React.ReactNode;
   headerRef?: React.RefObject<HTMLElement | null>;
   isMultiRow?: boolean;
 }
@@ -79,7 +79,6 @@ export function DesktopNav({
   cartCount,
   handleCartClick,
   setIsMobileMenuOpen,
-  formatModelName,
   headerRef,
   isMultiRow = false,
 }: DesktopNavProps) {
@@ -196,7 +195,7 @@ export function DesktopNav({
                                   href={getVariantHref(link.label, sub)}
                                   className="block px-4 py-2.5 text-xs font-normal uppercase tracking-[2px] text-primary hover:opacity-70 hover:bg-primary/5 rounded-none transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-3.5 w-full text-left whitespace-nowrap"
                                 >
-                                  {sub.includes("FANPULL") ? (
+                                  {isModelComingSoon(sub) ? (
                                     <>
                                       {formatModelName(sub)}
                                       <div className="text-[9px] text-primary/40 mt-1 tracking-widest">

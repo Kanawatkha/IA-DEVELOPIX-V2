@@ -13,20 +13,6 @@ import { DesktopNav } from "./desktop-nav";
 import { MobileDrawer } from "./mobile-drawer";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 
-// Helper to format model names (e.g. bolding "cm")
-const formatModelName = (name: string) => {
-  const parts = name.split("cm");
-  return parts.length > 1 ? (
-    <>
-      {parts[0]}
-      <span className="lowercase text-[0.75em] opacity-60">cm</span>
-      {parts[1]}
-    </>
-  ) : (
-    name
-  );
-};
-
 export function Navbar({
   isVisible = true,
   scrollDirection: _scrollDirection = "up",
@@ -228,7 +214,6 @@ export function Navbar({
         cartCount={cartCount}
         handleCartClick={handleCartClick}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
-        formatModelName={formatModelName}
         headerRef={headerRef}
         isMultiRow={isMultiRow}
       />
@@ -256,7 +241,6 @@ export function Navbar({
         activeSubmenu={activeSubmenu}
         setActiveSubmenu={setActiveSubmenu}
         activeSubpages={activeSubpages}
-        formatModelName={formatModelName}
         isLanguagePopupOpen={isLanguagePopupOpen}
         setIsLanguagePopupOpen={setIsLanguagePopupOpen}
         langDropdownRef={langDropdownRef}
