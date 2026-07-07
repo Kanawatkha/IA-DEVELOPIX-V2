@@ -1,40 +1,11 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Facebook, Instagram, Youtube } from "lucide-react";
 import { FOOTER_LINKS } from "@/src/constants";
-import { formatModelName, isModelComingSoon, CATEGORIES } from "@/src/lib/data/products";
-
-/**
- * Helper to render model labels.
- * Inspects if the label is flagged as "COMING SOON" and appends the standard label.
- * Resolves category and model status properties dynamically from the products database.
- */
-const renderFooterLinkLabel = (label: string) => {
-  const isComingSoon = (() => {
-    const labelUpper = label.toUpperCase();
-    const categoryMatch = CATEGORIES.find(c => c.name.toUpperCase() === labelUpper);
-    if (categoryMatch) {
-      return categoryMatch.isComingSoon;
-    }
-    return isModelComingSoon(label);
-  })();
-
-  if (isComingSoon) {
-    return (
-      <div className="flex flex-row items-center gap-1.5 whitespace-nowrap md:flex-col md:items-start md:gap-0 md:whitespace-normal lg:flex-row lg:items-center lg:gap-1.5 lg:whitespace-nowrap">
-        <span className="leading-tight text-[13px]">{formatModelName(label)}</span>
-        <span className="text-[13px] md:text-[9px] text-primary/40 tracking-widest font-normal">
-          (COMING SOON)
-        </span>
-      </div>
-    );
-  }
-
-  return formatModelName(label);
-};
+import { renderFooterLinkLabel } from "../utils/helpers";
 
 /**
  * Renders the links navigation grid and mailing list subscription form.

@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TOP_BANNERS } from "@/src/constants";
+import { sliderVariants } from "../animations";
 
 /**
  * Renders the top value proposition banners.
@@ -22,12 +23,6 @@ export function FooterBanner() {
   const prevBanner = () => {
     setSlideDirection(-1);
     setCurrentBanner((prev) => (prev - 1 + TOP_BANNERS.length) % TOP_BANNERS.length);
-  };
-
-  const sliderVariants = {
-    enter: (direction: number) => ({ x: direction > 0 ? "50%" : "-50%", opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction: number) => ({ x: direction < 0 ? "50%" : "-50%", opacity: 0 }),
   };
 
   return (
