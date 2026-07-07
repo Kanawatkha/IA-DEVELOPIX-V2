@@ -25,48 +25,54 @@ export function FooterBanner() {
     setCurrentBanner((prev) => (prev - 1 + TOP_BANNERS.length) % TOP_BANNERS.length);
   };
 
+  const Icon0 = TOP_BANNERS[0].icon;
+  const Icon1 = TOP_BANNERS[1].icon;
+  const Icon2 = TOP_BANNERS[2].icon;
+
   return (
     <>
       {/* Desktop Banner Grid */}
       <div className="hidden md:flex flex-row justify-between w-full pt-12 min-[1920px]:pt-20 pb-4 min-[1920px]:pb-8">
-        {TOP_BANNERS.map((banner, idx) => {
-          // Determine placement properties for left, center, and right alignments.
-          const isLeft = idx === 0;
-          const isCenter = idx === 1;
-          const isRight = idx === 2;
-
-          const alignClass = isLeft
-            ? "flex-1 items-start text-left pr-8"
-            : isCenter
-            ? "flex-1 items-center text-center px-4"
-            : "w-full md:w-[350px] lg:w-[450px] min-[1920px]:w-[700px] flex-shrink-0 items-end text-right pl-8 pr-0";
-
-          const titleRowClass = `flex items-center space-x-4 mb-2 min-[1920px]:mb-6 w-full ${
-            isCenter ? "justify-center" : isRight ? "justify-end" : "justify-start"
-          }`;
-
-          const paragraphClass = `font-serif text-xs md:text-[13px] min-[1920px]:text-lg text-body leading-relaxed w-full ${
-            isLeft
-              ? "pl-10 min-[1920px]:pl-14"
-              : isRight
-              ? "pr-10 min-[1920px]:pr-14 pl-0"
-              : "pl-0"
-          }`;
-
-          return (
-            <div key={idx} className={`flex flex-col ${alignClass}`}>
-              <div className={titleRowClass}>
-                <banner.icon className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
-                <h3 className="font-mono text-[13px] md:text-sm min-[1920px]:text-lg xl:text-xl uppercase tracking-[3px] text-primary font-normal">
-                  {banner.title}
-                </h3>
-              </div>
-              <p className={paragraphClass}>
-                {banner.desc}
-              </p>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 min-[1920px]:gap-16">
+          {/* Column 1: CUSTOMER SERVICE */}
+          <div className="flex flex-col items-start text-left pr-8">
+            <div className="flex items-center space-x-4 mb-2 min-[1920px]:mb-6 w-full justify-start">
+              <Icon0 className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
+              <h3 className="font-mono text-[11px] md:text-xs min-[1920px]:text-sm xl:text-base uppercase tracking-[2px] text-primary font-normal">
+                {TOP_BANNERS[0].title}
+              </h3>
             </div>
-          );
-        })}
+            <p className="font-serif text-[11px] md:text-xs min-[1920px]:text-[15px] text-body leading-relaxed w-full text-left pl-10 min-[1920px]:pl-14">
+              {TOP_BANNERS[0].desc}
+            </p>
+          </div>
+
+          {/* Column 2: FAST FREE SHIPPING */}
+          <div className="flex flex-col items-start text-left pr-8">
+            <div className="flex items-center space-x-4 mb-2 min-[1920px]:mb-6 w-full justify-start">
+              <Icon1 className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
+              <h3 className="font-mono text-[11px] md:text-xs min-[1920px]:text-sm xl:text-base uppercase tracking-[2px] text-primary font-normal">
+                {TOP_BANNERS[1].title}
+              </h3>
+            </div>
+            <p className="font-serif text-[11px] md:text-xs min-[1920px]:text-[15px] text-body leading-relaxed w-full text-left pl-10 min-[1920px]:pl-14">
+              {TOP_BANNERS[1].desc}
+            </p>
+          </div>
+        </div>
+
+        {/* Column 3: SECURE PAYMENT */}
+        <div className="w-full md:w-[350px] lg:w-[450px] min-[1920px]:w-[700px] flex-shrink-0 flex flex-col items-start text-left pl-8 pr-0">
+          <div className="flex items-center space-x-4 mb-2 min-[1920px]:mb-6 w-full justify-start">
+            <Icon2 className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
+            <h3 className="font-mono text-[11px] md:text-xs min-[1920px]:text-sm xl:text-base uppercase tracking-[2px] text-primary font-normal">
+              {TOP_BANNERS[2].title}
+            </h3>
+          </div>
+          <p className="font-serif text-[11px] md:text-xs min-[1920px]:text-[15px] text-body leading-relaxed w-full text-left pl-10 min-[1920px]:pl-14">
+            {TOP_BANNERS[2].desc}
+          </p>
+        </div>
       </div>
 
       {/* Mobile Interactive Slider */}
@@ -88,17 +94,29 @@ export function FooterBanner() {
               initial="enter"
               animate="center"
               exit="exit"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, info) => {
+                const swipe = info.offset.x;
+                const swipeThreshold = 50;
+                if (swipe < -swipeThreshold) {
+                  nextBanner();
+                } else if (swipe > swipeThreshold) {
+                  prevBanner();
+                }
+              }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="flex flex-col items-center text-center flex-1 px-10 absolute w-full"
+              className="flex flex-col items-center text-center flex-1 px-10 absolute w-full cursor-grab active:cursor-grabbing"
             >
               {React.createElement(TOP_BANNERS[currentBanner].icon, {
-                className: "w-7 h-7 text-primary mb-2",
+                className: "w-7 h-7 text-primary mb-2 select-none pointer-events-none",
                 strokeWidth: 1,
               })}
-              <h3 className="font-mono text-xs uppercase tracking-[2px] text-primary font-normal mb-1">
+              <h3 className="font-mono text-xs uppercase tracking-[2px] text-primary font-normal mb-1 select-none">
                 {TOP_BANNERS[currentBanner].title}
               </h3>
-              <p className="font-serif text-xs text-body leading-tight">
+              <p className="font-serif text-xs text-body leading-tight select-none">
                 {TOP_BANNERS[currentBanner].desc}
               </p>
             </motion.div>

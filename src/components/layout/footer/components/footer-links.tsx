@@ -26,50 +26,21 @@ export function FooterLinks() {
         <div className="hidden md:contents">
           {FOOTER_LINKS.map((col) => (
             <div key={col.title} className="flex flex-col space-y-6 min-[1920px]:space-y-10">
-              <h4 className="font-mono text-[13px] md:text-sm min-[1920px]:text-lg xl:text-xl font-normal text-primary tracking-[3px] uppercase">
+              <h4 className="font-mono text-[11px] md:text-xs min-[1920px]:text-sm xl:text-base font-normal text-primary tracking-[2px] uppercase">
                 {col.title}
               </h4>
-              {col.title === "ROBOT MODELS" ? (
-                <div className="grid grid-cols-2 gap-x-6">
-                  <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
-                    {col.links.slice(0, 4).map((link) => (
-                      <li key={link.label}>
-                        <Link
-                          href={link.href}
-                          className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
-                        >
-                          {renderFooterLinkLabel(link.label)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
-                    {col.links.slice(4).map((link) => (
-                      <li key={link.label}>
-                        <Link
-                          href={link.href}
-                          className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
-                        >
-                          {renderFooterLinkLabel(link.label)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
-                      >
-                        {renderFooterLinkLabel(link.label)}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="group font-serif text-xs min-[1920px]:text-sm tracking-normal text-primary hover:text-primary transition-colors duration-300 block"
+                    >
+                      {renderFooterLinkLabel(link.label)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -97,21 +68,12 @@ export function FooterLinks() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <ul
-                      className={
-                        col.title === "ROBOT MODELS"
-                          ? "columns-1 min-[1025px]:columns-2 gap-x-4 pb-4 pl-2"
-                          : "flex flex-col space-y-4 pb-4 pl-2"
-                      }
-                    >
+                    <ul className="flex flex-col space-y-1.5 pb-4 pl-2 pt-2">
                       {col.links.map((link) => (
-                        <li
-                          key={link.label}
-                          className={col.title === "ROBOT MODELS" ? "mb-2 break-inside-avoid" : ""}
-                        >
+                        <li key={link.label}>
                           <Link
                             href={link.href}
-                            className="font-serif text-xs tracking-normal text-muted hover:text-primary block py-1.5"
+                            className="group font-serif text-xs tracking-normal text-primary hover:text-primary block py-1"
                           >
                             {renderFooterLinkLabel(link.label)}
                           </Link>
