@@ -1,18 +1,14 @@
-"use client";
+'use client';
 
 import React from "react";
 import Link from "next/link";
 import { Home, Menu, ShoppingBag, ShoppingCart } from "lucide-react";
+import { MobileBottomNavProps } from "../types";
 
-interface MobileBottomNavProps {
-  scrollDirection: "up" | "down";
-  isAtBottom: boolean;
-  setIsMobileMenuOpen: (open: boolean) => void;
-  handleCartClick: () => void;
-  cartCount: number;
-  isVisible: boolean;
-}
-
+/**
+ * Mobile-only sticky bottom navigation panel.
+ * Displays key storefront links (Home, Menu drawer toggle, Store catalog, and Cart).
+ */
 export function MobileBottomNav({
   scrollDirection,
   isAtBottom,

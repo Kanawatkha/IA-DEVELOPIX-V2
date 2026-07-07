@@ -1,72 +1,21 @@
-"use client";
+'use client';
 
 import React from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, type Variants, useDragControls } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X, ChevronRight, ChevronLeft, ChevronDown, Globe, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
-import { DURATION, EASE, fastParentVariants, drawerTransition } from "@/src/lib/design/variants";
+import { EASE, fastParentVariants, drawerTransition } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
 import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
+import { MobileDrawerProps } from "../types";
+import { drawerItemVariants, fadeBlurVariants } from "../animations";
 
-interface MobileDrawerProps {
-  isMobileMenuOpen: boolean;
-  closeMenu: () => void;
-  isMobile: boolean;
-  triggerScrollUpdate: () => void;
-  menuRef: React.RefObject<HTMLDivElement | null>;
-  handleScrollMouseDown: (e: React.MouseEvent) => void;
-  handleScrollMouseLeave: () => void;
-  handleScrollMouseUp: () => void;
-  handleScrollMouseMove: (e: React.MouseEvent) => void;
-  activeSubmenu: string | null;
-  setActiveSubmenu: (menu: string | null) => void;
-  activeSubpages: string[];
-  isLanguagePopupOpen: boolean;
-  setIsLanguagePopupOpen: (open: boolean) => void;
-  langDropdownRef: React.RefObject<HTMLDivElement | null>;
-}
-
-const drawerItemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    x: -40,
-    filter: "blur(12px)",
-    transition: {
-      duration: 0.3,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: DURATION.fast,
-      ease: EASE.luxury,
-    },
-  },
-};
-
-const fadeBlurVariants: Variants = {
-  closedBottom: {
-    opacity: 0,
-    filter: "blur(8px)",
-  },
-  closedLeft: {
-    opacity: 0,
-    filter: "blur(8px)",
-  },
-  open: {
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-
+/**
+ * Mobile responsive navigation drawer.
+ * Slides up from bottom on mobile viewports and slides from left on tablet layout.
+ * Supports swiping drag-to-dismiss gestures.
+ */
 export function MobileDrawer({
   isMobileMenuOpen,
   closeMenu,

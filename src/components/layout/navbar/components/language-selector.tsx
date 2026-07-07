@@ -1,102 +1,20 @@
-"use client";
+'use client';
 
-import { motion, type Variants } from "framer-motion";
-import { DURATION, EASE } from "@/src/lib/design/variants";
+import React from "react";
+import { motion } from "framer-motion";
 import { LANGUAGES } from "@/src/constants/navigation";
+import { LanguageSelectorProps } from "../types";
+import {
+  containerVariants,
+  mobileContainerVariants,
+  languageItemVariants,
+  itemVariants,
+} from "../animations";
 
-interface LanguageSelectorProps {
-  isOpen: boolean;
-  onClose: () => void;
-  isMobile?: boolean;
-  style?: React.CSSProperties;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-}
-
-const containerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-const mobileContainerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-    filter: "blur(10px)",
-    transition: {
-      duration: 0.2,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    x: 40,
-    filter: "blur(12px)",
-    transition: {
-      duration: 0.3,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: DURATION.fast,
-      ease: EASE.luxury,
-    },
-  },
-};
-
-const languageItemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 15,
-    filter: "blur(8px)",
-    transition: {
-      duration: 0.2,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: DURATION.fast,
-      ease: EASE.luxury,
-    },
-  },
-};
-
+/**
+ * Premium Language selector dropdown.
+ * Loops dynamically over available options and provides smooth springy transitions.
+ */
 export function LanguageSelector({
   isOpen,
   onClose,

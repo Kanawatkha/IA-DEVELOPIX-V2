@@ -1,71 +1,19 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Globe, User, ShoppingCart, Menu, ShoppingBag } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
-import { DURATION, EASE } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
 import { formatModelName, isModelComingSoon } from "@/src/lib/data/products";
+import { DesktopNavProps } from "../types";
+import { submenuVariants, itemVariants } from "../animations";
 
-const submenuVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    x: 40,
-    filter: "blur(12px)",
-    transition: {
-      duration: 0.3,
-      ease: "easeIn",
-    },
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: DURATION.fast,
-      ease: EASE.luxury,
-    },
-  },
-};
-
-interface DesktopNavProps {
-  isMobileMenuOpen: boolean;
-  scrollDirection: "up" | "down";
-  isAtBottom: boolean;
-  isVisible: boolean;
-  hoveredLink: string | null;
-  setHoveredLink: (link: string | null) => void;
-  isDesktopLangOpen: boolean;
-  setIsDesktopLangOpen: (open: boolean) => void;
-  desktopLangRef: React.RefObject<HTMLDivElement | null>;
-  cartCount: number;
-  handleCartClick: () => void;
-  setIsMobileMenuOpen: (open: boolean) => void;
-  headerRef?: React.RefObject<HTMLElement | null>;
-  isMultiRow?: boolean;
-}
-
+/**
+ * Top desktop viewport navigation banner.
+ * Manages links hover overlays, model category grids, language drawer displays.
+ */
 export function DesktopNav({
   isMobileMenuOpen,
   scrollDirection,
