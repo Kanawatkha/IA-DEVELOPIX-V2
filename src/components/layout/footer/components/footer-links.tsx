@@ -26,30 +26,50 @@ export function FooterLinks() {
         <div className="hidden md:contents">
           {FOOTER_LINKS.map((col) => (
             <div key={col.title} className="flex flex-col space-y-6 min-[1920px]:space-y-10">
-              <h4 className="font-mono text-xs min-[1920px]:text-sm font-normal text-primary tracking-[2px] uppercase">
+              <h4 className="font-mono text-[13px] md:text-sm min-[1920px]:text-lg xl:text-xl font-normal text-primary tracking-[3px] uppercase">
                 {col.title}
               </h4>
-              <ul
-                className={
-                  col.title === "ROBOT MODELS"
-                    ? "columns-1 min-[1025px]:columns-2 gap-x-6"
-                    : "flex flex-col space-y-3 min-[1920px]:space-y-6"
-                }
-              >
-                {col.links.map((link) => (
-                  <li
-                    key={link.label}
-                    className={col.title === "ROBOT MODELS" ? "mb-1.5 break-inside-avoid" : ""}
-                  >
-                    <Link
-                      href={link.href}
-                      className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
-                    >
-                      {renderFooterLinkLabel(link.label)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {col.title === "ROBOT MODELS" ? (
+                <div className="grid grid-cols-2 gap-x-6">
+                  <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
+                    {col.links.slice(0, 4).map((link) => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
+                        >
+                          {renderFooterLinkLabel(link.label)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
+                    {col.links.slice(4).map((link) => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
+                        >
+                          {renderFooterLinkLabel(link.label)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-muted hover:text-primary transition-colors duration-300 block"
+                      >
+                        {renderFooterLinkLabel(link.label)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>

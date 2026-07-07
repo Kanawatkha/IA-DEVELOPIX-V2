@@ -62,12 +62,12 @@ export const FOOTER_LINKS: FooterColumn[] = [
   {
     title: "ROBOT MODELS",
     links: [
-      { label: "FANPULL 15cm", href: "/products/linefollower/fanpull-15" },
-      { label: "FANPULL 18cm", href: "/products/linefollower/fanpull-18" },
       { label: "NOFAN 15cm", href: "/products/linefollower/nofan-15" },
       { label: "NOFAN 18cm", href: "/products/linefollower/nofan-18" },
       { label: "MISSION GO", href: "/products/mission/go" },
       { label: "MISSION PRO", href: "/products/mission/pro" },
+      { label: "FANPULL 15cm", href: "/products/linefollower/fanpull-15" },
+      { label: "FANPULL 18cm", href: "/products/linefollower/fanpull-18" },
     ]
   }
 ];

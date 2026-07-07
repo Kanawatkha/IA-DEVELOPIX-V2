@@ -28,20 +28,45 @@ export function FooterBanner() {
   return (
     <>
       {/* Desktop Banner Grid */}
-      <div className="hidden md:grid grid-cols-3 pt-12 min-[1920px]:pt-20 pb-4 min-[1920px]:pb-8">
-        {TOP_BANNERS.map((banner, idx) => (
-          <div key={idx} className="flex flex-col items-start pr-8">
-            <div className="flex items-center space-x-4 mb-2 min-[1920px]:mb-6">
-              <banner.icon className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
-              <h3 className="font-mono text-xs min-[1920px]:text-sm uppercase tracking-[2px] text-primary font-normal">
-                {banner.title}
-              </h3>
+      <div className="hidden md:flex flex-row justify-between w-full pt-12 min-[1920px]:pt-20 pb-4 min-[1920px]:pb-8">
+        {TOP_BANNERS.map((banner, idx) => {
+          // Determine placement properties for left, center, and right alignments.
+          const isLeft = idx === 0;
+          const isCenter = idx === 1;
+          const isRight = idx === 2;
+
+          const alignClass = isLeft
+            ? "flex-1 items-start text-left pr-8"
+            : isCenter
+            ? "flex-1 items-center text-center px-4"
+            : "w-full md:w-[350px] lg:w-[450px] min-[1920px]:w-[700px] flex-shrink-0 items-end text-right pl-8 pr-0";
+
+          const titleRowClass = `flex items-center space-x-4 mb-2 min-[1920px]:mb-6 w-full ${
+            isCenter ? "justify-center" : isRight ? "justify-end" : "justify-start"
+          }`;
+
+          const paragraphClass = `font-serif text-xs md:text-[13px] min-[1920px]:text-lg text-body leading-relaxed w-full ${
+            isLeft
+              ? "pl-10 min-[1920px]:pl-14"
+              : isRight
+              ? "pr-10 min-[1920px]:pr-14 pl-0"
+              : "pl-0"
+          }`;
+
+          return (
+            <div key={idx} className={`flex flex-col ${alignClass}`}>
+              <div className={titleRowClass}>
+                <banner.icon className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-primary" strokeWidth={1.5} />
+                <h3 className="font-mono text-[13px] md:text-sm min-[1920px]:text-lg xl:text-xl uppercase tracking-[3px] text-primary font-normal">
+                  {banner.title}
+                </h3>
+              </div>
+              <p className={paragraphClass}>
+                {banner.desc}
+              </p>
             </div>
-            <p className="font-serif text-xs min-[1920px]:text-sm text-body pl-10 min-[1920px]:pl-14 leading-relaxed">
-              {banner.desc}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Mobile Interactive Slider */}
