@@ -5,19 +5,22 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Facebook, Instagram, Youtube } from "lucide-react";
 import { FOOTER_LINKS } from "@/src/constants";
-import { formatModelName } from "@/src/lib/data/products";
+import { formatModelName, isModelComingSoon, CATEGORIES } from "@/src/lib/data/products";
 
 /**
  * Helper to render model labels.
  * Inspects if the label is flagged as "COMING SOON" and appends the standard label.
- * Delegates the baseline cm suffix styling to the single source of truth in products.ts.
+ * Resolves category and model status properties dynamically from the products database.
  */
 const renderFooterLinkLabel = (label: string) => {
-  const isComingSoon =
-    label.includes("GATHERING") ||
-    label.includes("SUMO") ||
-    label.includes("FANPULL 15cm") ||
-    label.includes("FANPULL 18cm");
+  const isComingSoon = (() => {
+    const labelUpper = label.toUpperCase();
+    const categoryMatch = CATEGORIES.find(c => c.name.toUpperCase() === labelUpper);
+    if (categoryMatch) {
+      return categoryMatch.isComingSoon;
+    }
+    return isModelComingSoon(label);
+  })();
 
   if (isComingSoon) {
     return (
