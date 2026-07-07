@@ -1,5 +1,5 @@
 /**
- * @file src/components/ui/deployment-gallery.tsx
+ * @file src/features/home/components/deployment-gallery.tsx
  * @description Highly optimized full-width image slideshow component with swipe gesture capabilities.
  *              Built utilizing Framer Motion for high-fidelity hardware-accelerated transitions.
  */
@@ -12,7 +12,14 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { SKY_IMAGES } from '@/src/constants/home-data';
 
-// Custom adjacent slide transition variants
+/**
+ * Autoplay slide interval duration (in milliseconds) used to cycle graphics.
+ */
+const GALLERY_AUTOPLAY_INTERVAL = 4000;
+
+/**
+ * Custom adjacent slide transition animation variants.
+ */
 const galleryVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? '100%' : '-100%',
@@ -34,15 +41,14 @@ export const DeploymentGallery: React.FC = () => {
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const [isTabVisible, setIsTabVisible] = useState(true);
-  const [elapsedTime, setElapsedTime] = useState(0); // Accumulated milliseconds for the active slide duration
-  const [isAnimating, setIsAnimating] = useState(false); // Throttle flag to lock navigation during slide transitions
+  const [elapsedTime, setElapsedTime] = useState(0); 
+  const [isAnimating, setIsAnimating] = useState(false); 
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { margin: "200px 0px" });
   
-  // Minimum touch sweep range (pixels) required to trigger transition.
   const minSwipeDistance = 50;
 
   const triggerNext = useCallback(() => {
@@ -56,8 +62,6 @@ export const DeploymentGallery: React.FC = () => {
     setCurrentIndex((prev) => (prev - 1 + SKY_IMAGES.length) % SKY_IMAGES.length);
     setElapsedTime(0);
   }, []);
-
-  // --- Click / Navigation Handlers (with 800ms animation lock) ---
 
   const onNextClick = () => {
     if (isAnimating) return;
@@ -82,12 +86,10 @@ export const DeploymentGallery: React.FC = () => {
     setTimeout(() => setIsAnimating(false), 800);
   };
 
-  // --- Mobile Touch Gestures Mapping ---
-
   const onTouchStartEvent = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
-    setIsHovered(true); // Temporarily halt auto playback cycle
+    setIsHovered(true); 
   };
 
   const onTouchMoveEvent = (e: React.TouchEvent) => {
@@ -95,7 +97,7 @@ export const DeploymentGallery: React.FC = () => {
   };
 
   const onTouchEndEvent = () => {
-    setIsHovered(false); // Resume playback once user releases touch
+    setIsHovered(false); 
     if (!touchStart || !touchEnd || isAnimating) return;
 
     const distance = touchStart - touchEnd;
@@ -113,8 +115,6 @@ export const DeploymentGallery: React.FC = () => {
     }
   };
 
-  // --- Browser Tab Visibility tracking ---
-
   useEffect(() => {
     const handleVisibility = () => {
       setIsTabVisible(document.visibilityState === 'visible');
@@ -124,8 +124,6 @@ export const DeploymentGallery: React.FC = () => {
       document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
-
-  // --- Frame Tick Loop (Autoplay Timer) ---
 
   useEffect(() => {
     const isPaused = isHovered || !isTabVisible || !isInView;
@@ -140,7 +138,7 @@ export const DeploymentGallery: React.FC = () => {
 
       setElapsedTime((prev) => {
         const next = prev + delta;
-        return next >= 4000 ? 4000 : next;
+        return next >= GALLERY_AUTOPLAY_INTERVAL ? GALLERY_AUTOPLAY_INTERVAL : next;
       });
 
       animationFrameId = requestAnimationFrame(tick);
@@ -152,10 +150,8 @@ export const DeploymentGallery: React.FC = () => {
     };
   }, [isHovered, isTabVisible, isInView]);
 
-  // --- Active Slide Progression Trigger ---
-
   useEffect(() => {
-    if (elapsedTime >= 4000) {
+    if (elapsedTime >= GALLERY_AUTOPLAY_INTERVAL) {
       triggerNext();
     }
   }, [elapsedTime, triggerNext]);
@@ -170,7 +166,6 @@ export const DeploymentGallery: React.FC = () => {
       onTouchMove={onTouchMoveEvent}
       onTouchEnd={onTouchEndEvent}
     >
-      {/* Scroll Reveal Mask */}
       <motion.div
         initial={{ scaleX: 1 }}
         whileInView={{ scaleX: 0 }}
@@ -191,7 +186,6 @@ export const DeploymentGallery: React.FC = () => {
             transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
             className="absolute inset-0 w-full h-full overflow-hidden"
           >
-            {/* Ken Burns zoom animation container */}
             <motion.div
               key={`zoom-${currentIndex}`}
               initial={{ scale: 1.03 }}
@@ -241,7 +235,6 @@ export const DeploymentGallery: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Dynamic progress bar navigation indicators */}
       <div 
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-4" 
         style={{ flexDirection: 'row', direction: 'ltr' }}
@@ -257,7 +250,7 @@ export const DeploymentGallery: React.FC = () => {
             >
               {isActive && (
                 <div
-                  style={{ width: `${(elapsedTime / 4000) * 100}%` }}
+                  style={{ width: `${(elapsedTime / GALLERY_AUTOPLAY_INTERVAL) * 100}%` }}
                   className="absolute top-0 left-0 h-full bg-[#ffffff]"
                 />
               )}

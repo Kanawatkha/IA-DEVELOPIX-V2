@@ -20,3 +20,13 @@ export interface AwardData {
   size: AwardSize;
   isGold?: boolean;
 }
+
+/**
+ * Representation of a software tool / environment in the development tech stack.
+ */
+export interface TechItem {
+  iconSrc: string;
+  title: string;
+  id: string;
+  url: string;
+}

@@ -5,13 +5,17 @@ import { motion } from 'framer-motion';
 import { LaurelAward } from './laurel-award';
 import { AWARDS_DATA } from '@/src/constants/home-data';
 import {
-  parentVariants,
   awardsParentVariants,
-  childVariants,
   awardsChildVariants,
+  childVariants,
 } from '@/src/lib/design/variants';
 import { displayLg } from '@/src/lib/design/typography';
 
+/**
+ * Renders the competition achievements and track record section.
+ * Filters awards into gold/silver for optimized mobile wrapping grid and
+ * renders balanced rows of medals symmetrically for desktop viewports.
+ */
 export function AwardsSection() {
   const goldAwards = AWARDS_DATA.filter(award => award.isGold);
   const silverAwards = AWARDS_DATA.filter(award => !award.isGold);
@@ -27,7 +31,7 @@ export function AwardsSection() {
       >
         <motion.div variants={awardsChildVariants}>
           <div className="inline-block border-b border-hairline pb-4 mb-6 lg:mb-8 min-[2000px]:pb-8 min-[2000px]:mb-20 min-[2000px]:border-b-4 text-center">
-            {/* Awards Section heading */}
+            {/* Medals and Achievements Section Title */}
             <h2 className={`${displayLg} text-[30px] sm:text-[42px] md:text-[50px] lg:text-[80px] text-primary min-[2000px]:text-[100px]`}>
               PROVEN ON THE TRACK
             </h2>
@@ -36,7 +40,9 @@ export function AwardsSection() {
 
         <div className="w-full flex flex-col items-center gap-4 lg:gap-6 xl:gap-8">
           
-          {/* Desktop Tier */}
+          {/* Desktop Symmetrical Double-Row Layout 
+              To achieve visual balance and center gold medals, the dataset is sliced.
+              Row 1 displays index 0-5 (silver and gold layout) and Row 2 displays index 5 onwards. */}
           <div className="hidden lg:flex flex-col w-full gap-4 lg:gap-6 xl:gap-8 min-[2000px]:gap-12">
             <div className="flex flex-wrap lg:flex-nowrap justify-center items-center gap-4 min-[375px]:gap-6 sm:gap-8 md:gap-6 lg:gap-x-4 lg:gap-y-6 xl:gap-x-6 xl:gap-y-8 min-[2000px]:gap-x-12 w-full">
               {AWARDS_DATA.slice(0, 5).map((award, index) => (
@@ -63,7 +69,8 @@ export function AwardsSection() {
             </div>
           </div>
 
-          {/* Mobile / Tablet Tier */}
+          {/* Mobile / Tablet Responsive Wrapping Grid 
+              Groups gold medals at the top in a grid, and silver medals on a wrapping flexbox underneath. */}
           <div className="flex flex-col lg:hidden w-full gap-6 sm:gap-8 px-4 min-[375px]:px-6 overflow-hidden">
             <div className="grid grid-cols-1 min-[300px]:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-4 justify-items-center w-full max-w-[800px] mx-auto">
               {goldAwards.map((award, index) => (

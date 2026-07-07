@@ -15,14 +15,20 @@ import {
   bodyMd,
   ctaButton,
 } from '@/src/lib/design/typography';
+import { HERO_BG_IMAGES } from '@/src/constants/home-data';
 
+/**
+ * Landing page top Hero showcase component.
+ * Features full-bleed cinematic imagery and wide-tracked letter-spaced typography.
+ * Resolves static background imagery dynamically from central constants registry.
+ */
 export function HeroSection() {
   return (
     <section 
       className="relative w-full overflow-hidden border-b border-hairline flex flex-col justify-center max-[950px]:landscape:min-h-[750px] max-[950px]:landscape:h-auto"
       style={{ height: "calc(100dvh - var(--navbar-height, 80px))" }}
     >
-      {/* Background Image Layer */}
+      {/* Background Mobile Image Layer */}
       <motion.div
         variants={heroImageVariants}
         initial="initial"
@@ -30,8 +36,8 @@ export function HeroSection() {
         className="absolute inset-0 w-full h-full z-0 min-[1025px]:hidden"
       >
         <Image
-          src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png"
-          alt="Precision Robotics Mobile"
+          src={HERO_BG_IMAGES.mobile}
+          alt="Precision Robotics Mobile View"
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMDAwMDAwIi8+PC9zdmc+"
           fill
@@ -42,6 +48,7 @@ export function HeroSection() {
         />
       </motion.div>
       
+      {/* Background Desktop Image Layer */}
       <motion.div
         variants={heroImageVariants}
         initial="initial"
@@ -49,8 +56,8 @@ export function HeroSection() {
         className="absolute inset-0 w-full h-full z-0 hidden min-[1025px]:block"
       >
         <Image
-          src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png"
-          alt="Precision Robotics Desktop"
+          src={HERO_BG_IMAGES.desktop}
+          alt="Precision Robotics Desktop View"
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMDAwMDAwIi8+PC9zdmc+"
           fill

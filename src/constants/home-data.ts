@@ -3,7 +3,7 @@
  * @description Static datasets and imagery URLs for the storefront Home Page.
  */
 
-import { AwardData } from '@/src/types/home';
+import { AwardData, TechItem } from '@/src/types/home';
 
 /**
  * Array of premium high-resolution background images for the deployment gallery slider.
@@ -34,3 +34,41 @@ export const AWARDS_DATA: readonly AwardData[] = [
   { rank: 2, ordinal: 'nd', category: 'ROBOTRACER', event: 'ALL CHILE ROBOT\nCONTEST', year: 2025, size: 'sm' },
   { rank: 2, ordinal: 'nd', category: 'LINE FOLLOWER', event: 'XI RUNIBOT\nCOLOMBIA', year: 2025, size: 'sm' }, 
 ] as const;
+
+/**
+ * Array of software development tools and environments used in robotics engineering.
+ */
+export const TECH_ITEMS: readonly TechItem[] = [
+  { 
+    iconSrc: 'https://thesvg.org/icons/arduino/default.svg', 
+    title: 'ARDUINO IDE', 
+    id: 'arduino', 
+    url: 'https://www.arduino.cc/' 
+  },
+  { 
+    iconSrc: 'https://thesvg.org/icons/easyeda/default.svg', 
+    title: 'EASY EDA', 
+    id: 'easyeda', 
+    url: 'https://easyeda.com/' 
+  },
+  { 
+    iconSrc: 'https://thesvg.org/icons/fusion-360/default.svg', 
+    title: 'FUSION 360', 
+    id: 'fusion', 
+    url: 'https://www.autodesk.com/mx/products/fusion-360/overview' 
+  },
+  { 
+    iconSrc: 'https://thesvg.org/icons/visual-studio-code/default.svg', 
+    title: 'VISUAL STUDIO', 
+    id: 'vscode', 
+    url: 'https://code.visualstudio.com/' 
+  },
+] as const;
+
+/**
+ * High-resolution viewport background images for the Hero Section layout.
+ */
+export const HERO_BG_IMAGES = {
+  mobile: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png",
+  desktop: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png",
+} as const;
