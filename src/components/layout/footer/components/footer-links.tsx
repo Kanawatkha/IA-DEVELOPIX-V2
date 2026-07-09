@@ -34,7 +34,7 @@ export function FooterLinks() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="group font-serif text-xs min-[1920px]:text-sm tracking-normal text-primary hover:text-primary transition-colors duration-300 block"
+                      className="font-serif text-xs min-[1920px]:text-sm tracking-normal text-primary hover:text-primary transition-colors duration-300 block"
                     >
                       {renderFooterLinkLabel(link.label)}
                     </Link>
@@ -73,7 +73,7 @@ export function FooterLinks() {
                         <li key={link.label}>
                           <Link
                             href={link.href}
-                            className="group font-serif text-xs tracking-normal text-primary hover:text-primary block py-1"
+                            className="font-serif text-xs tracking-normal text-primary hover:text-primary block py-1"
                           >
                             {renderFooterLinkLabel(link.label)}
                           </Link>

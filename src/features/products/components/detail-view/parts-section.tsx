@@ -316,7 +316,7 @@ export function PartsSection() {
                           "absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105",
                           isComingSoon && "blur-xl brightness-50"
                         )}
-                        style={{ backgroundImage: `url('${part.image}')` }}
+                        style={{ backgroundImage: `url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png')` }}
                       />
 
                       {isComingSoon && (

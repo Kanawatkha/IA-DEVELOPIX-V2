@@ -11,21 +11,22 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShopCollections, StoreHero } from '@/src/features/store';
 import { PartsSection } from '@/src/features/products';
+import { CATEGORIES } from '@/src/lib/data/products';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
 
-const HERO_CATEGORIES = [
-  { id: 1, name: 'LINEFOLLOWER', isComingSoon: false, image: 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png' },
-  { id: 2, name: 'MISSION', isComingSoon: false, image: 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png' },
-  { id: 3, name: 'GATHERING', isComingSoon: true, image: 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png' },
-  { id: 4, name: 'SUMO', isComingSoon: true, image: 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png' },
-];
-
 export default function StorePage() {
+  const heroCategories = CATEGORIES.map((cat, index) => ({
+    id: index + 1,
+    name: cat.name,
+    isComingSoon: cat.isComingSoon,
+    image: cat.image,
+  }));
+
   return (
     <div>
       {/* SECTION 1: HERO CATEGORIES CAROUSEL */}
-      <StoreHero categories={HERO_CATEGORIES} />
+      <StoreHero categories={heroCategories} />
 
       {/* SECTION 2: INFO TEXT BLOCK */}
       <motion.section

@@ -1,26 +1,15 @@
+/**
+ * @file shop-collections.tsx
+ * @description Filterable horizontal-scroll product card carousel, dynamically resolving model image resources.
+ */
+
 'use client';
 
-// shop-collections.tsx
-// Filterable horizontal-scroll product card carousel.
-//
-// This is the Single Source of Truth for the shop/also-bought carousel UI.
-// Used in:
-//  - store/page.tsx         -> title="SHOP COLLECTIONS"
-//  - products/*/*/page.tsx  -> title="CUSTOMERS ALSO BOUGHT"
-//
-// BUG FIX:
-// Previous copies in product detail pages had `snap-x snap-mandatory`
-// on BOTH the outer scroll container and inner flex wrapper, causing
-// the nav arrow .scrollBy() to conflict with browser snap.
-// Fixed here: snap classes are only on the inner flex wrapper (w-max),
-// matching the correct pattern from store/page.tsx.
-
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  SHOP_MODELS,
   FILTERS,
   type FilterValue,
   formatModelName,
@@ -28,6 +17,9 @@ import {
   getCategoryPath,
 } from '@/src/lib/data/products';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
+import { useShopCollections } from '../hooks/use-shop-collections';
+import { collectionStaggerVariants, modelCardVariants } from '../animations';
+import { DEFAULT_PRODUCT_BLUEPRINT } from '../constants';
 
 interface ShopCollectionsProps {
   /** Section heading text. E.g. "SHOP COLLECTIONS" or "CUSTOMERS ALSO BOUGHT" */
@@ -37,57 +29,18 @@ interface ShopCollectionsProps {
 }
 
 export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollectionsProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterValue>(defaultFilter);
-  const [hasInteracted, setHasInteracted] = useState(false);
-
-  // Refs for the scroll container and section (for centered-scroll on filter change)
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Mobile scroll shadow state
-  const [shadowLeft, setShadowLeft] = useState(false);
-  const [shadowRight, setShadowRight] = useState(true);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const t = e.currentTarget;
-    setShadowLeft(t.scrollLeft > 0);
-    setShadowRight(Math.ceil(t.scrollLeft + t.clientWidth) < t.scrollWidth);
-  };
-
-  // Reset horizontal scroll to left when filter changes (Store page pattern)
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-    }
-  }, [activeFilter]);
-
-  const scrollCards = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const amount = scrollContainerRef.current.clientWidth * 0.8;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -amount : amount,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  const handleFilterClick = (filter: FilterValue) => {
-    setActiveFilter(filter);
-    setHasInteracted(true);
-    // Scroll section to center of viewport (matches store page behaviour)
-    requestAnimationFrame(() => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const targetY =
-          window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2 - 20;
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-      }
-    });
-  };
-
-  const filteredModels = SHOP_MODELS.filter(
-    (m) => activeFilter === 'ALL' || m.cat === activeFilter
-  );
+  const {
+    activeFilter,
+    scrollContainerRef,
+    sectionRef,
+    shadowLeft,
+    shadowRight,
+    filteredModels,
+    hasInteracted,
+    handleScroll,
+    scrollCards,
+    handleFilterClick,
+  } = useShopCollections(defaultFilter);
 
   return (
     <section
@@ -172,7 +125,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
           </div>
         </div>
 
-        {/* Scroll container — BUG FIX: no snap-x here, only on inner flex */}
+        {/* Scroll container */}
         <div
           ref={scrollContainerRef}
           className="w-full overflow-x-auto [&::-webkit-scrollbar]:hidden"
@@ -186,50 +139,18 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
               exit="exit"
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: hasInteracted ? 0.05 : 0.15,
-                    delayChildren: hasInteracted ? 0 : 0.1,
-                  },
-                },
-                exit: {
-                  opacity: 0,
-                  filter: 'blur(12px)',
-                  transition: { duration: hasInteracted ? 0.2 : 0.3 },
-                },
-              }}
-              /* snap-x + snap-mandatory is applied HERE (inner flex wrapper) only — correct pattern */
+              variants={collectionStaggerVariants(hasInteracted)}
               className="relative flex snap-x snap-mandatory gap-4 md:gap-6 w-max pr-6 md:pr-12 pb-8"
             >
               {filteredModels.map((model) => {
-                const isComingSoon =
-                  model.name.includes('FANPULL') ||
-                  model.cat === 'GATHERING' ||
-                  model.cat === 'SUMO' ||
-                  model.isComingSoon;
+                const isComingSoon = model.isComingSoon;
+                const cardImage = DEFAULT_PRODUCT_BLUEPRINT;
 
                 return (
                   <motion.div
                     key={model.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 40, filter: 'blur(12px)' },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        filter: 'blur(0px)',
-                        transition: {
-                          duration: hasInteracted ? 0.4 : 1.0,
-                          ease: [0.2, 0.8, 0.2, 1],
-                        },
-                      },
-                      exit: {
-                        opacity: 0,
-                        filter: 'blur(12px)',
-                        transition: { duration: hasInteracted ? 0.2 : 0.4 },
-                      },
-                    }}
+                    custom={hasInteracted}
+                    variants={modelCardVariants}
                     className="relative w-[260px] lg:w-[380px] min-[2000px]:w-[420px] shrink-0 snap-always snap-start overflow-hidden rounded-none border border-hairline aspect-[3/4] bg-surface-card"
                   >
                     {/* Layer 1: Background Image */}
@@ -241,7 +162,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                         <div
                           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-300 ease-out hover:scale-105"
                           style={{
-                            backgroundImage: `url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png')`,
+                            backgroundImage: `url('${cardImage}')`,
                           }}
                         />
                       </Link>
@@ -250,7 +171,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                         <div
                           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] blur-xl brightness-50"
                           style={{
-                            backgroundImage: `url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png')`,
+                            backgroundImage: `url('${cardImage}')`,
                           }}
                         />
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
