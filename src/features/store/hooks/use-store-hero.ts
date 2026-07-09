@@ -1,6 +1,6 @@
 /**
  * @file use-store-hero.ts
- * @description Hook managing state, coordinates, and seamless infinite loops for StoreHero using pre-emptive wraps.
+ * @description Hook managing state, coordinates, and seamless infinite loops for StoreHero using a conveyor belt concept.
  */
 
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
@@ -10,16 +10,23 @@ import { HeroCategory } from '../types';
 export function useStoreHero(categories: HeroCategory[]) {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Slide index and hover states, initialized to Copy 2 LINEFOLLOWER (index 4)
-  const [activeIndex, setActiveIndex] = useState(4);
+  // Continuous virtual index representing the scroll target (infinite in both directions)
+  const [virtualActiveIndex, setVirtualActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const isDragging = useRef(false);
   const startX = useRef(0);
   const currentAnimationRef = useRef<any>(null);
 
-  // Framer Motion direct DOM value controller, initialized to -328vw to align index 4 immediately on mount
-  const mvX = useMotionValue<number | string>('-328vw');
+  // Computed visual index for dots indicator and general highlight states
+  const activeIndex = useMemo(() => {
+    const N = categories.length;
+    if (N === 0) return 0;
+    return (virtualActiveIndex % N + N) % N;
+  }, [virtualActiveIndex, categories.length]);
+
+  // Framer Motion direct DOM value controller, initialized to 0px on mount
+  const mvX = useMotionValue<number | string>(0);
 
   const [dimensions, setDimensions] = useState({
     containerWidth: 0,
@@ -27,11 +34,8 @@ export function useStoreHero(categories: HeroCategory[]) {
     gap: 16,
   });
 
-  // Replicate categories array to build an infinite virtual sliding track of 3 segments (12 slides)
-  const extendedCategories = useMemo(() => {
-    if (categories.length === 0) return [];
-    return Array(3).fill(categories).flat();
-  }, [categories]);
+  // Categories are mapped exactly 1:1, layout positioning wraps them using CSS transforms on the fly
+  const extendedCategories = categories;
 
   // Read track size properties dynamically for centering calculations
   const updateDimensions = useCallback(() => {
@@ -57,7 +61,7 @@ export function useStoreHero(categories: HeroCategory[]) {
     );
   }, [dimensions]);
 
-  const baseOffset = useMemo(() => getBaseOffset(activeIndex), [activeIndex, getBaseOffset]);
+  const baseOffset = useMemo(() => getBaseOffset(virtualActiveIndex), [virtualActiveIndex, getBaseOffset]);
 
   // Update track dimensions dynamically on resize
   useEffect(() => {
@@ -70,47 +74,34 @@ export function useStoreHero(categories: HeroCategory[]) {
     };
   }, [updateDimensions, extendedCategories.length]);
 
-  // Position initial slide index statically on mount
+  // Keep track of virtualActiveIndex with a ref to avoid triggering centering effect on index changes
+  const activeIndexRef = useRef(virtualActiveIndex);
+  useEffect(() => {
+    activeIndexRef.current = virtualActiveIndex;
+  }, [virtualActiveIndex]);
+
+  // Position initial slide index statically on mount and keep centered on dimensions resize
   const isInitialized = useRef(false);
   useEffect(() => {
-    if (dimensions.containerWidth > 0 && dimensions.childWidth > 0 && !isInitialized.current) {
-      const targetPos = getBaseOffset(activeIndex);
+    if (dimensions.containerWidth > 0 && dimensions.childWidth > 0) {
+      const targetPos = getBaseOffset(activeIndexRef.current);
       mvX.set(targetPos);
       isInitialized.current = true;
     }
-  }, [dimensions, activeIndex, getBaseOffset, mvX]);
+  }, [dimensions, getBaseOffset, mvX]);
 
-  // Programmatic slide transition animator with strict clamping and silent pre-emptive boundary wraps
+  // Programmatic slide transition animator
   const animateToIdx = useCallback((targetIndex: number, useSpring: boolean = true) => {
     if (currentAnimationRef.current) {
       currentAnimationRef.current.stop();
     }
 
     const N = categories.length;
-    let currentIdx = activeIndex;
-    let adjustedTargetIdx = targetIndex;
+    if (N === 0) return;
 
-    if (N > 0 && dimensions.childWidth > 0) {
-      const offsetDiff = N * (dimensions.childWidth + dimensions.gap);
-      const currentVal = typeof mvX.get() === 'string' ? parseFloat(mvX.get() as string) : (mvX.get() as number);
+    setVirtualActiveIndex(targetIndex);
+    const targetPos = getBaseOffset(targetIndex);
 
-      // Pre-emptive loop warping based on the current position to support rapid continuous swiping
-      if (currentIdx >= 2 * N) {
-        currentIdx = currentIdx - N;
-        mvX.set(currentVal + offsetDiff);
-        adjustedTargetIdx = adjustedTargetIdx - N;
-      } else if (currentIdx < N) {
-        currentIdx = currentIdx + N;
-        mvX.set(currentVal - offsetDiff);
-        adjustedTargetIdx = adjustedTargetIdx + N;
-      }
-    }
-
-    const maxIdx = extendedCategories.length - 1;
-    const clampedIndex = Math.max(0, Math.min(adjustedTargetIdx, maxIdx));
-    setActiveIndex(clampedIndex);
-
-    const targetPos = getBaseOffset(clampedIndex);
     if (!useSpring) {
       mvX.set(targetPos);
       return;
@@ -122,29 +113,32 @@ export function useStoreHero(categories: HeroCategory[]) {
       damping: 28,
       mass: 1,
     });
-  }, [getBaseOffset, mvX, extendedCategories.length, categories.length, activeIndex, dimensions]);
+  }, [getBaseOffset, mvX, categories.length]);
 
   const handleNextSlide = useCallback(() => {
     if (extendedCategories.length === 0) return;
-    const nextIdx = activeIndex + 1;
+    const nextIdx = virtualActiveIndex + 1;
     animateToIdx(nextIdx, true);
-  }, [extendedCategories.length, activeIndex, animateToIdx]);
+  }, [extendedCategories.length, virtualActiveIndex, animateToIdx]);
 
   const handlePrevSlide = useCallback(() => {
     if (extendedCategories.length === 0) return;
-    const prevIdx = activeIndex - 1;
+    const prevIdx = virtualActiveIndex - 1;
     animateToIdx(prevIdx, true);
-  }, [extendedCategories.length, activeIndex, animateToIdx]);
+  }, [extendedCategories.length, virtualActiveIndex, animateToIdx]);
 
   const handleDotClickWrapper = useCallback((targetOriginalIndex: number) => {
-    if (categories.length === 0 || extendedCategories.length === 0) return;
+    const N = categories.length;
+    if (N === 0 || extendedCategories.length === 0) return;
     
-    // Slide to the nearest copy representing the clicked dot category
-    const currentCopy = Math.floor(activeIndex / categories.length);
-    const targetIdx = currentCopy * categories.length + targetOriginalIndex;
+    // Find the shortest distance virtual target index that maps to the selected original index
+    const currentIdx = virtualActiveIndex;
+    const diff = ((targetOriginalIndex - (currentIdx % N)) % N + N) % N;
+    const shift = diff > N / 2 ? diff - N : diff;
+    const targetIdx = currentIdx + shift;
     
     animateToIdx(targetIdx, true);
-  }, [categories.length, extendedCategories.length, activeIndex, animateToIdx]);
+  }, [categories.length, extendedCategories.length, virtualActiveIndex, animateToIdx]);
 
   // Autoplay intervals setup
   const autoRotateInterval = useRef<NodeJS.Timeout | null>(null);
@@ -193,7 +187,7 @@ export function useStoreHero(categories: HeroCategory[]) {
 
   // Pointer dragging event handlers
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return; // Process primary left-clicks only
+    if (e.button !== 0) return;
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a')) {
       return;
@@ -212,7 +206,7 @@ export function useStoreHero(categories: HeroCategory[]) {
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
     const walk = e.clientX - startX.current;
-    const currentVal = typeof mvX.get() === 'string' ? parseFloat(mvX.get() as string) : (mvX.get() as number);
+    const baseOffset = getBaseOffset(virtualActiveIndex);
     mvX.set(baseOffset + walk);
   };
 
@@ -222,15 +216,14 @@ export function useStoreHero(categories: HeroCategory[]) {
     setIsHovered(false);
     e.currentTarget.releasePointerCapture(e.pointerId);
 
-    const currentX = e.clientX;
-    const walk = currentX - startX.current;
+    const walk = e.clientX - startX.current;
     const threshold = 80;
 
-    let targetIdx = activeIndex;
+    let targetIdx = virtualActiveIndex;
     if (walk < -threshold) {
-      targetIdx = activeIndex + 1;
+      targetIdx = virtualActiveIndex + 1;
     } else if (walk > threshold) {
-      targetIdx = activeIndex - 1;
+      targetIdx = virtualActiveIndex - 1;
     }
 
     animateToIdx(targetIdx, true);
@@ -242,7 +235,7 @@ export function useStoreHero(categories: HeroCategory[]) {
     isDragging.current = false;
     setIsHovered(false);
     e.currentTarget.releasePointerCapture(e.pointerId);
-    animateToIdx(activeIndex, true);
+    animateToIdx(virtualActiveIndex, true);
     resetInterval();
   };
 

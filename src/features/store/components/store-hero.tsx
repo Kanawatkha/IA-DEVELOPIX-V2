@@ -8,7 +8,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 import * as ty from '@/src/lib/design/typography';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
@@ -18,6 +18,103 @@ import { storeHeroBackgroundVariants } from '../animations';
 
 interface StoreHeroProps {
   categories: HeroCategory[];
+}
+
+interface StoreHeroSlideProps {
+  cat: HeroCategory;
+  idx: number;
+  mvX: any;
+  dimensions: {
+    containerWidth: number;
+    childWidth: number;
+    gap: number;
+  };
+}
+
+function StoreHeroSlide({ cat, idx, mvX, dimensions }: StoreHeroSlideProps) {
+  // Translate wrapping formula for sushi conveyor-belt effect
+  const tx = useTransform(mvX, (val: number | string) => {
+    if (dimensions.containerWidth === 0 || dimensions.childWidth === 0) return 0;
+    const currentVal = typeof val === 'string' ? parseFloat(val) : val;
+    const step = dimensions.childWidth + dimensions.gap;
+    const N = 4; // Total categories is 4
+    
+    // cx is the centering offset: (containerWidth - childWidth) / 2
+    const cx = (dimensions.containerWidth - dimensions.childWidth) / 2;
+    
+    // Position of this slide relative to the screen center
+    const relativeOffset = idx * step + currentVal - cx;
+    
+    // Wrap relativeOffset to [-2 * step, 2 * step)
+    const range = N * step;
+    let wrapped = (relativeOffset - (-2 * step)) % range;
+    if (wrapped < 0) wrapped += range;
+    const wrappedOffset = wrapped + (-2 * step);
+    
+    // The translation applied to shift this slide in the track:
+    return wrappedOffset - (idx * step + currentVal - cx);
+  });
+
+  return (
+    <motion.div
+      className="relative w-[85vw] md:w-[84vw] min-[1025px]:w-[82vw] h-full shrink-0 bg-surface-soft overflow-hidden flex flex-col justify-end rounded-none border-x border-hairline/30"
+      style={{ x: tx }}
+    >
+      {/* Cinematic background photograph, utilizing individual category-specific images */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        custom={cat.isComingSoon}
+        variants={storeHeroBackgroundVariants}
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none user-select-none ${
+          cat.isComingSoon ? 'grayscale-[0.4]' : ''
+        }`}
+        style={{
+          backgroundImage: `url('${cat.image}')`,
+        }}
+      >
+        {/* Pure bottom overlay fade */}
+        <div className="absolute inset-0 bg-gradient-to-t from-canvas/80 via-canvas/10 to-transparent pointer-events-none" />
+      </motion.div>
+
+      {/* Structured slide header copy overlay */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={parentVariants}
+        className="relative z-10 p-6 md:p-12 pb-24 md:pb-32 min-[2000px]:p-20 min-[2000px]:pb-40 flex flex-col items-start w-full"
+      >
+        <div className="flex flex-col-reverse md:flex-row md:items-center gap-2 md:gap-4 mb-4 md:mb-6">
+          <motion.h2
+            variants={childVariants}
+            className={`${ty.displayXl} text-3xl min-[375px]:text-4xl md:text-[80px] min-[2000px]:text-[120px] text-primary select-none`}
+          >
+            {cat.name}
+          </motion.h2>
+          {cat.isComingSoon && (
+            <motion.span
+              variants={childVariants}
+              className={`${ty.captionUpper} text-[10px] md:text-xs text-muted border border-hairline px-3 py-1 rounded-none self-start md:self-auto translate-y-0 md:translate-y-2 lg:translate-y-4`}
+            >
+              (COMING SOON)
+            </motion.span>
+          )}
+        </div>
+
+        <motion.div variants={childVariants}>
+          <Link
+            href={cat.isComingSoon ? '#' : `/products/${cat.name.toLowerCase()}`}
+            className={`${ty.ctaButton} text-[9px] min-[375px]:text-[10px] sm:text-[12px] md:text-[14px] px-4 py-1.5 min-[375px]:px-5 min-[375px]:py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-primary hover:text-canvas transition-all cursor-pointer whitespace-nowrap`}
+            onClick={(e) => cat.isComingSoon && e.preventDefault()}
+          >
+            DISCOVER {cat.name}
+          </Link>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
 }
 
 export function StoreHero({ categories }: StoreHeroProps) {
@@ -34,12 +131,14 @@ export function StoreHero({ categories }: StoreHeroProps) {
     handlePointerUp,
     handlePointerCancel,
     isHovered,
+    dimensions,
   } = useStoreHero(categories);
 
   return (
     <section
       id="store-hero-carousel"
-      className="relative w-full border-b border-hairline bg-canvas overflow-hidden flex flex-col min-h-[500px] h-[60dvh] md:h-[600px] lg:h-[700px] xl:h-[calc(100dvh-90px)] select-none"
+      className="relative w-full border-b border-hairline bg-canvas overflow-hidden flex flex-col min-h-[500px] select-none"
+      style={{ height: "calc(100dvh - var(--navbar-height, 90px))" }}
     >
       {/* Outer overflow container viewport frame */}
       <div 
@@ -55,70 +154,19 @@ export function StoreHero({ categories }: StoreHeroProps) {
           style={{ x: mvX, cursor: isHovered ? 'grabbing' : 'grab' }}
         >
           {extendedCategories.map((cat, idx) => (
-            <div
+            <StoreHeroSlide
               key={`${cat.id}-${idx}`}
-              className="relative w-[85vw] md:w-[84vw] min-[1025px]:w-[82vw] h-full shrink-0 bg-surface-soft overflow-hidden flex flex-col justify-end rounded-none border-x border-hairline/30"
-            >
-              {/* Cinematic background photograph, utilizing individual category-specific images */}
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={cat.isComingSoon}
-                variants={storeHeroBackgroundVariants}
-                className={`absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none user-select-none ${
-                  cat.isComingSoon ? 'grayscale-[0.4]' : ''
-                }`}
-                style={{
-                  backgroundImage: `url('${cat.image}')`,
-                }}
-              >
-                {/* Pure bottom overlay fade */}
-                <div className="absolute inset-0 bg-gradient-to-t from-canvas/80 via-canvas/10 to-transparent pointer-events-none" />
-              </motion.div>
-
-              {/* Structured slide header copy overlay */}
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={parentVariants}
-                className="relative z-10 p-6 md:p-12 pb-24 md:pb-32 min-[2000px]:p-20 min-[2000px]:pb-40 flex flex-col items-start w-full"
-              >
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-4 md:mb-6">
-                  <motion.h2
-                    variants={childVariants}
-                    className={`${ty.displayXl} text-5xl md:text-[80px] min-[2000px]:text-[120px] text-primary select-none`}
-                  >
-                    {cat.name}
-                  </motion.h2>
-                  {cat.isComingSoon && (
-                    <motion.span
-                      variants={childVariants}
-                      className={`${ty.captionUpper} text-[10px] md:text-xs text-muted border border-hairline px-3 py-1 rounded-none self-start md:self-auto translate-y-2 lg:translate-y-4`}
-                    >
-                      (COMING SOON)
-                    </motion.span>
-                  )}
-                </div>
-
-                <motion.div variants={childVariants}>
-                  <Link
-                    href={cat.isComingSoon ? '#' : `/products/${cat.name.toLowerCase()}`}
-                    className={`${ty.ctaButton} text-[10px] sm:text-[12px] md:text-[14px] px-5 py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-primary hover:text-canvas transition-all cursor-pointer`}
-                    onClick={(e) => cat.isComingSoon && e.preventDefault()}
-                  >
-                    DISCOVER {cat.name}
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </div>
+              cat={cat}
+              idx={idx}
+              mvX={mvX}
+              dimensions={dimensions}
+            />
           ))}
         </motion.div>
       </div>
 
       {/* Control console wrapper */}
-      <div className="absolute bottom-8 md:bottom-10 left-0 right-0 z-20 px-[7.5vw] md:px-[8vw] min-[1025px]:px-[9vw] lg:px-[10vw] flex justify-between items-center pointer-events-none">
+      <div className="absolute bottom-8 md:bottom-10 left-0 right-0 z-20 px-[11vw] md:px-[12vw] min-[1025px]:px-[9vw] lg:px-[10vw] flex justify-between items-center pointer-events-none">
         <motion.button
           initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
