@@ -16,9 +16,7 @@ import { HeroCategory } from '../types';
 import { useStoreHero } from '../hooks/use-store-hero';
 import { storeHeroBackgroundVariants } from '../animations';
 
-interface StoreHeroProps {
-  categories: HeroCategory[];
-}
+
 
 interface StoreHeroSlideProps {
   cat: HeroCategory;
@@ -117,11 +115,12 @@ function StoreHeroSlide({ cat, idx, mvX, dimensions }: StoreHeroSlideProps) {
   );
 }
 
-export function StoreHero({ categories }: StoreHeroProps) {
+export function StoreHero() {
   const {
     containerRef,
     activeIndex,
     extendedCategories,
+    categories,
     mvX,
     handleNextSlide,
     handlePrevSlide,
@@ -132,7 +131,7 @@ export function StoreHero({ categories }: StoreHeroProps) {
     handlePointerCancel,
     isHovered,
     dimensions,
-  } = useStoreHero(categories);
+  } = useStoreHero();
 
   return (
     <section

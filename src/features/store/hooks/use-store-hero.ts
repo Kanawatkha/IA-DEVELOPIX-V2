@@ -5,10 +5,20 @@
 
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { useMotionValue, animate } from 'framer-motion';
+import { CATEGORIES } from '@/src/lib/data/products';
 import { HeroCategory } from '../types';
 
-export function useStoreHero(categories: HeroCategory[]) {
+export function useStoreHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const categories = useMemo(() => {
+    return CATEGORIES.map((cat, index) => ({
+      id: index + 1,
+      name: cat.name,
+      isComingSoon: cat.isComingSoon,
+      image: cat.image,
+    }));
+  }, []);
   
   // Continuous virtual index representing the scroll target (infinite in both directions)
   const [virtualActiveIndex, setVirtualActiveIndex] = useState(0);
@@ -243,6 +253,7 @@ export function useStoreHero(categories: HeroCategory[]) {
     containerRef,
     activeIndex,
     extendedCategories,
+    categories,
     mvX,
     handleNextSlide: handleNextWithReset,
     handlePrevSlide: handlePrevWithReset,
