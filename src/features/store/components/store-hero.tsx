@@ -140,8 +140,11 @@ export function StoreHero() {
       style={{ height: "calc(100dvh - var(--navbar-height, 90px))" }}
     >
       {/* Outer overflow container viewport frame */}
-      <div 
+      <motion.div 
         ref={containerRef}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: dimensions.containerWidth > 0 ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="w-full h-full flex-1 relative overflow-hidden flex items-stretch"
       >
         <motion.div
@@ -162,7 +165,7 @@ export function StoreHero() {
             />
           ))}
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Control console wrapper */}
       <div className="absolute bottom-8 md:bottom-10 left-0 right-0 z-20 px-[11vw] md:px-[12vw] min-[1025px]:px-[9vw] lg:px-[10vw] flex justify-between items-center pointer-events-none">
