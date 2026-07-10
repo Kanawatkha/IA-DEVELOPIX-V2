@@ -58,9 +58,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const existingIndex = cartItems.findIndex((i) => i.id === item.id);
     let newItems = [...cartItems];
     if (existingIndex > -1) {
-      newItems[existingIndex].quantity += quantity;
+      const updatedItem = {
+        ...newItems[existingIndex],
+        quantity: newItems[existingIndex].quantity + quantity
+      };
+      newItems.splice(existingIndex, 1);
+      newItems.unshift(updatedItem);
     } else {
-      newItems.push({ ...item, quantity });
+      newItems.unshift({ ...item, quantity });
     }
     saveCart(newItems);
   };

@@ -7,8 +7,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '@/src/context/cart-context';
 import {
   FILTERS,
   type FilterValue,
@@ -29,6 +30,8 @@ interface ShopCollectionsProps {
 }
 
 export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollectionsProps) {
+  const { addToCart, setIsCartOpen } = useCart();
+
   const {
     activeFilter,
     scrollContainerRef,
@@ -42,6 +45,27 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
     handleFilterClick,
   } = useShopCollections(defaultFilter);
 
+  const handleAddToCartClick = (model: any) => {
+    const numericPrice = parseInt(model.price.replace(/[^0-9]/g, ""), 10) || 0;
+    const isMission = model.cat.toLowerCase().includes("mission");
+    
+    // Resolve id standards consistent with the product catalog
+    const id = model.name.toLowerCase().includes("nofan 15") ? "nofan-15"
+             : model.name.toLowerCase().includes("nofan 18") ? "nofan-18"
+             : model.name.toLowerCase().includes("go") ? "mission-go"
+             : "mission-pro";
+             
+    addToCart({
+      id,
+      name: model.name,
+      price: numericPrice,
+      image: model.image,
+      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
+    }, 1);
+    
+    setIsCartOpen(true);
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -50,7 +74,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true }}
         variants={parentVariants}
         className="max-w-[3840px] mx-auto w-full"
       >
@@ -73,12 +97,12 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
               className="absolute inset-0 pointer-events-none z-10 md:hidden"
             >
               <div
-                className={`absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-primary/30 to-transparent transition-opacity duration-300 ${
+                className={`absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/40 via-white/10 to-transparent transition-opacity duration-300 ${
                   shadowLeft ? 'opacity-100' : 'opacity-0'
                 }`}
               />
               <div
-                className={`absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-primary/30 to-transparent transition-opacity duration-300 ${
+                className={`absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/40 via-white/10 to-transparent transition-opacity duration-300 ${
                   shadowRight ? 'opacity-100' : 'opacity-0'
                 }`}
               />
@@ -87,7 +111,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
             {/* Filter buttons */}
             <motion.div
               variants={parentVariants}
-              className="flex flex-nowrap items-center gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden w-full relative z-0"
+              className="flex flex-nowrap items-center gap-3 overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:hidden w-full relative z-0"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               onScroll={handleScroll}
             >
@@ -96,7 +120,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                   variants={childVariants}
                   key={f}
                   onClick={() => handleFilterClick(f)}
-                  className={`shrink-0 font-mono text-[10px] md:text-[12px] leading-[1.43] uppercase tracking-[2px] px-3 md:px-6 py-2 md:py-2.5 rounded-pill transition-colors duration-300 outline-none focus:ring-1 focus:ring-white whitespace-nowrap font-normal border ${
+                  className={`shrink-0 font-mono text-[10px] md:text-[12px] leading-[1.43] uppercase tracking-[2px] px-3 md:px-6 py-2 md:py-2.5 rounded-full transition-colors duration-300 outline-none focus:ring-1 focus:ring-white whitespace-nowrap font-normal border ${
                     activeFilter === f
                       ? 'bg-primary text-canvas border-primary'
                       : 'bg-transparent text-muted border-hairline hover:border-hairline-strong hover:text-primary'
@@ -128,7 +152,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
         {/* Scroll container */}
         <div
           ref={scrollContainerRef}
-          className="w-full overflow-x-auto [&::-webkit-scrollbar]:hidden"
+          className="w-full overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:hidden"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           onScroll={handleScroll}
         >
@@ -137,75 +161,101 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
               key={activeFilter}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={{ once: true }}
               exit="exit"
               variants={collectionStaggerVariants(hasInteracted)}
               className="relative flex snap-x snap-mandatory gap-4 md:gap-6 w-max pr-6 md:pr-12 pb-8"
             >
               {filteredModels.map((model) => {
                 const isComingSoon = model.isComingSoon;
-                const cardImage = DEFAULT_PRODUCT_BLUEPRINT;
+                const cardImage = model.image || DEFAULT_PRODUCT_BLUEPRINT;
 
                 return (
                   <motion.div
                     key={model.id}
                     custom={hasInteracted}
                     variants={modelCardVariants}
-                    className="relative w-[260px] lg:w-[380px] min-[2000px]:w-[420px] shrink-0 snap-always snap-start overflow-hidden rounded-none border border-hairline aspect-[3/4] bg-surface-card"
+                    className="relative w-[260px] lg:w-[380px] min-[2000px]:w-[420px] shrink-0 snap-always snap-start overflow-hidden rounded-[20px] border border-hairline aspect-[3/4] bg-[#eaeaea] flex flex-col"
                   >
-                    {/* Layer 1: Background Image */}
-                    {!isComingSoon ? (
-                      <Link
-                        href={getProductPath(model)}
-                        className="absolute inset-0 z-0 overflow-hidden select-none pointer-events-auto block"
-                      >
-                        <div
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-300 ease-out hover:scale-105"
-                          style={{
-                            backgroundImage: `url('${cardImage}')`,
-                          }}
-                        />
-                      </Link>
-                    ) : (
-                      <div className="absolute inset-0 z-0 overflow-hidden select-none pointer-events-none">
-                        <div
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] blur-xl brightness-50"
-                          style={{
-                            backgroundImage: `url('${cardImage}')`,
-                          }}
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                          <span className="border border-primary/30 px-6 py-2 text-primary font-normal tracking-[2px] uppercase rounded-none bg-canvas/60">
-                            COMING SOON
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-canvas/90 to-transparent pointer-events-none z-0" />
-
-                    {/* Layer 2: Text Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 px-6 md:px-8 pb-8 md:pb-10 flex flex-col lg:flex-row lg:justify-between lg:items-end z-10 pointer-events-none">
-                      <div className="flex flex-col items-start text-left">
-                        <Link
-                          href={getCategoryPath(model.cat)}
-                          className="font-mono text-[10px] md:text-[12px] uppercase tracking-[2px] text-muted mb-2 pointer-events-auto inline-block relative transition-all outline-none focus:text-primary pb-1 after:content-[''] after:absolute after:w-full after:h-[1px] after:bottom-0 after:left-0 after:bg-current after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 font-normal"
-                        >
-                          {model.cat}
-                        </Link>
-                        <h3 className="font-display font-normal text-2xl md:text-3xl uppercase leading-none text-primary pointer-events-auto outline-none tracking-[2px]">
+                    {/* Upper block: Image Container */}
+                    <div className="relative w-full flex-1 overflow-hidden select-none bg-[#f2f2f2]">
+                      {!isComingSoon ? (
+                        <div className="relative w-full h-full group/img">
                           <Link
                             href={getProductPath(model)}
-                            className="inline-block relative after:content-[''] after:absolute after:w-full after:h-[1px] after:bottom-0 after:left-0 after:bg-current after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 transition-all outline-none pb-1"
+                            className="block w-full h-full pointer-events-auto"
+                          >
+                            <div
+                              className="w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:scale-105"
+                              style={{
+                                backgroundImage: `url('${cardImage}')`,
+                              }}
+                            />
+                          </Link>
+                          
+                          {/* Interactive Hover Actions Overlay */}
+                          <div className="absolute inset-0 pointer-events-none z-10">
+                            {/* Quick View Eye Button */}
+                            <Link
+                              href={getProductPath(model)}
+                              className="absolute top-4 right-4 w-11 h-11 bg-white text-black hover:bg-black hover:text-white hover:border-white border border-transparent rounded-full flex items-center justify-center pointer-events-auto opacity-0 translate-y-2 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg cursor-pointer"
+                              aria-label="View product details"
+                            >
+                              <Eye className="w-5 h-5" />
+                            </Link>
+
+                            {/* Add to Cart Button */}
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleAddToCartClick(model);
+                              }}
+                              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2.5 bg-white text-black hover:bg-black hover:text-white hover:border-white border border-transparent rounded-full font-mono text-[11px] uppercase tracking-[2px] pointer-events-auto opacity-0 translate-y-4 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg whitespace-nowrap cursor-pointer"
+                            >
+                              ADD TO CART
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative w-full h-full pointer-events-none">
+                          <div
+                            className="w-full h-full bg-cover bg-center bg-no-repeat blur-xl brightness-75 scale-110"
+                            style={{
+                              backgroundImage: `url('${cardImage}')`,
+                            }}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center z-10">
+                            <span className="border border-white/20 px-6 py-2 text-white font-mono text-[11px] tracking-[2px] uppercase rounded-none bg-black/60">
+                              COMING SOON
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Lower block: Text Content box */}
+                    <div className="w-full bg-[#eaeaea] p-5 lg:pt-[18px] lg:pb-[30px] lg:px-[30px] flex flex-col items-start text-left shrink-0">
+                      <Link
+                        href={getCategoryPath(model.cat)}
+                        className="font-mono text-[10px] md:text-[11px] uppercase tracking-[2px] text-[#666666] mb-2 pointer-events-auto inline-block hover-underline-expand pb-0.5 font-normal outline-none"
+                      >
+                        {model.cat}
+                      </Link>
+                      
+                      <div className="flex justify-between items-start w-full gap-2">
+                        <h3 className="font-display font-normal text-[16px] xs:text-[18px] lg:text-[24px] uppercase leading-tight text-[#000000] pointer-events-auto outline-none tracking-[1px] flex-1 pr-2">
+                          <Link
+                            href={getProductPath(model)}
+                            className="inline-block hover-underline-expand pb-0.5 outline-none"
                           >
                             {formatModelName(model.name)}
                           </Link>
                         </h3>
+                        <span className="font-mono text-[11px] xs:text-[12px] lg:text-[14px] uppercase tracking-[1px] text-[#000000] mt-1 shrink-0 pointer-events-auto font-normal">
+                          {isComingSoon ? 'THB ??' : model.price}
+                        </span>
                       </div>
-                      <span className="font-mono text-[13px] md:text-[15px] uppercase tracking-[2px] text-primary mt-2 lg:mt-0 lg:ml-4 self-start lg:self-auto shrink-0 pointer-events-auto font-normal">
-                        {isComingSoon ? 'THB ??' : model.price}
-                      </span>
                     </div>
                   </motion.div>
                 );

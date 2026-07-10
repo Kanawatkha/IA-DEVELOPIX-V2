@@ -16,9 +16,9 @@ export function StoreIntro() {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
       variants={parentVariants}
-      className="w-full py-20 md:py-[120px] px-6 md:px-12 flex justify-center items-center bg-canvas"
+      className="w-full py-10 md:py-12 px-6 md:px-12 flex justify-center items-center bg-canvas"
     >
       <div className="max-w-[1000px] min-[2000px]:max-w-[1200px] mx-auto text-center flex flex-col items-center">
         <motion.h2

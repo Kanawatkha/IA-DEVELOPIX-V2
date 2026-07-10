@@ -68,7 +68,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "THB 15,000",
     isComingSoon: false,
     image:
-      "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 2,
@@ -77,7 +77,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "THB 18,000",
     isComingSoon: false,
     image:
-      "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 3,
@@ -86,7 +86,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "THB 25,000",
     isComingSoon: false,
     image:
-      "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 4,
@@ -95,7 +95,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "THB 45,000",
     isComingSoon: false,
     image:
-      "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 5,
@@ -104,7 +104,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "TBA",
     isComingSoon: true,
     image:
-      "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 6,
@@ -113,7 +113,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "TBA",
     isComingSoon: true,
     image:
-      "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 7,
@@ -122,7 +122,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "TBA",
     isComingSoon: true,
     image:
-      "https://images.unsplash.com/photo-1503376713214-5d55b0a373b5?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
   {
     id: 8,
@@ -131,7 +131,7 @@ export const SHOP_MODELS: ShopModel[] = [
     price: "TBA",
     isComingSoon: true,
     image:
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1000&auto=format&fit=crop",
+      "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png",
   },
 ];
 
@@ -222,6 +222,7 @@ export function getCategoryPath(cat: string): string {
  */
 export function isModelComingSoon(name: string): boolean {
   return SHOP_MODELS.some(
-    (model) => model.name.toUpperCase() === name.toUpperCase() && model.isComingSoon
+    (model) =>
+      model.name.toUpperCase() === name.toUpperCase() && model.isComingSoon,
   );
 }

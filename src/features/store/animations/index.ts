@@ -32,13 +32,13 @@ export const collectionStaggerVariants = (hasInteracted: boolean): Variants => (
   },
 });
 
-/** Individual model card item load and transition variants inside ShopCollections */
 export const modelCardVariants: Variants = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(12px)' },
+  hidden: { opacity: 0, y: 40, filter: 'blur(4px)', pointerEvents: 'none' },
   visible: (hasInteracted: boolean) => ({
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
+    pointerEvents: 'auto',
     transition: {
       duration: hasInteracted ? 0.4 : 1.0,
       ease: [0.2, 0.8, 0.2, 1],
@@ -46,7 +46,8 @@ export const modelCardVariants: Variants = {
   }),
   exit: (hasInteracted: boolean) => ({
     opacity: 0,
-    filter: 'blur(12px)',
+    filter: 'blur(4px)',
+    pointerEvents: 'none',
     transition: { duration: hasInteracted ? 0.2 : 0.4 },
   }),
 };
