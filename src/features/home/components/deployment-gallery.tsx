@@ -190,6 +190,20 @@ export const DeploymentGallery: React.FC = () => {
           </button>
         ))}
       </div>
+
+      {/* Background image preloader to avoid black screen flashing during slide transitions */}
+      <div className="hidden" aria-hidden="true">
+        {SKY_IMAGES.map((src, index) => (
+          <Image
+            key={`preload-${index}`}
+            src={`${src}?q=80&w=2000&auto=format&fit=crop`}
+            alt="preload"
+            width={10}
+            height={10}
+            priority
+          />
+        ))}
+      </div>
     </div>
   );
 };

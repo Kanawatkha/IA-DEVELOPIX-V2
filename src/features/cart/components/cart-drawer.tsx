@@ -41,7 +41,7 @@ export function CartDrawer() {
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
   const [view, setView] = useState<"tabs" | "checkout">("tabs");
   const [isCopied, setIsCopied] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   const dragControls = useDragControls();
 
   const drawerVariants = {
@@ -174,19 +174,18 @@ export function CartDrawer() {
 
   // Render the Quote statement onto the HTML5 Canvas when the checkout view is active and canvas has mounted.
   useEffect(() => {
-    if (view !== "checkout" || !canvasRef.current) return;
+    if (view !== "checkout" || !canvasElement) return;
 
-    const canvas = canvasRef.current;
-    const frame = window.requestAnimationFrame(() => {
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+    const canvas = canvasElement;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     // Set high resolution canvas dimensions
     canvas.width = 800;
     canvas.height = 1000;
 
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw luxury double borders
     ctx.strokeStyle = "#262626";
@@ -296,15 +295,11 @@ export function CartDrawer() {
     ctx.fillStyle = "#666666";
     ctx.font = `italic 14px ${garamond}`;
     ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 920);
-
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, [view, cartItems, cartSubtotal]);
+  }, [view, canvasElement, cartItems, cartSubtotal]);
 
   const handleDownload = async () => {
-    if (!canvasRef.current) return;
-    const blob = await exportQuoteImage(canvasRef.current);
+    if (!canvasElement) return;
+    const blob = await exportQuoteImage(canvasElement);
     downloadQuoteImage(blob);
   };
 
@@ -372,7 +367,7 @@ export function CartDrawer() {
               transition={{ duration: 0.3, ease: "easeOut" }}
               className={drawerGlowClass}
             />
-            <div className="w-full h-full flex flex-col relative overflow-hidden bg-canvas">
+            <div className="w-full h-full flex flex-col relative overflow-hidden rounded-[inherit] bg-canvas">
               {/* Drawer Handle for Mobile Swipe-down */}
               <div 
                 className="shrink-0 w-full block md:hidden pt-4 pb-2 cursor-grab active:cursor-grabbing"
@@ -679,7 +674,9 @@ export function CartDrawer() {
 
                     <div className="flex justify-center border border-hairline bg-surface-soft p-4 md:p-6 mb-2 overflow-hidden rounded-xl">
                       <canvas 
-                        ref={canvasRef}
+                        ref={setCanvasElement}
+                        width={800}
+                        height={1000}
                         className="w-full max-w-[280px] md:max-w-[340px] border border-hairline-strong shadow-lg aspect-[8/10]" 
                       />
                     </div>
@@ -785,7 +782,7 @@ export function CartDrawer() {
 
                     <button
                       onClick={handleSendFacebook}
-                      className="flex-1 flex items-center justify-center gap-1.5 border border-primary text-primary font-mono text-[9px] md:text-xs uppercase tracking-[1px] md:tracking-[2px] py-3.5 px-1 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer truncate"
+                      className="flex-1 flex items-center justify-center gap-1.5 border border-primary bg-primary text-canvas font-mono text-[9px] md:text-xs uppercase tracking-[1px] md:tracking-[2px] py-3.5 px-1 rounded-pill hover:bg-canvas hover:text-primary transition-colors duration-300 outline-none cursor-pointer truncate"
                     >
                       <MessageCircle size={12} className="shrink-0" />
                       <span className="truncate">FACEBOOK</span>
