@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export function EngineeringGrid({ children, title }: { children: React.ReactNode, title: string }) {
   return (
-    <section className="w-full px-8 md:px-16 lg:px-24 py-32 relative">
+    <section className="w-full section-py px-8 md:px-16 lg:px-24 relative">
       <div className="relative mb-16 pb-8 border-b border-transparent">
         <motion.h3 
           initial={{ opacity: 0, y: 20 }}

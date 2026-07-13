@@ -9,6 +9,7 @@
 import React from 'react';
 import { StoreHero, StoreIntro, ShopCollections } from '@/src/features/store';
 import { PartsSection } from '@/src/features/products';
+import { storeContent } from '@/src/content';
 
 export default function StorePage() {
   return (
@@ -20,7 +21,7 @@ export default function StorePage() {
       <StoreIntro />
 
       {/* SECTION 3: SHOP COLLECTIONS */}
-      <ShopCollections title="SHOP COLLECTIONS" defaultFilter="ALL" />
+      <ShopCollections title={storeContent.collections} defaultFilter="ALL" />
 
       {/* SECTION 4: PARTS & COMPONENTS */}
       <PartsSection />

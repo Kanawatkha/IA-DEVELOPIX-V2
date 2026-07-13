@@ -251,3 +251,9 @@ export const drawerTransition = {
   duration: 0.65,          // 0.65 seconds to showcase speed changes clearly
   ease: [0.16, 1, 0.3, 1], // Highly dynamic curve with rapid start and long cushioned deceleration tail
 } as const;
+
+export const drawerSurfaceClass =
+  'bottom-0 left-0 w-full h-[100dvh] max-h-[90dvh] rounded-t-[2rem] border-t border-hairline md:top-0 md:bottom-auto md:w-[576px] md:h-[100dvh] md:max-h-[100dvh] md:border-t-0';
+
+export const drawerGlowClass =
+  'absolute inset-0 -z-10 rounded-[inherit] shadow-[0_0_60px_rgba(255,255,255,0.15)] pointer-events-none';

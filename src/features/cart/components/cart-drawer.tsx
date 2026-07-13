@@ -2,20 +2,26 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { X, ArrowRight, ChevronLeft, Download, Copy, MessageCircle, Lock, Check, Trash2 } from "lucide-react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useCart } from "@/src/context/cart-context";
 import { useWindowSize } from "@/src/hooks";
-import { drawerTransition, EASE, DURATION } from "@/src/lib/design/variants";
+import { drawerTransition, EASE, DURATION, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
+import { exportQuoteImage, downloadQuoteImage } from "@/src/features/cart/services/quote-export-service";
+import { getMessengerUrl } from "@/src/features/cart/services/messenger-service";
+import { externalImages } from "@/src/lib/media";
+
+const RECENTLY_VIEWED_IMAGE = externalImages.catalog.productBlueprint;
 
 // 6 fixed robot models for the Recently Viewed tab using the requested custom image
 const RECENTLY_VIEWED_ITEMS = [
-  { id: "nofan-15", name: "NOFAN 15cm", cat: "LINEFOLLOWER", price: 15000, isComingSoon: false, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/linefollower/nofan-15" },
-  { id: "nofan-18", name: "NOFAN 18cm", cat: "LINEFOLLOWER", price: 18000, isComingSoon: false, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/linefollower/nofan-18" },
-  { id: "mission-go", name: "MISSION GO", cat: "MISSION", price: 25000, isComingSoon: false, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/mission/go" },
-  { id: "mission-pro", name: "MISSION PRO", cat: "MISSION", price: 45000, isComingSoon: false, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/mission/pro" },
-  { id: "fanpull-15", name: "FANPULL 15cm", cat: "LINEFOLLOWER", price: 0, isComingSoon: true, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/linefollower/fanpull-15" },
-  { id: "fanpull-18", name: "FANPULL 18cm", cat: "LINEFOLLOWER", price: 0, isComingSoon: true, image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,h=1920,fit=crop/Y4LDGNyengfoZkEX/scene_2_0-mnlJgb3qe6iDVo5r.png", href: "/products/linefollower/fanpull-18" }
+  { id: "nofan-15", name: "NOFAN 15cm", cat: "LINEFOLLOWER", price: 15000, isComingSoon: false, image: RECENTLY_VIEWED_IMAGE, href: "/products/linefollower/nofan-15" },
+  { id: "nofan-18", name: "NOFAN 18cm", cat: "LINEFOLLOWER", price: 18000, isComingSoon: false, image: RECENTLY_VIEWED_IMAGE, href: "/products/linefollower/nofan-18" },
+  { id: "mission-go", name: "MISSION GO", cat: "MISSION", price: 25000, isComingSoon: false, image: RECENTLY_VIEWED_IMAGE, href: "/products/mission/go" },
+  { id: "mission-pro", name: "MISSION PRO", cat: "MISSION", price: 45000, isComingSoon: false, image: RECENTLY_VIEWED_IMAGE, href: "/products/mission/pro" },
+  { id: "fanpull-15", name: "FANPULL 15cm", cat: "LINEFOLLOWER", price: 0, isComingSoon: true, image: RECENTLY_VIEWED_IMAGE, href: "/products/linefollower/fanpull-15" },
+  { id: "fanpull-18", name: "FANPULL 18cm", cat: "LINEFOLLOWER", price: 0, isComingSoon: true, image: RECENTLY_VIEWED_IMAGE, href: "/products/linefollower/fanpull-18" }
 ];
 
 export function CartDrawer() {
@@ -28,7 +34,6 @@ export function CartDrawer() {
     addToCart, 
     removeFromCart, 
     updateQuantity,
-    setIsQuoteOpen,
     clearCart
   } = useCart();
 
@@ -36,7 +41,7 @@ export function CartDrawer() {
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
   const [view, setView] = useState<"tabs" | "checkout">("tabs");
   const [isCopied, setIsCopied] = useState(false);
-  const [canvasEl, setCanvasEl] = useState<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const dragControls = useDragControls();
 
   const drawerVariants = {
@@ -82,20 +87,18 @@ export function CartDrawer() {
     },
   };
 
-  // Reset active tab and checkout view state when the drawer is closed.
-  useEffect(() => {
-    if (!isCartOpen) {
-      setActiveTab("cart");
-      setView("tabs");
-    }
-  }, [isCartOpen]);
+  const closeDrawer = () => {
+    setActiveTab("cart");
+    setView("tabs");
+    setIsCartOpen(false);
+  };
 
   const formatPrice = (amount: number) => {
     return `฿${amount.toLocaleString()} THB`;
   };
 
   // Component to render price counts with smooth rolling numeric animation (money flow / slot machine style).
-  const AnimatedPrice = React.memo(({ value }: { value: number }) => {
+  const renderAnimatedPrice = (value: number) => {
     const formatPriceString = (amount: number) => {
       return `฿${amount.toLocaleString()} THB`;
     };
@@ -149,9 +152,7 @@ export function CartDrawer() {
         })}
       </span>
     );
-  });
-
-  AnimatedPrice.displayName = "AnimatedPrice";
+  };
 
   const handleAddFromRecommendations = (item: typeof RECENTLY_VIEWED_ITEMS[number]) => {
     addToCart({
@@ -173,19 +174,19 @@ export function CartDrawer() {
 
   // Render the Quote statement onto the HTML5 Canvas when the checkout view is active and canvas has mounted.
   useEffect(() => {
-    if (view !== "checkout" || !canvasEl) return;
-    
-    const canvas = canvasEl;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (view !== "checkout" || !canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const frame = window.requestAnimationFrame(() => {
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
     // Set high resolution canvas dimensions
     canvas.width = 800;
     canvas.height = 1000;
 
-    // Draw black canvas background
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw luxury double borders
     ctx.strokeStyle = "#262626";
@@ -296,14 +297,15 @@ export function CartDrawer() {
     ctx.font = `italic 14px ${garamond}`;
     ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 920);
 
-  }, [view, canvasEl, cartItems, cartSubtotal]);
+    });
 
-  const handleDownload = () => {
-    if (!canvasEl) return;
-    const link = document.createElement("a");
-    link.download = `iadevelopix-quote-${Date.now()}.png`;
-    link.href = canvasEl.toDataURL("image/png");
-    link.click();
+    return () => window.cancelAnimationFrame(frame);
+  }, [view, cartItems, cartSubtotal]);
+
+  const handleDownload = async () => {
+    if (!canvasRef.current) return;
+    const blob = await exportQuoteImage(canvasRef.current);
+    downloadQuoteImage(blob);
   };
 
   const handleCopyText = async () => {
@@ -326,8 +328,8 @@ export function CartDrawer() {
     }
   };
 
-  const handleSendFacebook = () => {
-    window.open("https://www.facebook.com/profile.php?id=61585300577028", "_blank");
+  const handleSendFacebook = async () => {
+    window.open(getMessengerUrl(), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -340,7 +342,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[150] bg-canvas/40 backdrop-blur-sm"
-            onClick={() => setIsCartOpen(false)}
+            onClick={closeDrawer}
           />
 
           {/* Drawer Body */}
@@ -358,22 +360,19 @@ export function CartDrawer() {
             onDragEnd={(e, info) => {
               const projectedY = info.offset.y + info.velocity.y * 0.2;
               if (info.offset.y > 250 || projectedY > 250) {
-                setIsCartOpen(false);
+                closeDrawer();
               }
             }}
-            className={`fixed z-[160] flex flex-col bg-[#000000] border-t border-hairline overflow-visible text-primary
-              bottom-0 left-0 w-full h-[100dvh] max-h-[90dvh] rounded-t-[2rem] shadow-none
-              md:top-0 md:bottom-auto md:right-0 md:left-auto md:w-[576px] md:h-[100dvh] md:max-h-[100dvh] md:rounded-l-[2rem] md:rounded-r-none md:border-l md:border-t-0 md:border-hairline
-            `}
+            className={`fixed z-[160] flex flex-col bg-canvas overflow-visible text-primary ${drawerSurfaceClass} md:right-0 md:left-auto md:rounded-l-[2rem] md:rounded-r-none md:border-l md:border-r-0`}
           >
             {/* Subtle White Glow Shadow Layer (Fade-In) */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: isCartOpen ? 1 : 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute inset-0 -z-10 rounded-[inherit] shadow-[0_0_60px_rgba(255,255,255,0.15)] pointer-events-none"
+              className={drawerGlowClass}
             />
-            <div className="w-full h-full flex flex-col relative overflow-hidden rounded-[inherit] bg-[#000000]">
+            <div className="w-full h-full flex flex-col relative overflow-hidden bg-canvas">
               {/* Drawer Handle for Mobile Swipe-down */}
               <div 
                 className="shrink-0 w-full block md:hidden pt-4 pb-2 cursor-grab active:cursor-grabbing"
@@ -473,7 +472,7 @@ export function CartDrawer() {
                   variants={cartItemVariants}
                   initial="hidden"
                   animate={isCartOpen ? "visible" : "hidden"}
-                  onClick={() => setIsCartOpen(false)}
+                  onClick={closeDrawer}
                   className="absolute top-6 right-6 z-50 flex items-center justify-center h-9 w-9 text-primary hover:bg-primary hover:text-canvas transition-all duration-300 ease-in-out rounded-full cursor-pointer"
                   aria-label="Close Cart"
                 >
@@ -513,7 +512,7 @@ export function CartDrawer() {
                               </p>
                               <Link
                                 href="/store"
-                                onClick={() => setIsCartOpen(false)}
+                                onClick={closeDrawer}
                                 className="flex items-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2.5px] py-3.5 px-8 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
                               >
                                 <span>Continue shopping</span>
@@ -527,10 +526,10 @@ export function CartDrawer() {
                                 variants={cartItemVariants}
                                 className="flex justify-between items-center pb-2 border-b border-hairline shrink-0"
                               >
-                                <span className="font-mono text-[10px] md:text-xs uppercase tracking-[2px] text-muted-soft">{cartCount} {cartCount === 1 ? 'ITEM' : 'ITEMS'}</span>
+                                <span className="font-mono text-[10px] md:text-xs uppercase tracking-[2px] text-primary">{cartCount} {cartCount === 1 ? 'ITEM' : 'ITEMS'}</span>
                                 <button
                                   onClick={clearCart}
-                                  className="font-mono text-[10px] md:text-xs uppercase tracking-[2.5px] text-muted hover:text-primary transition-colors cursor-pointer flex items-center gap-1.5 outline-none"
+                                  className="font-mono text-[10px] md:text-xs uppercase tracking-[2.5px] text-primary hover:opacity-70 transition-colors cursor-pointer flex items-center gap-1.5 outline-none"
                                 >
                                   <Trash2 size={12} strokeWidth={1.5} />
                                   <span>Remove All</span>
@@ -541,10 +540,12 @@ export function CartDrawer() {
                                 {cartItems.map((item) => (
                                   <motion.div key={item.id} variants={cartItemVariants} className="flex py-4 md:py-5 gap-3 md:gap-5 items-start">
                                     {/* Product Image - Responsive scaling */}
-                                    <div className="w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-surface-soft overflow-hidden shrink-0 rounded-md">
-                                      <img 
+                                    <div className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl">
+                                      <Image
                                         src={item.image} 
                                         alt={item.name} 
+                                        fill
+                                        sizes="(min-width: 768px) 110px, 80px"
                                         className="w-full h-full object-cover"
                                       />
                                     </div>
@@ -554,13 +555,13 @@ export function CartDrawer() {
                                       <h4 className="font-display text-sm md:text-base tracking-[2px] uppercase text-primary break-words">
                                         <Link 
                                           href={item.href || "#"} 
-                                          onClick={() => setIsCartOpen(false)}
+                                          onClick={closeDrawer}
                                           className="hover-underline-expand inline-block"
                                         >
                                           {item.name}
                                         </Link>
                                       </h4>
-                                      <p className="font-mono text-[11px] md:text-xs text-muted mt-1.5">
+                                      <p className="font-mono text-[11px] md:text-xs text-primary mt-1.5">
                                         {formatPrice(item.price)}
                                       </p>
 
@@ -584,7 +585,7 @@ export function CartDrawer() {
                                         
                                         <button
                                           onClick={() => removeFromCart(item.id)}
-                                          className="font-mono text-[10px] uppercase text-muted hover:text-primary transition-colors cursor-pointer flex items-center gap-1.5 outline-none"
+                                          className="font-mono text-[10px] uppercase text-primary hover:opacity-70 transition-colors cursor-pointer flex items-center gap-1.5 outline-none"
                                         >
                                           <Trash2 size={11} strokeWidth={1.5} />
                                           <span>Remove</span>
@@ -612,10 +613,12 @@ export function CartDrawer() {
                           {RECENTLY_VIEWED_ITEMS.map((item) => (
                             <motion.div key={item.id} variants={cartItemVariants} className="flex p-3 md:p-4 border border-hairline items-center gap-3 md:gap-5 bg-surface-soft rounded-xl transition-colors hover:border-hairline-strong">
                               {/* Product Image - Responsive scaling */}
-                              <div className="w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-canvas overflow-hidden shrink-0 rounded-md">
-                                <img 
+                              <div className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl">
+                                <Image
                                   src={item.image} 
                                   alt={item.name} 
+                                  fill
+                                  sizes="(min-width: 768px) 110px, 80px"
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -625,13 +628,13 @@ export function CartDrawer() {
                                 <h4 className="font-display text-sm md:text-base tracking-[2px] uppercase text-primary break-words">
                                   <Link 
                                     href={item.href} 
-                                    onClick={() => setIsCartOpen(false)}
+                                    onClick={closeDrawer}
                                     className="hover-underline-expand inline-block"
                                   >
                                     {item.name}
                                   </Link>
                                 </h4>
-                                <p className="font-mono text-[11px] md:text-xs text-muted mt-1">
+                                <p className="font-mono text-[11px] md:text-xs text-primary mt-1">
                                   {item.isComingSoon ? "TBA" : formatPrice(item.price)}
                                 </p>
                               </div>
@@ -641,7 +644,7 @@ export function CartDrawer() {
                                 {item.isComingSoon ? (
                                   <Link
                                     href={item.href}
-                                    onClick={() => setIsCartOpen(false)}
+                                    onClick={closeDrawer}
                                     className="inline-block border border-primary text-primary font-mono text-[10px] md:text-[11px] uppercase tracking-[1px] md:tracking-[2px] py-1.5 px-3 md:py-2 md:px-5 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
                                   >
                                     + VIEW
@@ -676,7 +679,7 @@ export function CartDrawer() {
 
                     <div className="flex justify-center border border-hairline bg-surface-soft p-4 md:p-6 mb-2 overflow-hidden rounded-xl">
                       <canvas 
-                        ref={setCanvasEl} 
+                        ref={canvasRef}
                         className="w-full max-w-[280px] md:max-w-[340px] border border-hairline-strong shadow-lg aspect-[8/10]" 
                       />
                     </div>
@@ -694,12 +697,12 @@ export function CartDrawer() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="shrink-0 p-6 border-t border-hairline bg-[#000000] space-y-4 rounded-bl-[2rem]"
+                    className="shrink-0 p-6 border-t border-hairline bg-canvas space-y-4"
                 >
                   {/* Total */}
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-sm uppercase tracking-[2px] text-primary">Subtotal</span>
-                    <AnimatedPrice value={cartSubtotal} />
+                    {renderAnimatedPrice(cartSubtotal)}
                   </div>
                   
                   <p className="font-serif text-base text-primary leading-tight">
@@ -710,7 +713,7 @@ export function CartDrawer() {
                   <div className="flex flex-row gap-3 w-full">
                     <button
                       onClick={() => setView("checkout")}
-                      className="w-[50%] md:w-[60%] border border-primary bg-primary text-canvas font-mono text-xs uppercase tracking-[2px] py-3.5 px-4 rounded-pill hover:bg-transparent hover:text-primary transition-all duration-300 outline-none text-center font-bold cursor-pointer flex items-center justify-center gap-1.5"
+                      className="w-[50%] md:w-[60%] min-h-11 border border-primary bg-primary text-canvas font-mono text-xs uppercase tracking-[2px] py-3.5 px-4 rounded-pill hover:bg-canvas hover:text-primary transition-colors duration-300 outline-none text-center cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Lock size={14} />
                       <span>Check out</span>
@@ -718,7 +721,7 @@ export function CartDrawer() {
                     
                     <Link
                       href="/cart"
-                      onClick={() => setIsCartOpen(false)}
+                      onClick={closeDrawer}
                       className="w-[50%] md:w-[40%] border border-primary text-primary bg-transparent font-mono text-xs uppercase tracking-[2px] py-3.5 px-4 rounded-pill hover:bg-primary hover:text-canvas transition-all duration-300 outline-none text-center block cursor-pointer"
                     >
                       View cart
@@ -732,7 +735,7 @@ export function CartDrawer() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="shrink-0 p-6 border-t border-hairline bg-[#000000] rounded-bl-[2rem]"
+                    className="shrink-0 p-6 border-t border-hairline bg-canvas"
                 >
                   <div className="flex flex-row gap-2 w-full justify-between items-center shrink-0">
                     <button

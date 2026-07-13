@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X, ChevronRight, ChevronLeft, ChevronDown, Globe, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
-import { EASE, fastParentVariants, drawerTransition } from "@/src/lib/design/variants";
+import { EASE, fastParentVariants, drawerTransition, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
 import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
 import { MobileDrawerProps } from "../types";
@@ -74,7 +74,8 @@ export function MobileDrawer({
         }
       }}
       className={`fixed z-[120] flex flex-col bg-canvas transform-gpu will-change-transform overflow-visible
-        bottom-0 left-0 w-full h-[100dvh] max-h-[90dvh] rounded-t-[2rem] border-t border-hairline shadow-none
+        ${drawerSurfaceClass}
+        md:left-0 md:right-auto md:rounded-r-[2rem] md:rounded-l-none md:border-r md:border-hairline
         max-md:landscape:top-0 max-md:landscape:bottom-auto max-md:landscape:w-[350px] max-md:landscape:h-[100dvh] max-md:landscape:max-h-[100dvh] max-md:landscape:rounded-r-[2rem] max-md:landscape:rounded-l-none max-md:landscape:border-t-0 max-md:landscape:border-r max-md:landscape:border-hairline max-md:landscape:shadow-none
         md:top-0 md:bottom-auto md:w-[576px] md:h-[100dvh] md:rounded-r-[2rem] md:rounded-l-none md:border-r md:border-hairline md:shadow-none md:max-h-[100dvh] md:border-t-0
         [@media(max-height:500px)]:w-[480px]
@@ -85,7 +86,7 @@ export function MobileDrawer({
         initial={{ opacity: 0 }}
         animate={{ opacity: isMobileMenuOpen ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="absolute inset-0 -z-10 rounded-[inherit] shadow-[0_0_60px_rgba(255,255,255,0.15)] pointer-events-none"
+        className={drawerGlowClass}
       />
 
       <div className="w-full h-full flex flex-col relative overflow-hidden rounded-[inherit] bg-canvas">

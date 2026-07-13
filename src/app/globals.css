@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+:root {
+  --ia-canvas: #000000;
+  --ia-primary: #ffffff;
+  --ia-hairline: #262626;
+  --ia-content-wide: 1720px;
+  --ia-section-space-mobile: 40px;
+  --ia-section-space: 48px;
+}
+
 @utility no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -10,15 +19,11 @@
 }
 
 @utility section-py {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: var(--ia-section-space-mobile);
+  padding-bottom: var(--ia-section-space-mobile);
   @media (min-width: 768px) {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-  @media (min-width: 2000px) {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: var(--ia-section-space);
+    padding-bottom: var(--ia-section-space);
   }
 }
 
@@ -37,19 +42,18 @@
 
 @utility section-layout {
   width: 100%;
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid var(--ia-hairline);
 }
 
 @utility section-content-limit {
   width: 100%;
-  max-w-screen: 100%;
-  max-width: 1720px;
+  max-width: var(--ia-content-wide);
   margin-left: auto;
   margin-right: auto;
   display: flex;
   flex-direction: column;
   @media (min-width: 2000px) {
-    max-width: 2400px;
+    max-width: var(--ia-content-wide);
   }
 }
 
@@ -107,8 +111,8 @@
   }
 
   body {
-    background-color: #000000; /* Pure black canvas */
-    color: #ffffff; /* White primary text */
+    background-color: var(--ia-canvas);
+    color: var(--ia-primary);
     font-family: theme('fontFamily.body');
     /* Hide scrollbars to maintain the cinematic feel */
     -ms-overflow-style: none; /* IE and Edge */

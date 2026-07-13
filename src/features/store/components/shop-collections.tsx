@@ -17,6 +17,7 @@ import {
   getProductPath,
   getCategoryPath,
 } from '@/src/lib/data/products';
+import type { ShopModel } from '@/src/lib/data/products';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import { useShopCollections } from '../hooks/use-shop-collections';
 import { collectionStaggerVariants, modelCardVariants } from '../animations';
@@ -45,22 +46,15 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
     handleFilterClick,
   } = useShopCollections(defaultFilter);
 
-  const handleAddToCartClick = (model: any) => {
-    const numericPrice = parseInt(model.price.replace(/[^0-9]/g, ""), 10) || 0;
-    const isMission = model.cat.toLowerCase().includes("mission");
-    
-    // Resolve id standards consistent with the product catalog
-    const id = model.name.toLowerCase().includes("nofan 15") ? "nofan-15"
-             : model.name.toLowerCase().includes("nofan 18") ? "nofan-18"
-             : model.name.toLowerCase().includes("go") ? "mission-go"
-             : "mission-pro";
-             
+  const handleAddToCartClick = (model: ShopModel) => {
+    if (model.isComingSoon || model.price === null) return;
+
     addToCart({
-      id,
+      id: model.id,
       name: model.name,
-      price: numericPrice,
+      price: model.price,
       image: model.image,
-      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
+      href: model.path,
     }, 1);
     
     setIsCartOpen(true);
@@ -69,7 +63,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
   return (
     <section
       ref={sectionRef}
-      className="w-full py-10 md:py-12 border-t border-hairline overflow-hidden bg-canvas px-6 lg:px-12"
+      className="w-full section-py border-t border-hairline overflow-hidden bg-canvas px-6 lg:px-12"
     >
       <motion.div
         initial="hidden"
@@ -175,10 +169,10 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                     key={model.id}
                     custom={hasInteracted}
                     variants={modelCardVariants}
-                    className="relative w-[260px] lg:w-[380px] min-[2000px]:w-[420px] shrink-0 snap-always snap-start overflow-hidden rounded-[20px] border border-hairline aspect-[3/4] bg-[#eaeaea] flex flex-col"
+                    className="relative w-[260px] lg:w-[380px] min-[2000px]:w-[420px] shrink-0 snap-always snap-start overflow-hidden rounded-[20px] border border-hairline aspect-[3/4] bg-product-card flex flex-col"
                   >
                     {/* Upper block: Image Container */}
-                    <div className="relative w-full flex-1 overflow-hidden select-none bg-[#f2f2f2]">
+                    <div className="relative w-full flex-1 overflow-hidden select-none bg-product-image">
                       {!isComingSoon ? (
                         <div className="relative w-full h-full group/img">
                           <Link
@@ -198,7 +192,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                             {/* Quick View Eye Button */}
                             <Link
                               href={getProductPath(model)}
-                              className="absolute top-4 right-4 w-11 h-11 bg-white text-black hover:bg-black hover:text-white hover:border-white border border-transparent rounded-full flex items-center justify-center pointer-events-auto opacity-0 translate-y-2 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg cursor-pointer"
+                              className="absolute top-4 right-4 w-11 h-11 bg-primary text-product-ink hover:bg-product-ink hover:text-primary hover:border-primary border border-transparent rounded-full flex items-center justify-center pointer-events-auto opacity-0 translate-y-2 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg cursor-pointer"
                               aria-label="View product details"
                             >
                               <Eye className="w-5 h-5" />
@@ -211,7 +205,7 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                                 e.stopPropagation();
                                 handleAddToCartClick(model);
                               }}
-                              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2.5 bg-white text-black hover:bg-black hover:text-white hover:border-white border border-transparent rounded-full font-mono text-[11px] uppercase tracking-[2px] pointer-events-auto opacity-0 translate-y-4 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg whitespace-nowrap cursor-pointer"
+                              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2.5 bg-primary text-product-ink hover:bg-product-ink hover:text-primary hover:border-primary border border-transparent rounded-full font-mono text-[11px] uppercase tracking-[2px] pointer-events-auto opacity-0 translate-y-4 blur-[4px] group-hover/img:opacity-100 group-hover/img:translate-y-0 group-hover/img:blur-none transition-all duration-300 shadow-lg whitespace-nowrap cursor-pointer"
                             >
                               ADD TO CART
                             </button>
@@ -235,16 +229,16 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                     </div>
 
                     {/* Lower block: Text Content box */}
-                    <div className="w-full bg-[#eaeaea] p-5 lg:pt-[18px] lg:pb-[30px] lg:px-[30px] flex flex-col items-start text-left shrink-0">
+                    <div className="w-full bg-product-card p-5 lg:pt-[18px] lg:pb-[30px] lg:px-[30px] flex flex-col items-start text-left shrink-0">
                       <Link
-                        href={getCategoryPath(model.cat)}
-                        className="font-mono text-[10px] md:text-[11px] uppercase tracking-[2px] text-[#666666] mb-2 pointer-events-auto inline-block hover-underline-expand pb-0.5 font-normal outline-none"
+                        href={getCategoryPath(model.categoryLabel)}
+                        className="font-mono text-[10px] md:text-[11px] uppercase tracking-[2px] text-muted-soft mb-2 pointer-events-auto inline-block hover-underline-expand pb-0.5 font-normal outline-none"
                       >
-                        {model.cat}
+                        {model.categoryLabel}
                       </Link>
                       
                       <div className="flex justify-between items-start w-full gap-2">
-                        <h3 className="font-display font-normal text-[16px] xs:text-[18px] lg:text-[24px] uppercase leading-tight text-[#000000] pointer-events-auto outline-none tracking-[1px] flex-1 pr-2">
+                        <h3 className="font-display font-normal text-[16px] xs:text-[18px] lg:text-[24px] uppercase leading-tight text-product-ink pointer-events-auto outline-none tracking-[1px] flex-1 pr-2">
                           <Link
                             href={getProductPath(model)}
                             className="inline-block hover-underline-expand pb-0.5 outline-none"
@@ -252,8 +246,8 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
                             {formatModelName(model.name)}
                           </Link>
                         </h3>
-                        <span className="font-mono text-[11px] xs:text-[12px] lg:text-[14px] uppercase tracking-[1px] text-[#000000] mt-1 shrink-0 pointer-events-auto font-normal">
-                          {isComingSoon ? 'THB ??' : model.price}
+                        <span className="font-mono text-[11px] xs:text-[12px] lg:text-[14px] uppercase tracking-[1px] text-product-ink mt-1 shrink-0 pointer-events-auto font-normal">
+                          {model.priceLabel}
                         </span>
                       </div>
                     </div>

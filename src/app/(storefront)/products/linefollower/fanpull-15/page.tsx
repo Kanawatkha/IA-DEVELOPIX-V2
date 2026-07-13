@@ -18,7 +18,7 @@ export default function Fanpull15Page() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={parentVariants}
-        className="w-full min-h-[50vh] md:min-h-[60vh] flex justify-center items-center py-16 md:py-24"
+        className="w-full min-h-[50vh] md:min-h-[60vh] flex justify-center items-center section-py"
       >
         <motion.div
           variants={childVariants}

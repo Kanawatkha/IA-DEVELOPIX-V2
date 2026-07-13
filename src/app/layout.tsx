@@ -2,6 +2,8 @@ import type {Metadata} from 'next';
 import { Saira_Condensed, EB_Garamond, Space_Mono } from 'next/font/google';
 import { ScrollToTop } from '@/src/components/layout/scroll-to-top';
 import './globals.css';
+import { commonContent } from '@/src/content';
+import { brandImages } from '@/src/lib/media';
 
 const garamond = EB_Garamond({
   subsets: ['latin'],
@@ -22,8 +24,11 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'IA DEVELOPIX',
-  description: 'Enterprise-grade Next.js robotics e-commerce application',
+  title: commonContent.metadata.title,
+  description: commonContent.metadata.description,
+  icons: {
+    icon: brandImages.favicon,
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

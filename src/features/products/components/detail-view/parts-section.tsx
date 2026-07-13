@@ -72,7 +72,7 @@ export function PartsSection() {
   };
 
   return (
-    <section ref={sectionRef} className="w-full py-10 md:py-12 border-t border-hairline bg-canvas overflow-hidden px-6 lg:px-12">
+    <section ref={sectionRef} className="w-full section-py border-t border-hairline bg-canvas overflow-hidden px-6 lg:px-12">
       <motion.div
         initial="hidden"
         whileInView="visible"

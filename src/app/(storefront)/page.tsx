@@ -13,7 +13,7 @@ export default function HomePage() {
       <HeroSection />
       <FleetSection />
       <AwardsSection />
-      <section className="w-full border-b border-hairline bg-[#000000]">
+      <section className="w-full border-b border-hairline bg-canvas">
         <DeploymentGallery />
       </section>
       <TechStackSection />

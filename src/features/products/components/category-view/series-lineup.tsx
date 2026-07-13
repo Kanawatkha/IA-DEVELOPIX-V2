@@ -35,7 +35,7 @@ export function SeriesLineup({ series }: SeriesLineupProps) {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
             variants={parentVariants}
-            className={`w-full max-w-[1720px] min-[2000px]:max-w-[2300px] mx-auto px-6 md:px-12 lg:px-20 min-[2000px]:px-16 py-10 md:py-12 ${
+            className={`w-full max-w-[1720px] min-[2000px]:max-w-[2300px] mx-auto px-6 md:px-12 lg:px-20 min-[2000px]:px-16 section-py ${
               index > 0 ? 'border-t border-hairline' : ''
             }`}
           >

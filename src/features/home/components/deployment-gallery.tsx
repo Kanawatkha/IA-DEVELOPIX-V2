@@ -1,53 +1,70 @@
 /**
  * @file src/features/home/components/deployment-gallery.tsx
- * @description Highly optimized full-width image slideshow component with swipe gesture capabilities.
- *              Built utilizing Framer Motion for high-fidelity hardware-accelerated transitions.
+ * @description Full-width deployment slideshow with the original adjacent-slide
+ *              transition, autoplay, touch swipe, reveal mask, and zoom effect.
  */
 
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { SKY_IMAGES } from '@/src/constants/home-data';
 import { galleryVariants } from '../animations';
 import { useSwipe, useTabVisibility, useAutoplay } from '../hooks';
 
-/**
- * Autoplay slide interval duration (in milliseconds) used to cycle graphics.
- */
 const GALLERY_AUTOPLAY_INTERVAL = 4000;
+const GALLERY_ANIMATION_LOCK_MS = 800;
+const GALLERY_TRANSITION_SECONDS = 1.4;
+const GALLERY_ZOOM_SECONDS = 4.5;
 
 /**
  * Image gallery showing international field deployments of robotics platforms.
- * Supports fluid slides, automated progression, hovering pauses, and mobile touch swiping.
+ * Preserves the original Home Gallery interaction model from Git history.
  */
 export const DeploymentGallery: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false); 
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { margin: "200px 0px" });
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInView = useInView(containerRef, { margin: '200px 0px' });
 
   const triggerNext = useCallback(() => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % SKY_IMAGES.length);
+    setCurrentIndex((previousIndex) => (previousIndex + 1) % SKY_IMAGES.length);
   }, []);
 
   const triggerPrev = useCallback(() => {
     setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + SKY_IMAGES.length) % SKY_IMAGES.length);
+    setCurrentIndex((previousIndex) => (previousIndex - 1 + SKY_IMAGES.length) % SKY_IMAGES.length);
   }, []);
+
+  const isTabVisible = useTabVisibility();
+  const { elapsedTime, resetAutoplay } = useAutoplay({
+    interval: GALLERY_AUTOPLAY_INTERVAL,
+    isActive: !isHovered && isTabVisible && isInView,
+    onIntervalComplete: triggerNext,
+  });
+
+  const unlockAnimation = () => {
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+    }
+    animationTimeoutRef.current = setTimeout(() => {
+      setIsAnimating(false);
+    }, GALLERY_ANIMATION_LOCK_MS);
+  };
 
   const onNextClick = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     triggerNext();
     resetAutoplay();
-    setTimeout(() => setIsAnimating(false), 800);
+    unlockAnimation();
   };
 
   const onPrevClick = () => {
@@ -55,22 +72,18 @@ export const DeploymentGallery: React.FC = () => {
     setIsAnimating(true);
     triggerPrev();
     resetAutoplay();
-    setTimeout(() => setIsAnimating(false), 800);
+    unlockAnimation();
   };
 
-  const onDotClick = (idx: number) => {
-    if (isAnimating || idx === currentIndex) return;
+  const onDotClick = (index: number) => {
+    if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
-    setDirection(idx > currentIndex ? 1 : -1);
-    setCurrentIndex(idx);
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
     resetAutoplay();
-    setTimeout(() => setIsAnimating(false), 800);
+    unlockAnimation();
   };
 
-  // Custom hook to observe page tab focus state.
-  const isTabVisible = useTabVisibility();
-
-  // Custom hook to coordinate touch swipe drag coordinates.
   const swipeHandlers = useSwipe({
     onSwipeLeft: onNextClick,
     onSwipeRight: onPrevClick,
@@ -78,17 +91,10 @@ export const DeploymentGallery: React.FC = () => {
     onTouchEndTrigger: () => setIsHovered(false),
   });
 
-  // Custom hook to coordinate requestAnimationFrame slide progression timers.
-  const { elapsedTime, resetAutoplay } = useAutoplay({
-    interval: GALLERY_AUTOPLAY_INTERVAL,
-    isActive: !isHovered && isTabVisible && isInView,
-    onIntervalComplete: triggerNext,
-  });
-
   return (
-    <div 
+    <div
       ref={containerRef}
-      className="relative w-full h-[60vh] lg:h-[70vh] group overflow-hidden bg-[#000000] cursor-default"
+      className="relative w-full h-[60vh] lg:h-[70vh] group overflow-hidden bg-canvas cursor-default"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={swipeHandlers.onTouchStart}
@@ -99,8 +105,8 @@ export const DeploymentGallery: React.FC = () => {
         initial={{ scaleX: 1 }}
         whileInView={{ scaleX: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
-        className="absolute inset-0 bg-[#000000] z-50 origin-right pointer-events-none"
+        transition={{ duration: GALLERY_TRANSITION_SECONDS, ease: [0.2, 0.8, 0.2, 1] }}
+        className="absolute inset-0 bg-canvas z-50 origin-right pointer-events-none"
       />
 
       <div className="relative w-full h-full pointer-events-none">
@@ -112,14 +118,14 @@ export const DeploymentGallery: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: GALLERY_TRANSITION_SECONDS, ease: [0.2, 0.8, 0.2, 1] }}
             className="absolute inset-0 w-full h-full overflow-hidden"
           >
             <motion.div
               key={`zoom-${currentIndex}`}
               initial={{ scale: 1.03 }}
               animate={{ scale: 1.08 }}
-              transition={{ duration: 4.5, ease: 'linear' }}
+              transition={{ duration: GALLERY_ZOOM_SECONDS, ease: 'linear' }}
               className="absolute inset-0 w-full h-full"
             >
               <Image
@@ -144,18 +150,17 @@ export const DeploymentGallery: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onPrevClick}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 flex items-center justify-center text-white/80 hover:text-white transition-colors z-30 outline-none hidden md:flex drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 flex items-center justify-center text-primary/80 hover:text-primary transition-colors z-30 outline-none hidden md:flex drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer"
               aria-label="Previous slide"
             >
               <ChevronLeft strokeWidth={1} className="w-12 h-12" />
             </motion.button>
-            
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onNextClick}
-              className="absolute right-4 md:left-auto md:right-8 top-1/2 -translate-y-1/2 flex items-center justify-center text-white/80 hover:text-white transition-colors z-30 outline-none hidden md:flex drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex items-center justify-center text-primary/80 hover:text-primary transition-colors z-30 outline-none hidden md:flex drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer"
               aria-label="Next slide"
             >
               <ChevronRight strokeWidth={1} className="w-12 h-12" />
@@ -164,28 +169,26 @@ export const DeploymentGallery: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div 
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-4" 
-        style={{ flexDirection: 'row', direction: 'ltr' }}
-      >
-        {SKY_IMAGES.map((_, idx) => {
-          const isActive = idx === currentIndex;
-          return (
-            <button 
-              key={idx} 
-              onClick={() => onDotClick(idx)} 
-              className="w-12 h-1 bg-[#444444]/60 relative overflow-hidden outline-none cursor-pointer rounded-full" 
-              aria-label={`Go to slide ${idx + 1}`}
-            >
-              {isActive && (
-                <div
-                  style={{ width: `${(elapsedTime / GALLERY_AUTOPLAY_INTERVAL) * 100}%` }}
-                  className="absolute top-0 left-0 h-full bg-[#ffffff]"
-                />
-              )}
-            </button>
-          );
-        })}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4">
+        {SKY_IMAGES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => onDotClick(index)}
+            className={`relative h-1.5 overflow-hidden rounded-full outline-none cursor-pointer transition-[width,background-color] duration-300 ${
+              index === currentIndex
+                ? 'w-10 bg-primary'
+                : 'w-2 bg-muted-soft hover:bg-muted'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            {index === currentIndex && (
+              <div
+                style={{ width: `${(elapsedTime / GALLERY_AUTOPLAY_INTERVAL) * 100}%` }}
+                className="absolute top-0 left-0 h-full bg-primary"
+              />
+            )}
+          </button>
+        ))}
       </div>
     </div>
   );

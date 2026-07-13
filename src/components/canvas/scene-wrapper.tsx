@@ -1,18 +1,18 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useSyncExternalStore } from "react";
 
 interface SceneWrapperProps {
   children: React.ReactNode;
 }
 
 export function SceneWrapper({ children }: SceneWrapperProps) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 
   if (!isMounted) {
     return (
@@ -31,4 +31,3 @@ export function SceneWrapper({ children }: SceneWrapperProps) {
     </div>
   );
 }
-

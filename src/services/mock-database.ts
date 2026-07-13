@@ -1,94 +1,30 @@
-import { Product } from "@/src/features/products/types";
+import {
+  CATALOG_PRODUCTS,
+  type CatalogProductId,
+} from "@/src/features/products/data/catalog";
+import type { Product } from "@/src/features/products/types";
+
+const PRODUCT_DESCRIPTIONS: Record<CatalogProductId, string> = {
+  "nofan-15": "Ultra-lightweight line follower optimized for 15 cm agility tracks.",
+  "nofan-18": "Ultra-lightweight line follower optimized for 18 cm agility tracks.",
+  "fanpull-15": "Vacuum-assisted line follower designed for 15 cm competition tracks.",
+  "fanpull-18": "Vacuum-assisted line follower designed for 18 cm competition tracks.",
+  "mission-go": "High-precision mission robot built for complex autonomous tasks.",
+  "mission-pro": "Advanced mission robot engineered for maximum competitive performance.",
+  gathering: "Heavy-duty gathering robot designed for swift sorting and collection.",
+  sumo: "Professional-grade sumo combat robot with magnetic downforce.",
+};
 
 export const mockDatabase: { products: Product[] } = {
-  products: [
-    {
-      id: 'prod_1',
-      name: 'LINEFOLLOWER (NOFAN)',
-      category: 'linefollower',
-      price: 249.99,
-      description: 'Ultra-lightweight line follower optimized for standard agility tracks.',
-      status: 'deploy',
-      technicalSpecs: {
-        Weight: '145g',
-        Agility: 'Maximum',
-        Sensor: 'ZR Sonar'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/linefollower-nofan/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    },
-    {
-      id: 'prod_2',
-      name: 'LINEFOLLOWER FAN',
-      category: 'linefollower',
-      price: 349.99,
-      description: 'Advanced line follower with downforce fan integration.',
-      status: 'coming_soon',
-      technicalSpecs: {
-        Weight: '180g',
-        Downforce: '2kg max',
-        Sensor: 'ZR Sonar Pro'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/linefollower-fan/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    },
-    {
-      id: 'prod_3',
-      name: 'MISSION',
-      category: 'mission',
-      price: 899.99,
-      description: 'High-precision mission robot built for complex autonomous tasks.',
-      status: 'deploy',
-      technicalSpecs: {
-        Precision: 'High',
-        Drive: 'Maxon DCX 12 L'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/mission/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    },
-    {
-      id: 'prod_4',
-      name: 'MISSION PRO',
-      category: 'mission',
-      price: 1499.99,
-      description: 'Enterprise-grade mission robot with payload extension.',
-      status: 'coming_soon',
-      technicalSpecs: {
-        Precision: 'Extreme',
-        Drive: 'Dual Maxon DCX 12 L',
-        Sensors: 'LiDAR + Vision'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/mission-pro/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    },
-    {
-      id: 'prod_5',
-      name: 'GATHERING',
-      category: 'gathering',
-      price: 649.99,
-      description: 'Heavy-duty gathering robot capable of swift sorting.',
-      status: 'coming_soon',
-      technicalSpecs: {
-        Payload: '500g',
-        Mechanism: 'Dual Gripper'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/gathering/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    },
-    {
-      id: 'prod_6',
-      name: 'SUMO',
-      category: 'sumo',
-      price: 1299.99,
-      description: 'Professional grade sumo combat robot with magnetic downforce.',
-      status: 'coming_soon',
-      technicalSpecs: {
-        Class: '3KG Heavyweight',
-        Armor: 'Steel & Aluminum',
-        Drive: 'Brushless DC'
-      },
-      imagePlaceholder: 'https://picsum.photos/seed/sumo/800/600',
-      '3dModelUrl': '/models/placeholder-sphere.glb'
-    }
-  ]
+  products: CATALOG_PRODUCTS.map((product) => ({
+    id: product.id,
+    name: product.name,
+    category: product.category,
+    price: product.price ?? 0,
+    description: PRODUCT_DESCRIPTIONS[product.id],
+    status: product.isComingSoon ? "coming_soon" : "deploy",
+    technicalSpecs: {},
+    imagePlaceholder: product.image,
+    "3dModelUrl": "/models/placeholder-sphere.glb",
+  })),
 };

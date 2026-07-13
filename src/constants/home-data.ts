@@ -4,15 +4,12 @@
  */
 
 import { AwardData, TechItem } from '@/src/types/home';
+import { externalImages } from '@/src/lib/media';
 
 /**
  * Array of premium high-resolution background images for the deployment gallery slider.
  */
-export const SKY_IMAGES: readonly string[] = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-] as const;
+export const SKY_IMAGES = externalImages.home.gallery;
 
 /**
  * Static registry of international participations and victories.
@@ -68,7 +65,4 @@ export const TECH_ITEMS: readonly TechItem[] = [
 /**
  * High-resolution viewport background images for the Hero Section layout.
  */
-export const HERO_BG_IMAGES = {
-  mobile: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_1-AR03811lQghk0N7O.png",
-  desktop: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Y4LDGNyengfoZkEX/scene_3_0-YBgb9j1lxpUrKbOK.png",
-} as const;
+export const HERO_BG_IMAGES = externalImages.home.hero;

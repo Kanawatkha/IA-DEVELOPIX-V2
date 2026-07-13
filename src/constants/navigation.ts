@@ -1,27 +1,28 @@
 import { MessageCircle, Truck, ShieldCheck } from "lucide-react";
 import { NavItem, InfoBannerItem, FooterColumn } from "../types/navigation";
+import { navigationContent } from "@/src/content";
 
 /**
  * Main application navigation items for the header and mobile drawer.
  * Defines hierarchy, links, accessibility flags, and upcoming features.
  */
 export const MAIN_NAVIGATION: NavItem[] = [
-  { label: "STORE", href: "/store" },
+  { label: navigationContent.store, href: "/store" },
   { 
-    label: "LINEFOLLOWER", 
-    href: "/products/linefollower", 
-    hasSubmenu: true, 
-    subpages: ["NOFAN 15cm", "NOFAN 18cm", "FANPULL 15cm", "FANPULL 18cm"] 
+    label: navigationContent.linefollower,
+    href: "/products/linefollower",
+    hasSubmenu: true,
+    subpages: ["NOFAN 15cm", "NOFAN 18cm", "FANPULL 15cm", "FANPULL 18cm"]
   },
   { 
-    label: "MISSION", 
-    href: "/products/mission", 
-    hasSubmenu: true, 
-    subpages: ["MISSION GO", "MISSION PRO"] 
+    label: navigationContent.mission,
+    href: "/products/mission",
+    hasSubmenu: true,
+    subpages: ["MISSION GO", "MISSION PRO"]
   },
-  { label: "GATHERING", href: "/products/gathering", isComingSoon: true },
-  { label: "SUMO", href: "/products/sumo", isComingSoon: true },
-  { label: "ABOUT US", href: "/about" },
+  { label: navigationContent.gathering, href: "/products/gathering", isComingSoon: true },
+  { label: navigationContent.sumo, href: "/products/sumo", isComingSoon: true },
+  { label: navigationContent.about, href: "/about" },
 ];
 
 /**
@@ -31,17 +32,17 @@ export const MAIN_NAVIGATION: NavItem[] = [
 export const TOP_BANNERS: InfoBannerItem[] = [
   { 
     icon: MessageCircle, 
-    title: "CUSTOMER SERVICE", 
+    title: navigationContent.banners.customerService.title,
     desc: "Reach out to our team if you need any help." 
   },
   { 
     icon: Truck, 
-    title: "FAST FREE SHIPPING", 
+    title: navigationContent.banners.shipping.title,
     desc: "Free shipping on orders above ฿5,000." 
   },
   { 
     icon: ShieldCheck, 
-    title: "SECURE PAYMENT", 
+    title: navigationContent.banners.orderSupport.title,
     desc: "Your payment information is processed securely." 
   }
 ];

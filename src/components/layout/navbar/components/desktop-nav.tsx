@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, User, ShoppingCart, Menu, ShoppingBag } from "lucide-react";
@@ -30,16 +30,16 @@ export function DesktopNav({
   headerRef,
   isMultiRow = false,
 }: DesktopNavProps) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 
   return (
     <>
       <motion.header
-        ref={headerRef as any}
+        ref={headerRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}

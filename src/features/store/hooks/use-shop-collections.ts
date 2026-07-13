@@ -55,7 +55,7 @@ export function useShopCollections(defaultFilter: FilterValue = 'ALL') {
   };
 
   const filteredModels = SHOP_MODELS.filter(
-    (m) => activeFilter === 'ALL' || m.cat === activeFilter
+    (m) => activeFilter === 'ALL' || m.categoryLabel === activeFilter
   );
 
   return {

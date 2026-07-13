@@ -74,7 +74,7 @@ export function HeroSection() {
 
       {/* Content Layer */}
       <div className="relative z-10 w-full h-full section-content-limit section-px flex flex-col justify-start pt-20 items-center text-center min-[1025px]:justify-center min-[1025px]:items-start min-[1025px]:text-left min-[1025px]:pt-0">
-        <div className="max-w-full min-[1025px]:max-w-[50%] flex flex-col items-center min-[1025px]:items-start translate-y-[-20px] min-[1025px]:translate-y-0 min-[2000px]:gap-12 min-[2000px]:ml-[10%]">
+        <div className="w-full min-w-0 min-[1025px]:w-1/2 max-w-[44rem] flex flex-col items-center min-[1025px]:items-start translate-y-[-20px] min-[1025px]:translate-y-0 min-[2000px]:gap-12 min-[2000px]:ml-[10%]">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -89,7 +89,7 @@ export function HeroSection() {
             </motion.h1>
             <motion.p 
               variants={childVariants}
-              className={`${bodyMd} md:text-[20px] mb-12 max-w-lg min-[2000px]:text-[24px] min-[2000px]:max-w-[700px]`}
+              className={`${bodyMd} w-full min-w-0 md:text-[20px] mb-12 max-w-lg min-[2000px]:text-[24px] min-[2000px]:max-w-[700px]`}
             >
               High-speed line followers, mission-based robots, and elite competition hardware. From advanced sensors to specialized mechanical parts — everything you need to win.
             </motion.p>

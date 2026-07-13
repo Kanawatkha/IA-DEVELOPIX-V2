@@ -2,9 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Undo2 } from "lucide-react";
 import { useCart } from "@/src/context/cart-context";
 import { ShopCollections } from "@/src/features/store";
+import { cartContent } from "@/src/content";
 
 export default function CartPage() {
   const { 
@@ -26,16 +28,16 @@ export default function CartPage() {
         {cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 md:py-32 text-center">
             <h1 className="font-display text-4xl md:text-5xl uppercase tracking-[4px] text-primary mb-6">
-              Your cart is empty
+              {cartContent.emptyTitle}
             </h1>
             <p className="font-serif text-sm text-body mb-8 max-w-md mx-auto leading-relaxed">
-              Before you proceed to checkout, you must add some products to your shopping cart. You will find a lot of interesting robotics products on our store.
+              {cartContent.emptyDescription}
             </p>
             <Link
               href="/store"
               className="flex items-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-3.5 px-8 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
             >
-              <span>Continue shopping</span>
+               <span>{cartContent.continueShopping ?? "Continue shopping"}</span>
               <ArrowRight size={14} />
             </Link>
           </div>
@@ -44,14 +46,14 @@ export default function CartPage() {
             {/* Top Page Header */}
             <div className="flex items-center justify-between pb-8 border-b border-hairline mb-8 md:mb-12">
               <h1 className="font-display text-4xl md:text-[60px] uppercase tracking-[4px] text-primary">
-                Your cart
+                {cartContent.cartTitle}
               </h1>
               <Link
                 href="/store"
                 className="flex items-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2px] py-3.5 px-6 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none whitespace-nowrap"
               >
                 <Undo2 size={14} />
-                <span>Continue shopping</span>
+                <span>{cartContent.continueShopping ?? "Continue shopping"}</span>
               </Link>
             </div>
 
@@ -75,10 +77,12 @@ export default function CartPage() {
                       
                       {/* Product Detail Card */}
                       <div className="col-span-1 md:col-span-6 flex gap-4 items-center">
-                        <div className="w-[120px] h-[120px] border border-hairline bg-surface-soft shrink-0 rounded-md overflow-hidden">
-                          <img 
+                        <div className="relative w-[120px] h-[120px] border border-hairline bg-surface-soft shrink-0 rounded-md overflow-hidden">
+                          <Image
                             src={item.image} 
                             alt={item.name} 
+                            fill
+                            sizes="120px"
                             className="w-full h-full object-cover"
                           />
                         </div>

@@ -28,7 +28,7 @@ export function Navbar({
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   // Platform Hooks
-  const { isMobile } = useWindowSize();
+  const { isMobile, isDesktop } = useWindowSize();
   const { scrollDirection, isAtBottom } = useScrollDetection();
   const { cartCount, setIsCartOpen, isCartOpen } = useCart();
   const pathname = usePathname();
@@ -161,18 +161,18 @@ export function Navbar({
   // Lock body scroll on active mobile drawer layout overlay or cart drawer and prevent layout shifts
   useEffect(() => {
     const isAnyOpen = isMobileMenuOpen || isCartOpen;
+    const header = headerRef.current;
+
     if (isAnyOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-      const header = headerRef.current;
       if (header) {
         header.style.paddingRight = `${scrollbarWidth}px`;
       }
     } else {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
-      const header = headerRef.current;
       if (header) {
         header.style.paddingRight = "";
       }
@@ -180,7 +180,6 @@ export function Navbar({
     return () => {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
-      const header = headerRef.current;
       if (header) {
         header.style.paddingRight = "";
       }
@@ -218,33 +217,37 @@ export function Navbar({
         isMultiRow={isMultiRow}
       />
 
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[120] bg-canvas/40 backdrop-blur-sm"
-          onClick={closeMenu}
-        />
-      )}
+      {!isDesktop && (
+        <>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[120] bg-canvas/40 backdrop-blur-sm"
+              onClick={closeMenu}
+            />
+          )}
 
-      <MobileDrawer
-        isMobileMenuOpen={isMobileMenuOpen}
-        closeMenu={closeMenu}
-        isMobile={isMobile}
-        triggerScrollUpdate={triggerScrollUpdate}
-        menuRef={menuRef}
-        handleScrollMouseDown={handleScrollMouseDown}
-        handleScrollMouseLeave={handleScrollMouseLeave}
-        handleScrollMouseUp={handleScrollMouseUp}
-        handleScrollMouseMove={handleScrollMouseMove}
-        activeSubmenu={activeSubmenu}
-        setActiveSubmenu={setActiveSubmenu}
-        activeSubpages={activeSubpages}
-        isLanguagePopupOpen={isLanguagePopupOpen}
-        setIsLanguagePopupOpen={setIsLanguagePopupOpen}
-        langDropdownRef={langDropdownRef}
-      />
+          <MobileDrawer
+            isMobileMenuOpen={isMobileMenuOpen}
+            closeMenu={closeMenu}
+            isMobile={isMobile}
+            triggerScrollUpdate={triggerScrollUpdate}
+            menuRef={menuRef}
+            handleScrollMouseDown={handleScrollMouseDown}
+            handleScrollMouseLeave={handleScrollMouseLeave}
+            handleScrollMouseUp={handleScrollMouseUp}
+            handleScrollMouseMove={handleScrollMouseMove}
+            activeSubmenu={activeSubmenu}
+            setActiveSubmenu={setActiveSubmenu}
+            activeSubpages={activeSubpages}
+            isLanguagePopupOpen={isLanguagePopupOpen}
+            setIsLanguagePopupOpen={setIsLanguagePopupOpen}
+            langDropdownRef={langDropdownRef}
+          />
+        </>
+      )}
 
       <MobileBottomNav
         scrollDirection={scrollDirection}

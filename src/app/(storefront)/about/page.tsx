@@ -7,6 +7,7 @@ import { SlidersHorizontal, X } from 'lucide-react';
 import { ACHIEVEMENTS, type Achievement } from '@/src/lib/data/achievements';
 import { parentVariants, childVariants, fastChildVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
+import { aboutImages, brandImages } from '@/src/lib/media';
 
 // Standalone component rendering the timeline segment, declared outside major render scope to keep React performance native and avoid state resets on tickers
 const TimelineGroup = ({ 
@@ -326,10 +327,10 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-center w-full">
           
           {/* LEFT COLUMN: 1:1 Logo Block */}
-          <div className="w-full md:w-1/2 aspect-square relative flex items-center justify-center border border-hairline p-8 max-h-[65vh] md:max-h-[calc(100vh-200px)] mx-auto order-1 rounded-none">
+          <div className="w-full min-w-0 md:flex-1 md:w-auto aspect-square relative flex items-center justify-center border border-hairline p-8 max-h-[65vh] md:max-h-[calc(100vh-200px)] mx-auto order-1 rounded-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://i.postimg.cc/C5NnVVq0/i-A-Developix.jpg"
+              src={brandImages.logo}
               alt="IA DEVELOPER Logo"
               referrerPolicy="no-referrer"
               className="object-contain w-full h-full select-none"
@@ -337,7 +338,7 @@ export default function AboutPage() {
           </div>
 
           {/* RIGHT COLUMN: Text Architecture Override */}
-          <div className="text-left flex flex-col justify-center w-full md:w-1/2 order-2">
+          <div className="text-left flex flex-col justify-center w-full min-w-0 md:flex-1 md:w-auto order-2">
             {/* Eyebrow Label */}
             <span className={`${ty.captionUpper} text-xs text-muted mb-4`}>
               ABOUT US
@@ -349,7 +350,7 @@ export default function AboutPage() {
             </h1>
 
             {/* Vision Paragraph */}
-            <p className={`${ty.bodyMd} text-[16px] lg:text-[18px] text-muted max-w-xl`}>
+            <p className={`${ty.bodyMd} w-full min-w-0 text-[16px] lg:text-[18px] text-muted max-w-xl`}>
               IA DEVELOPER was founded by a synergy of robotics engineers dedicated to rewriting the physics of autonomous racing. From precise hardware mechanics to cutting-edge AI software algorithms, we build high-speed systems you can rely on.
             </p>
           </div>
@@ -360,7 +361,7 @@ export default function AboutPage() {
       {/* ===================================== */}
       {/* SECTION 2: FOUNDERS                  */}
       {/* ===================================== */}
-      <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 pt-8 pb-16 border-t border-hairline">
+      <section className="w-full max-w-[1720px] mx-auto section-py px-4 sm:px-6 md:px-12 lg:px-16 border-t border-hairline">
         {/* Section Heading */}
         <h2 className={`${ty.displayLg} text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.0] text-primary text-left mb-6`}>
           FOUNDERS
@@ -375,7 +376,7 @@ export default function AboutPage() {
             <div className="w-full aspect-[4/5] relative overflow-hidden bg-canvas border border-hairline rounded-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://i.postimg.cc/5ywT4s4v/My-Picture-1.jpg"
+                src={aboutImages.founders.kanawat}
                 alt="Kanawat Khamkongchai - Founder & Hardware Engineer"
                 referrerPolicy="no-referrer"
                 className="object-cover w-full h-full select-none transition-transform duration-300 ease-out hover:scale-105"
@@ -452,7 +453,7 @@ export default function AboutPage() {
             <div className="w-full aspect-[4/5] relative overflow-hidden bg-canvas border border-hairline rounded-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://i.postimg.cc/5ywT4s4v/My-Picture-1.jpg"
+                src={aboutImages.founders.saritwatkha}
                 alt="Co-Founder & Software Architect"
                 referrerPolicy="no-referrer"
                 className="object-cover w-full h-full select-none transition-transform duration-300 ease-out hover:scale-105"
@@ -530,7 +531,7 @@ export default function AboutPage() {
       {/* SECTION 3: TRACK RECORD TICKER       */}
       {/* ===================================== */}
       <section 
-        className="w-full bg-canvas pt-8 pb-16 border-t border-hairline overflow-hidden"
+        className="w-full bg-canvas section-py border-t border-hairline overflow-hidden"
       >
         {/* For Handheld Viewports (1024px and below) Heading + Clear Reset Icon Top-Row Consolidation */}
         <div className="min-[1025px]:hidden w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 mb-6 select-none flex items-center justify-between">
@@ -1043,7 +1044,7 @@ export default function AboutPage() {
       {/* ===================================== */}
       {/* SECTION 4: STORE GATEWAY CTA         */}
       {/* ===================================== */}
-      <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-32 md:py-40 border-t border-hairline">
+      <section className="w-full max-w-[1720px] mx-auto section-py px-4 sm:px-6 md:px-12 lg:px-16 border-t border-hairline">
         <div className="text-center flex flex-col items-center justify-center w-full">
           {/* Eyebrow */}
           <span className={`${ty.captionUpper} text-xs text-muted mb-4 block`}>

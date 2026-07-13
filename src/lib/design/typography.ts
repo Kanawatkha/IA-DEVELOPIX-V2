@@ -43,7 +43,7 @@
  * Font size: 64px (base). Common responsive: text-[14.5vw] md:text-[110px] xl:text-[140px]
  */
 export const displayXl =
-  'font-display font-normal uppercase tracking-[4px] leading-[1.1]' as const;
+  'font-display font-normal uppercase text-display-xl' as const;
 
 /**
  * display-lg  —  Section headings.
@@ -51,21 +51,21 @@ export const displayXl =
  * Font size: 48px (base). Common responsive: text-[50px] md:text-[80px]
  */
 export const displayLg =
-  'font-display font-normal uppercase tracking-[3px] leading-[1.15]' as const;
+  'font-display font-normal uppercase text-display-lg' as const;
 
 /**
  * display-md  —  Sub-section heads, model names inside cards.
  * Font size: 32px (base). Common responsive: text-3xl md:text-4xl
  */
 export const displayMd =
-  'font-display font-normal uppercase tracking-[2px] leading-[1.2]' as const;
+  'font-display font-normal uppercase text-display-md' as const;
 
 /**
  * display-sm  —  Card titles, smaller headings.
  * Font size: 24px (base). Common: text-2xl
  */
 export const displaySm =
-  'font-display font-normal uppercase tracking-[1.5px] leading-[1.3]' as const;
+  'font-display font-normal uppercase text-display-sm' as const;
 
 /**
  * wordmark  —  The "IA DEVELOPIX" brand wordmark in the navbar.
@@ -73,7 +73,7 @@ export const displaySm =
  * Font size: 14px — do not scale up.
  */
 export const wordmark =
-  'font-display font-normal uppercase tracking-[6px] leading-none text-[14px]' as const;
+  'font-display font-normal uppercase text-wordmark' as const;
 
 
 // ============================================================
@@ -85,14 +85,14 @@ export const wordmark =
  * Font size: 20px.
  */
 export const titleMd =
-  'font-display font-normal uppercase tracking-[1px] leading-[1.3] text-[20px]' as const;
+  'font-display font-normal uppercase text-title-md' as const;
 
 /**
  * titleSm  —  Mid-tier headlines, callout card titles.
  * Font size: 16px.
  */
 export const titleSm =
-  'font-display font-normal uppercase tracking-[1.5px] leading-[1.3] text-[16px]' as const;
+  'font-display font-normal uppercase text-title-sm' as const;
 
 
 // ============================================================
@@ -105,21 +105,21 @@ export const titleSm =
  * Font size: 16px base.
  */
 export const bodyMd =
-  'font-serif font-normal text-[16px] leading-[1.5] tracking-normal text-body' as const;
+  'font-serif font-normal text-body-md tracking-normal text-body' as const;
 
 /**
  * bodyMdStrong  —  Lead paragraphs, emphasized body.
  * Same as bodyMd but slightly brighter text.
  */
 export const bodyMdStrong =
-  'font-serif font-normal text-[16px] leading-[1.5] tracking-normal text-body-strong' as const;
+  'font-serif font-normal text-body-md tracking-normal text-body-strong' as const;
 
 /**
  * bodySm  —  Footer body, fine-print legal, secondary metadata.
  * Font size: 14px.
  */
 export const bodySm =
-  'font-serif font-normal text-[14px] leading-[1.5] tracking-normal text-muted' as const;
+  'font-serif font-normal text-body-sm tracking-normal text-muted' as const;
 
 
 // ============================================================
@@ -132,7 +132,7 @@ export const bodySm =
  * Font size: 11px.
  */
 export const captionUpper =
-  'font-mono font-normal text-[11px] uppercase tracking-[2px] leading-[1.4]' as const;
+  'font-mono font-normal text-caption uppercase' as const;
 
 /**
  * buttonLabel  —  All CTA and action button text.
@@ -140,7 +140,7 @@ export const captionUpper =
  * Font size: 14px, 2.5px tracking — the widest mono use outside wordmark.
  */
 export const buttonLabel =
-  'font-mono font-normal text-[14px] uppercase tracking-[2.5px] leading-none' as const;
+  'font-mono font-normal text-button uppercase' as const;
 
 /**
  * navLink  —  Top navigation menu items.
@@ -148,7 +148,7 @@ export const buttonLabel =
  * Font size: 12px.
  */
 export const navLink =
-  'font-mono font-normal text-[12px] uppercase tracking-[2px] leading-[1.4]' as const;
+  'font-mono font-normal text-nav uppercase' as const;
 
 
 // ============================================================
@@ -164,7 +164,7 @@ export const navLink =
  * <Link className={`${ty.ctaButton} px-8 py-3.5 hover:bg-white hover:text-black`}>
  */
 export const ctaButton =
-  'inline-flex items-center justify-center border border-white rounded-full bg-transparent text-white font-mono font-normal text-[14px] uppercase tracking-[2.5px] leading-none transition-all duration-300' as const;
+  'inline-flex min-h-11 items-center justify-center border border-primary rounded-pill bg-transparent text-primary font-mono font-normal text-button uppercase transition-colors duration-300' as const;
 
 /**
  * specValue  —  The large number/value in a spec cell (e.g. "15", "18W").
@@ -178,4 +178,4 @@ export const specValue =
  * Uses caption-upper sizing.
  */
 export const specLabel =
-  'font-mono font-normal text-[11px] uppercase tracking-[2px] leading-[1.4] text-muted' as const;
+  'font-mono font-normal text-caption uppercase text-muted' as const;

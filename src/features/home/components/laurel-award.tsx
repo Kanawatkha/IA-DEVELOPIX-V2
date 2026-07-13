@@ -97,10 +97,10 @@ import { LaurelAwardProps } from '../types';
  */
 export const LaurelAward: React.FC<LaurelAwardProps> = ({ award }) => {
   const isGold = award.isGold;
-  const textColorPrimary = isGold ? 'text-[#FFD700]' : 'text-white';
-  const textColorSecondary = isGold ? 'text-[#FFD700]/90' : 'text-gray-300';
-  const shadowClass = isGold ? 'drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]' : 'drop-shadow-sm';
-  const dividerClass = isGold ? 'bg-[#FFD700]' : 'bg-white';
+  const textColorPrimary = isGold ? 'text-award-gold' : 'text-primary';
+  const textColorSecondary = isGold ? 'text-award-gold/90' : 'text-body';
+  const shadowClass = '';
+  const dividerClass = isGold ? 'bg-award-gold' : 'bg-primary';
 
   const sizeStyles = {
     lg: {

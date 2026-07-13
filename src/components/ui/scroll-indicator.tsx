@@ -16,7 +16,7 @@ export function ScrollIndicator() {
         initial={scrollIndicatorInitial}
         animate={scrollIndicatorAnimate}
         transition={scrollIndicatorTransition}
-        className="flex flex-col items-center text-[#999999]"
+        className="flex flex-col items-center text-muted"
       >
         <ChevronDown strokeWidth={1} className="w-8 h-8 opacity-70 text-muted" />
       </motion.div>

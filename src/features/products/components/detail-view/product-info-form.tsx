@@ -20,8 +20,10 @@ import { motion } from 'framer-motion';
 import { childVariants, parentVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
 import { useCart } from '@/src/context/cart-context';
+import { getCatalogProduct, type CatalogProductId } from '@/src/features/products/data/catalog';
 
 interface ProductInfoFormProps {
+  productId: CatalogProductId;
   /** Full display name, e.g. "NOFAN 15CM" */
   name: string;
   /** Category breadcrumb label, e.g. "LINEFOLLOWER" */
@@ -37,6 +39,7 @@ interface ProductInfoFormProps {
 }
 
 export function ProductInfoForm({
+  productId,
   name,
   category,
   categoryHref,
@@ -46,46 +49,27 @@ export function ProductInfoForm({
 }: ProductInfoFormProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart, setIsCartOpen, setIsQuoteOpen } = useCart();
+  const catalogProduct = getCatalogProduct(productId);
 
-  const handleAddToCart = () => {
-    const numericPrice = parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
-    const isMission = category.toLowerCase().includes("mission");
-    const id = name.toLowerCase().includes("nofan 15") ? "nofan-15"
-             : name.toLowerCase().includes("nofan 18") ? "nofan-18"
-             : name.toLowerCase().includes("go") ? "mission-go"
-             : "mission-pro";
-    const image = isMission 
-      ? "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
-      : "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop";
+  const addCatalogProductToCart = () => {
+    if (catalogProduct.price === null) return;
 
     addToCart({
-      id,
-      name,
-      price: numericPrice,
-      image,
-      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
+      id: catalogProduct.id,
+      name: catalogProduct.name,
+      price: catalogProduct.price,
+      image: catalogProduct.image,
+      href: catalogProduct.path,
     }, quantity);
+  };
+
+  const handleAddToCart = () => {
+    addCatalogProductToCart();
     setIsCartOpen(true);
   };
 
   const handleOrderNow = () => {
-    const numericPrice = parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
-    const isMission = category.toLowerCase().includes("mission");
-    const id = name.toLowerCase().includes("nofan 15") ? "nofan-15"
-             : name.toLowerCase().includes("nofan 18") ? "nofan-18"
-             : name.toLowerCase().includes("go") ? "mission-go"
-             : "mission-pro";
-    const image = isMission 
-      ? "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
-      : "https://images.unsplash.com/photo-1617814065664-9cbfe0fa3ec6?q=80&w=1000&auto=format&fit=crop";
-
-    addToCart({
-      id,
-      name,
-      price: numericPrice,
-      image,
-      href: isMission ? `/products/mission/${id.replace("mission-", "")}` : `/products/linefollower/${id}`
-    }, quantity);
+    addCatalogProductToCart();
     setIsQuoteOpen(true);
   };
 

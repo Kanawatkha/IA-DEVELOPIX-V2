@@ -110,7 +110,7 @@ spacing:
   lg: 24px
   xl: 40px
   xxl: 64px
-  section: 120px
+  section: 48px
 
 components:
   button-primary:
@@ -217,7 +217,7 @@ Display sizes use weight 400 (regular) — never bold. Visual emphasis comes fro
 - No accent color. The only non-monochrome color anywhere on the site is `{colors.link}` (#c3d9f3) — a desaturated ice-blue used on inline anchor links, and even that appears rarely.
 - Buttons are pill-shaped (`{rounded.pill}`) with **transparent background** and a 1px white outline. Bugatti is the only luxury-auto brand whose primary CTA is fully transparent.
 - Photography is the only depth element. No drop shadows. No gradients. No card surfaces. Surface cards are `{colors.surface-card}` (#141414) at most — a barely-different-from-black tone.
-- Section rhythm is generous — `{spacing.section}` (120px) between major bands, longer than most marketing sites because Bugatti's pages are mostly photography with minimal text density.
+- Standard section rhythm is `{spacing.section}` (48px on desktop, 40px on mobile) between major content bands. Full-screen Hero bands are the intentional exception.
 
 ## Colors
 
@@ -296,8 +296,8 @@ The substitution preserves the three-family split, which is more important than 
 
 ### Spacing System
 - **Base unit:** 4px.
-- **Tokens:** `{spacing.xxs}` 4px · `{spacing.xs}` 8px · `{spacing.sm}` 12px · `{spacing.md}` 16px · `{spacing.lg}` 24px · `{spacing.xl}` 40px · `{spacing.xxl}` 64px · `{spacing.section}` 120px.
-- **Section padding:** `{spacing.section}` (120px) — longer than most marketing sites because Bugatti's bands are mostly photography with minimal text. The empty space frames the cars.
+- **Tokens:** `{spacing.xxs}` 4px · `{spacing.xs}` 8px · `{spacing.sm}` 12px · `{spacing.md}` 16px · `{spacing.lg}` 24px · `{spacing.xl}` 40px · `{spacing.xxl}` 64px · `{spacing.section}` 48px.
+- **Section padding:** `{spacing.section}` (48px desktop, 40px mobile). Full-screen Hero bands use viewport height instead of standard section padding.
 - **Card internal padding:** `{spacing.lg}` (24px) for newsroom and content cards; `{spacing.md}` (16px) for the career callout card; `{spacing.xxl}` (64px) inside hero photo bands.
 - **Gutters:** `{spacing.xl}` (40px) between cards in 2-up grids — wider than typical because Bugatti's grids are sparse.
 
@@ -393,14 +393,14 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 - Use Bugatti Display for headlines, Bugatti Text Regular (serif!) for body, Bugatti Monospace for buttons + captions + nav. The trinity is unbreakable.
 - Keep `{component.button-primary}` transparent with a 1px white outline. The transparent pill IS the brand button.
 - Use weight 400 everywhere. Bold breaks the brand voice — the system has no bold weight role.
-- Use `{spacing.section}` (120px) between major editorial bands. The whitespace is part of the brand.
+- Use `{spacing.section}` (48px desktop, 40px mobile) between standard editorial bands. Full-screen Hero bands remain the exception.
 - Reserve `{colors.link}` (#c3d9f3) for inline anchor links only. It's the system's only non-monochrome color.
 
 ### Don't
 - Don't introduce any accent color outside `{colors.link}`. Bugatti's brand discipline is total monochrome + photography. Adding a brand-blue or brand-red breaks the contract.
 - Don't bold any type. The system has no bold weight — every typeface stays at 400.
 - Don't fill primary buttons. Transparent + outline only. A solid white button reads as off-brand.
-- Don't compress whitespace between sections. The 120px rhythm is part of the editorial pacing.
+- Keep the standard 40/48px rhythm consistent between sections. Do not apply it to full-screen Hero bands.
 - Don't use rounded corners outside buttons. Cards, photos, inputs all stay at 0px. Rounded cards read as consumer-tech, not luxury-engineered.
 - Don't tighten letter-spacing on display headlines. 2-4px tracking on Bugatti Display is non-negotiable.
 - Don't use Bugatti Display in a button (use Bugatti Monospace) or Bugatti Monospace in a paragraph (use Bugatti Text Regular). The trinity split is the brand voice.

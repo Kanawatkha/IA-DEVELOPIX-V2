@@ -3,7 +3,7 @@
  * @description custom react hook for high-performance requestAnimationFrame loop control.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface AutoplayConfig {
   interval: number;
@@ -17,6 +17,7 @@ interface AutoplayConfig {
  */
 export function useAutoplay({ interval, isActive, onIntervalComplete }: AutoplayConfig) {
   const [elapsedTime, setElapsedTime] = useState(0);
+  const elapsedTimeRef = useRef(0);
 
   useEffect(() => {
     if (!isActive) return;
@@ -28,10 +29,15 @@ export function useAutoplay({ interval, isActive, onIntervalComplete }: Autoplay
       const delta = now - lastTime;
       lastTime = now;
 
-      setElapsedTime((prev) => {
-        const next = prev + delta;
-        return next >= interval ? interval : next;
-      });
+      const next = elapsedTimeRef.current + delta;
+      if (next >= interval) {
+        elapsedTimeRef.current = 0;
+        setElapsedTime(0);
+        onIntervalComplete();
+      } else {
+        elapsedTimeRef.current = next;
+        setElapsedTime(next);
+      }
 
       animationFrameId = requestAnimationFrame(tick);
     };
@@ -40,16 +46,10 @@ export function useAutoplay({ interval, isActive, onIntervalComplete }: Autoplay
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isActive, interval]);
-
-  useEffect(() => {
-    if (elapsedTime >= interval) {
-      onIntervalComplete();
-      setElapsedTime(0);
-    }
-  }, [elapsedTime, interval, onIntervalComplete]);
+  }, [isActive, interval, onIntervalComplete]);
 
   const resetAutoplay = () => {
+    elapsedTimeRef.current = 0;
     setElapsedTime(0);
   };
 
