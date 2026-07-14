@@ -39,6 +39,8 @@ export const DURATION = {
  */
 export const EASE = {
   luxury: [0.2, 0.8, 0.2, 1] as [number, number, number, number],
+  customEaseOut: [0.16, 1, 0.3, 1] as [number, number, number, number],
+  customEaseInOut: [0.42, 0, 0.58, 1] as [number, number, number, number],
 } as const;
 
 /**
@@ -242,14 +244,25 @@ export const scrollIndicatorTransition = {
 };
 
 /**
- * drawerTransition
- * Standard motion configuration for premium sliding panels, drawers, and overlays.
- * Combines the custom luxury ease curve with fast timing for responsive yet elegant weight.
+ * drawerOpenTransition
+ * Motion configuration for entering sliding panels, drawers, and overlays.
+ * Uses a snappy ease-out curve with rapid start and long cushioned deceleration.
  */
-export const drawerTransition = {
+export const drawerOpenTransition = {
   type: "tween" as const,
-  duration: 0.65,          // 0.65 seconds to showcase speed changes clearly
-  ease: [0.16, 1, 0.3, 1], // Highly dynamic curve with rapid start and long cushioned deceleration tail
+  duration: 0.65,
+  ease: EASE.customEaseOut,
+} as const;
+
+/**
+ * drawerCloseTransition
+ * Motion configuration for exiting sliding panels, drawers, and overlays.
+ * Uses a smooth ease-in-out curve with a slightly faster duration.
+ */
+export const drawerCloseTransition = {
+  type: "tween" as const,
+  duration: 0.45,
+  ease: EASE.customEaseInOut,
 } as const;
 
 export const drawerSurfaceClass =

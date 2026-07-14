@@ -26,7 +26,7 @@ export function HeroSection() {
   return (
     <section 
       className="relative w-full overflow-hidden border-b border-hairline flex flex-col justify-center max-[950px]:landscape:min-h-[750px] max-[950px]:landscape:h-auto"
-      style={{ height: "calc(100dvh - var(--navbar-height, 80px))" }}
+      style={{ height: "calc(100svh - var(--navbar-height, 80px))" }}
     >
       {/* Background Mobile Image Layer */}
       <motion.div

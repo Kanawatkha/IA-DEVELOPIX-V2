@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X, ChevronRight, ChevronLeft, ChevronDown, Globe, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
-import { EASE, fastParentVariants, drawerTransition, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
+import { EASE, fastParentVariants, drawerOpenTransition, drawerCloseTransition, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
 import { LanguageSelector } from "./language-selector";
 import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
 import { MobileDrawerProps } from "../types";
@@ -53,17 +53,17 @@ export function MobileDrawer({
         open: {
           y: 0,
           x: 0,
-          transition: drawerTransition,
+          transition: drawerOpenTransition,
         },
         closedBottom: {
           y: "100%",
           x: 0,
-          transition: drawerTransition,
+          transition: drawerCloseTransition,
         },
         closedLeft: {
           x: "-100%",
           y: 0,
-          transition: drawerTransition,
+          transition: drawerCloseTransition,
         },
       }}
       initial={false}

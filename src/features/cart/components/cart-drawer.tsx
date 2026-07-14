@@ -7,7 +7,7 @@ import { X, ArrowRight, ChevronLeft, Download, Copy, MessageCircle, Lock, Check,
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useCart } from "@/src/context/cart-context";
 import { useWindowSize } from "@/src/hooks";
-import { drawerTransition, EASE, DURATION, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
+import { drawerOpenTransition, drawerCloseTransition, EASE, DURATION, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
 import { exportQuoteImage, downloadQuoteImage } from "@/src/features/cart/services/quote-export-service";
 import { getMessengerUrl } from "@/src/features/cart/services/messenger-service";
 import { externalImages } from "@/src/lib/media";
@@ -48,17 +48,17 @@ export function CartDrawer() {
     open: {
       x: 0,
       y: 0,
-      transition: drawerTransition,
+      transition: drawerOpenTransition,
     },
     closedRight: {
       x: "100%",
       y: 0,
-      transition: drawerTransition,
+      transition: drawerCloseTransition,
     },
     closedBottom: {
       x: 0,
       y: "100%",
-      transition: drawerTransition,
+      transition: drawerCloseTransition,
     },
   };
 

@@ -137,7 +137,7 @@ export function StoreHero() {
     <section
       id="store-hero-carousel"
       className="relative w-full border-b border-hairline bg-canvas overflow-hidden flex flex-col min-h-[500px] select-none"
-      style={{ height: "calc(100dvh - var(--navbar-height, 90px))" }}
+      style={{ height: "calc(100svh - var(--navbar-height, 90px))" }}
     >
       {/* Outer overflow container viewport frame */}
       <motion.div 

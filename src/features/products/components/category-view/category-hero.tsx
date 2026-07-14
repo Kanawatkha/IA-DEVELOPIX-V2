@@ -37,7 +37,7 @@ export function CategoryHero({
   isComingSoon = false,
 }: CategoryHeroProps) {
   return (
-    <section className="relative w-full min-h-[calc(100dvh-80px)] flex flex-col justify-start min-[1025px]:justify-center bg-canvas overflow-hidden">
+    <section className="relative w-full min-h-[calc(100svh-80px)] flex flex-col justify-start min-[1025px]:justify-center bg-canvas overflow-hidden">
       
       {/* Cinematic Background Layer */}
       <motion.div
