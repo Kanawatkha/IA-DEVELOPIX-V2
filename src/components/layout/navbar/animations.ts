@@ -12,6 +12,8 @@ import { DURATION, EASE } from "@/src/lib/design/variants";
 export const submenuVariants: Variants = {
   hidden: {
     opacity: 0,
+    y: -12,
+    filter: "blur(8px)",
     transition: {
       duration: 0.2,
       ease: "easeIn",
@@ -19,6 +21,8 @@ export const submenuVariants: Variants = {
   },
   visible: {
     opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
     transition: {
       duration: 0.3,
       ease: "easeOut",
@@ -34,16 +38,16 @@ export const submenuVariants: Variants = {
 export const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    x: 40,
-    filter: "blur(12px)",
+    y: -8,
+    filter: "blur(8px)",
     transition: {
-      duration: 0.3,
+      duration: 0.2,
       ease: "easeIn",
     },
   },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     filter: "blur(0px)",
     transition: {
       duration: DURATION.fast,
@@ -104,6 +108,8 @@ export const fadeBlurVariants: Variants = {
 export const containerVariants: Variants = {
   hidden: {
     opacity: 0,
+    y: -12,
+    filter: "blur(8px)",
     transition: {
       duration: 0.2,
       ease: "easeIn",
@@ -111,6 +117,8 @@ export const containerVariants: Variants = {
   },
   visible: {
     opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
     transition: {
       duration: 0.3,
       ease: "easeOut",

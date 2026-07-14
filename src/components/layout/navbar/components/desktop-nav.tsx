@@ -36,6 +36,40 @@ export function DesktopNav({
     () => false,
   );
 
+  const timeoutRef = React.useRef<any>(null);
+  const langTimeoutRef = React.useRef<any>(null);
+
+  const handleMouseEnter = (label: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setHoveredLink(label);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setHoveredLink(null);
+    }, 150);
+  };
+
+  const handleLangMouseEnter = () => {
+    if (langTimeoutRef.current) clearTimeout(langTimeoutRef.current);
+    setIsDesktopLangOpen(true);
+  };
+
+  const handleLangMouseLeave = () => {
+    if (langTimeoutRef.current) clearTimeout(langTimeoutRef.current);
+    langTimeoutRef.current = setTimeout(() => {
+      setIsDesktopLangOpen(false);
+    }, 150);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (langTimeoutRef.current) clearTimeout(langTimeoutRef.current);
+    };
+  }, []);
+
   return (
     <>
       <motion.header
@@ -79,8 +113,8 @@ export function DesktopNav({
                   key={link.label}
                   data-nav-label={link.label}
                   className="relative group h-full flex items-center"
-                  onMouseEnter={() => setHoveredLink(link.label)}
-                  onMouseLeave={() => setHoveredLink(null)}
+                  onMouseEnter={() => handleMouseEnter(link.label)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <Link
                     href={link.href}
@@ -132,8 +166,6 @@ export function DesktopNav({
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        onMouseEnter={() => setHoveredLink(link.label)}
-                        onMouseLeave={() => setHoveredLink(null)}
                       >
                         <div className="bg-[#0d0d0d] border border-hairline rounded-2xl shadow-lg">
                           <div className="flex flex-col items-start text-left p-2 min-[2000px]:p-3 w-full">
@@ -172,8 +204,8 @@ export function DesktopNav({
               className="hidden min-[950px]:flex relative cursor-pointer" 
               ref={desktopLangRef as any}
               data-nav-lang="true"
-              onMouseEnter={() => setIsDesktopLangOpen(true)}
-              onMouseLeave={() => setIsDesktopLangOpen(false)}
+              onMouseEnter={handleLangMouseEnter}
+              onMouseLeave={handleLangMouseLeave}
             >
               <button
                 onClick={() => setIsDesktopLangOpen(!isDesktopLangOpen)}
@@ -188,8 +220,6 @@ export function DesktopNav({
                     isOpen={isDesktopLangOpen}
                     onClose={() => setIsDesktopLangOpen(false)}
                     isMobile={false}
-                    onMouseEnter={() => setIsDesktopLangOpen(true)}
-                    onMouseLeave={() => setIsDesktopLangOpen(false)}
                   />
                 )}
               </AnimatePresence>
