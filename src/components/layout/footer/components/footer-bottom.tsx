@@ -72,14 +72,14 @@ export function FooterBottom() {
 
           <button
             onClick={() => setIsLangOpen(!isLangOpen)}
-            className="flex items-center justify-between w-full border border-hairline rounded-pill px-5 py-2 hover:bg-primary/5 transition-colors outline-none cursor-pointer"
+            className="flex items-center justify-between w-full border border-primary bg-primary rounded-pill px-5 py-2 hover:bg-transparent transition-colors outline-none cursor-pointer group"
             aria-label="Toggle Language Options"
           >
-            <Globe className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-muted" strokeWidth={1.5} />
-            <span className="font-mono text-[10px] min-[1920px]:text-sm text-primary uppercase tracking-[2px] whitespace-nowrap mx-2">
+            <Globe className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-canvas group-hover:text-muted transition-colors" strokeWidth={1.5} />
+            <span className="font-mono text-[10px] min-[1920px]:text-sm text-canvas group-hover:text-primary uppercase tracking-[2px] whitespace-nowrap mx-2 transition-colors">
               THAI / ENGLISH
             </span>
-            <ChevronDown className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-muted" strokeWidth={1.5} />
+            <ChevronDown className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-canvas group-hover:text-muted transition-colors" strokeWidth={1.5} />
           </button>
         </div>
 

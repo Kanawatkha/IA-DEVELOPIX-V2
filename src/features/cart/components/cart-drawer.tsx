@@ -516,7 +516,7 @@ export function CartDrawer() {
                               <Link
                                 href="/store"
                                 onClick={closeDrawer}
-                                className="flex items-center gap-2 border border-primary text-primary font-mono text-xs uppercase tracking-[2.5px] py-3.5 px-8 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
+                                className="flex items-center gap-2 border border-primary bg-primary text-canvas font-mono text-xs uppercase tracking-[2.5px] py-3.5 px-8 rounded-pill hover:bg-transparent hover:text-primary transition-colors outline-none cursor-pointer"
                               >
                                 <span>Continue shopping</span>
                                 <ArrowRight size={14} />
@@ -648,14 +648,14 @@ export function CartDrawer() {
                                   <Link
                                     href={item.href}
                                     onClick={closeDrawer}
-                                    className="inline-block border border-primary text-primary font-mono text-[10px] md:text-[11px] uppercase tracking-[1px] md:tracking-[2px] py-1.5 px-3 md:py-2 md:px-5 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none"
+                                    className="inline-block border border-primary bg-primary text-canvas font-mono text-[10px] md:text-[11px] uppercase tracking-[1px] md:tracking-[2px] py-1.5 px-3 md:py-2 md:px-5 rounded-pill hover:bg-transparent hover:text-primary transition-colors outline-none"
                                   >
                                     + VIEW
                                   </Link>
                                 ) : (
                                   <button
                                     onClick={() => handleAddFromRecommendations(item)}
-                                    className="border border-primary text-primary font-mono text-[10px] md:text-[11px] uppercase tracking-[1px] md:tracking-[2px] py-1.5 px-3 md:py-2 md:px-5 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer"
+                                    className="border border-primary bg-primary text-canvas font-mono text-[10px] md:text-[11px] uppercase tracking-[1px] md:tracking-[2px] py-1.5 px-3 md:py-2 md:px-5 rounded-pill hover:bg-transparent hover:text-primary transition-colors outline-none cursor-pointer"
                                   >
                                     + ADD
                                   </button>

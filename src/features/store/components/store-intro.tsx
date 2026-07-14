@@ -38,7 +38,7 @@ export function StoreIntro() {
         <motion.div variants={childVariants}>
           <Link
             href="/about"
-            className={`${ty.ctaButton} text-[14px] min-[2000px]:text-lg px-[24px] py-[12px] min-[2000px]:px-10 min-[2000px]:py-4 hover:bg-primary hover:text-canvas`}
+            className="inline-flex min-h-11 items-center justify-center border border-primary rounded-pill bg-primary text-canvas font-mono font-normal text-button uppercase transition-colors duration-300 text-[14px] min-[2000px]:text-lg px-[24px] py-[12px] min-[2000px]:px-10 min-[2000px]:py-4 hover:bg-transparent hover:text-primary"
           >
             DISCOVER MORE
           </Link>

@@ -97,7 +97,7 @@ export function HeroSection() {
             <motion.div variants={childVariants}>
               <Link
                 href="/store"
-                className={`${ctaButton} px-8 py-3.5 hover:bg-white hover:text-black w-max min-[2000px]:text-lg min-[2000px]:px-10 min-[2000px]:py-4`}
+                className="inline-flex min-h-11 items-center justify-center border border-primary rounded-pill bg-primary text-canvas font-mono font-normal text-button uppercase transition-colors duration-300 px-8 py-3.5 hover:bg-transparent hover:text-primary w-max min-[2000px]:text-lg min-[2000px]:px-10 min-[2000px]:py-4"
               >
                 ENTER THE STORE
               </Link>

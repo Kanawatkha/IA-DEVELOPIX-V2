@@ -104,7 +104,7 @@ function StoreHeroSlide({ cat, idx, mvX, dimensions }: StoreHeroSlideProps) {
         <motion.div variants={childVariants}>
           <Link
             href={cat.isComingSoon ? '#' : `/products/${cat.name.toLowerCase()}`}
-            className={`${ty.ctaButton} text-[9px] min-[375px]:text-[10px] sm:text-[12px] md:text-[14px] px-4 py-1.5 min-[375px]:px-5 min-[375px]:py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-primary hover:text-canvas transition-all cursor-pointer whitespace-nowrap`}
+            className="inline-flex min-h-11 items-center justify-center border border-primary rounded-pill bg-primary text-canvas font-mono font-normal text-button uppercase transition-colors duration-300 text-[9px] min-[375px]:text-[10px] sm:text-[12px] md:text-[14px] px-4 py-1.5 min-[375px]:px-5 min-[375px]:py-2 sm:px-6 sm:py-2.5 md:px-[24px] md:py-[12px] hover:bg-transparent hover:text-primary whitespace-nowrap cursor-pointer"
             onClick={(e) => cat.isComingSoon && e.preventDefault()}
           >
             DISCOVER {cat.name}
