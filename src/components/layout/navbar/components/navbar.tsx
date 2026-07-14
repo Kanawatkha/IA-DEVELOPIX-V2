@@ -158,31 +158,17 @@ export function Navbar({
     };
   }, [isLanguagePopupOpen, isDesktopLangOpen]);
 
-  // Lock body scroll on active mobile drawer layout overlay or cart drawer and prevent layout shifts
+  // Lock body scroll on active mobile drawer layout overlay or cart drawer
   useEffect(() => {
     const isAnyOpen = isMobileMenuOpen || isCartOpen;
-    const header = headerRef.current;
 
     if (isAnyOpen) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-      if (header) {
-        header.style.paddingRight = `${scrollbarWidth}px`;
-      }
     } else {
       document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-      if (header) {
-        header.style.paddingRight = "";
-      }
     }
     return () => {
       document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-      if (header) {
-        header.style.paddingRight = "";
-      }
     };
   }, [isMobileMenuOpen, isCartOpen]);
 

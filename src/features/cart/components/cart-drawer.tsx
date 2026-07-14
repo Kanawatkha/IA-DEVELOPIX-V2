@@ -76,6 +76,10 @@ export function CartDrawer() {
     hidden: {
       opacity: 0,
       filter: "blur(12px)",
+      transition: {
+        duration: 0.3,
+        ease: "easeIn" as const,
+      },
     },
     visible: {
       opacity: 1,
@@ -88,8 +92,6 @@ export function CartDrawer() {
   };
 
   const closeDrawer = () => {
-    setActiveTab("cart");
-    setView("tabs");
     setIsCartOpen(false);
   };
 
@@ -328,10 +330,9 @@ export function CartDrawer() {
   };
 
   return (
-    <AnimatePresence>
-      {isCartOpen && (
-        <>
-          {/* Backdrop Overlay */}
+    <>
+      <AnimatePresence>
+        {isCartOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -339,27 +340,34 @@ export function CartDrawer() {
             className="fixed inset-0 z-[150] bg-canvas/40 backdrop-blur-sm"
             onClick={closeDrawer}
           />
+        )}
+      </AnimatePresence>
 
-          {/* Drawer Body */}
-          <motion.div
-            variants={drawerVariants}
-            initial={isMobile ? "closedBottom" : "closedRight"}
-            animate={isCartOpen ? "open" : isMobile ? "closedBottom" : "closedRight"}
-            exit={isMobile ? "closedBottom" : "closedRight"}
-            drag={isMobile ? "y" : false}
-            dragControls={dragControls}
-            dragListener={false}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0, bottom: 0.7 }}
-            dragMomentum={true}
-            onDragEnd={(e, info) => {
-              const projectedY = info.offset.y + info.velocity.y * 0.2;
-              if (info.offset.y > 250 || projectedY > 250) {
-                closeDrawer();
-              }
-            }}
-            className={`fixed z-[160] flex flex-col bg-canvas overflow-visible text-primary ${drawerSurfaceClass} md:right-0 md:left-auto md:rounded-l-[2rem] md:rounded-r-none md:border-l md:border-r-0`}
-          >
+      {/* Drawer Body - Always mounted to support nested exit transitions */}
+      <motion.div
+        variants={drawerVariants}
+        initial={isMobile ? "closedBottom" : "closedRight"}
+        animate={isCartOpen ? "open" : isMobile ? "closedBottom" : "closedRight"}
+        drag={isMobile ? "y" : false}
+        dragControls={dragControls}
+        dragListener={false}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0, bottom: 0.7 }}
+        dragMomentum={true}
+        onDragEnd={(e, info) => {
+          const projectedY = info.offset.y + info.velocity.y * 0.2;
+          if (info.offset.y > 250 || projectedY > 250) {
+            closeDrawer();
+          }
+        }}
+        onAnimationComplete={(variant) => {
+          if (variant === "closedRight" || variant === "closedBottom") {
+            setActiveTab("cart");
+            setView("tabs");
+          }
+        }}
+        className={`fixed z-[160] flex flex-col bg-canvas overflow-visible text-primary ${drawerSurfaceClass} md:right-0 md:left-auto md:rounded-l-[2rem] md:rounded-r-none md:border-l md:border-r-0`}
+      >
             {/* Subtle White Glow Shadow Layer (Fade-In) */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -383,10 +391,10 @@ export function CartDrawer() {
                   {view === "tabs" ? (
                     <motion.div
                       key="tabs-header"
-                      initial={{ opacity: 0, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, filter: "blur(4px)" }}
-                      transition={{ duration: 0.2 }}
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate={isCartOpen ? "visible" : "hidden"}
+                      exit="hidden"
                       className="flex space-x-8"
                     >
                       <motion.button
@@ -443,10 +451,10 @@ export function CartDrawer() {
                   ) : (
                     <motion.div
                       key="checkout-header"
-                      initial={{ opacity: 0, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, filter: "blur(4px)" }}
-                      transition={{ duration: 0.2 }}
+                      variants={cartItemVariants}
+                      initial="hidden"
+                      animate={isCartOpen ? "visible" : "hidden"}
+                      exit="hidden"
                       className="flex items-center space-x-6 pb-2"
                     >
                       <button
@@ -493,7 +501,7 @@ export function CartDrawer() {
                           key="cart"
                           variants={containerVariants}
                           initial="hidden"
-                          animate="visible"
+                          animate={isCartOpen ? "visible" : "hidden"}
                           exit="hidden"
                           className="w-full"
                         >
@@ -601,7 +609,7 @@ export function CartDrawer() {
                           key="recent"
                           variants={containerVariants}
                           initial="hidden"
-                          animate="visible"
+                          animate={isCartOpen ? "visible" : "hidden"}
                           exit="hidden"
                           className="flex flex-col space-y-4"
                         >
@@ -692,7 +700,7 @@ export function CartDrawer() {
                   key="cart-footer"
                   variants={cartItemVariants}
                   initial="hidden"
-                  animate="visible"
+                  animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"
                     className="shrink-0 p-6 border-t border-hairline bg-canvas space-y-4"
                 >
@@ -730,7 +738,7 @@ export function CartDrawer() {
                   key="checkout-footer"
                   variants={cartItemVariants}
                   initial="hidden"
-                  animate="visible"
+                  animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"
                     className="shrink-0 p-6 border-t border-hairline bg-canvas"
                 >
@@ -793,8 +801,6 @@ export function CartDrawer() {
             </AnimatePresence>
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+    </>
   );
 }

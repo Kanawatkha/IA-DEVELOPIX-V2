@@ -110,6 +110,11 @@
     box-sizing: border-box;
   }
 
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   body {
     background-color: var(--ia-canvas);
     color: var(--ia-primary);

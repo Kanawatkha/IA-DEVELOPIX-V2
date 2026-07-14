@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning className={`${garamond.variable} ${sairaCondensed.variable} ${spaceMono.variable} bg-canvas text-primary font-body antialiased`}>
+      <body suppressHydrationWarning className={`${garamond.variable} ${sairaCondensed.variable} ${spaceMono.variable} bg-canvas text-primary font-body antialiased overflow-x-hidden`}>
         <ScrollToTop />
         {children}
       </body>
