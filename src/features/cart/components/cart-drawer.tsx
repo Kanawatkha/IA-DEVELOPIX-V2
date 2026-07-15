@@ -49,8 +49,6 @@ export function CartDrawer() {
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   const dragControls = useDragControls();
 
-  if (!mounted) return null;
-
   const drawerVariants = {
     open: {
       x: 0,
@@ -335,6 +333,8 @@ export function CartDrawer() {
   const handleSendFacebook = async () => {
     window.open(getMessengerUrl(), "_blank", "noopener,noreferrer");
   };
+
+  if (!mounted) return null;
 
   return (
     <>
