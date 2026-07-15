@@ -28,9 +28,11 @@ interface ShopCollectionsProps {
   title: string;
   /** Optional: pre-select a category filter on mount */
   defaultFilter?: FilterValue;
+  /** Optional: indicates if rendered on Cart Page to trigger top-scroll instead of drawer */
+  isCartPage?: boolean;
 }
 
-export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollectionsProps) {
+export function ShopCollections({ title, defaultFilter = 'ALL', isCartPage = false }: ShopCollectionsProps) {
   const { addToCart, setIsCartOpen } = useCart();
 
   const {
@@ -57,7 +59,11 @@ export function ShopCollections({ title, defaultFilter = 'ALL' }: ShopCollection
       href: model.path,
     }, 1);
     
-    setIsCartOpen(true);
+    if (isCartPage) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      setIsCartOpen(true);
+    }
   };
 
   return (

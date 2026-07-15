@@ -163,12 +163,16 @@ export function Navbar({
     const isAnyOpen = isMobileMenuOpen || isCartOpen;
 
     if (isAnyOpen) {
-      document.body.style.overflow = "hidden";
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      document.body.classList.add("lock-scroll");
     } else {
-      document.body.style.overflow = "";
+      document.body.classList.remove("lock-scroll");
+      document.documentElement.style.removeProperty('--scrollbar-width');
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.classList.remove("lock-scroll");
+      document.documentElement.style.removeProperty('--scrollbar-width');
     };
   }, [isMobileMenuOpen, isCartOpen]);
 

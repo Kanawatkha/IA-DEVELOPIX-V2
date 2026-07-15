@@ -103,6 +103,28 @@
   }
 }
 
+@utility hover-underline-collapse {
+  position: relative;
+  cursor: pointer;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(1);
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: #ffffff;
+    transform-origin: bottom left;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  &:hover::after,
+  .group:hover &::after {
+    transform: scaleX(0);
+    transform-origin: bottom right;
+  }
+}
+
 @layer base {
   * {
     margin: 0;
@@ -110,7 +132,6 @@
     box-sizing: border-box;
   }
 
-  html,
   body {
     overflow-x: hidden;
   }
@@ -127,4 +148,16 @@
   body::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
   }
+}
+
+/* Scroll locking classes to prevent layout shift */
+body.lock-scroll {
+  overflow: hidden !important;
+  padding-right: var(--scrollbar-width, 0px) !important;
+}
+
+body.lock-scroll header,
+body.lock-scroll nav {
+  right: var(--scrollbar-width, 0px) !important;
+  width: auto !important;
 }

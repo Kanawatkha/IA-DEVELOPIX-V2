@@ -543,15 +543,19 @@ export function CartDrawer() {
                                 {cartItems.map((item) => (
                                   <motion.div key={item.id} variants={cartItemVariants} className="flex py-4 md:py-5 gap-3 md:gap-5 items-start">
                                     {/* Product Image - Responsive scaling */}
-                                    <div className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl">
+                                    <Link 
+                                      href={item.href || "#"} 
+                                      onClick={closeDrawer}
+                                      className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl block group"
+                                    >
                                       <Image
                                         src={item.image} 
                                         alt={item.name} 
                                         fill
                                         sizes="(min-width: 768px) 110px, 80px"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                                       />
-                                    </div>
+                                    </Link>
 
                                     {/* Details - Scaled font sizes */}
                                     <div className="flex-1 min-w-0">
@@ -588,10 +592,10 @@ export function CartDrawer() {
                                         
                                         <button
                                           onClick={() => removeFromCart(item.id)}
-                                          className="font-mono text-[10px] uppercase text-primary hover:opacity-70 transition-colors cursor-pointer flex items-center gap-1.5 outline-none"
+                                          className="group font-mono text-[10px] uppercase text-primary cursor-pointer flex items-center gap-1.5 outline-none"
                                         >
                                           <Trash2 size={11} strokeWidth={1.5} />
-                                          <span>Remove</span>
+                                          <span className="hover-underline-collapse leading-none">Remove</span>
                                         </button>
                                       </div>
                                     </div>
@@ -616,15 +620,19 @@ export function CartDrawer() {
                           {RECENTLY_VIEWED_ITEMS.map((item) => (
                             <motion.div key={item.id} variants={cartItemVariants} className="flex p-3 md:p-4 border border-hairline items-center gap-3 md:gap-5 bg-surface-soft rounded-xl transition-colors hover:border-hairline-strong">
                               {/* Product Image - Responsive scaling */}
-                              <div className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl">
+                              <Link 
+                                href={item.href} 
+                                onClick={closeDrawer}
+                                className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl block group"
+                              >
                                 <Image
                                   src={item.image} 
                                   alt={item.name} 
                                   fill
                                   sizes="(min-width: 768px) 110px, 80px"
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                                 />
-                              </div>
+                              </Link>
 
                               {/* Details - Scaled font sizes with clickable title hover effect */}
                               <div className="flex-1 min-w-0">
