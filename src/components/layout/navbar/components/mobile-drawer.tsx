@@ -66,7 +66,7 @@ export function MobileDrawer({
           transition: drawerCloseTransition,
         },
       }}
-      initial={false}
+      initial={isMobile ? "closedBottom" : "closedLeft"}
       animate={isMobileMenuOpen ? "open" : isMobile ? "closedBottom" : "closedLeft"}
       onAnimationComplete={(variant) => {
         if (variant === "closedBottom" || variant === "closedLeft") {

@@ -38,11 +38,18 @@ export function CartDrawer() {
   } = useCart();
 
   const { isMobile } = useWindowSize();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
   const [view, setView] = useState<"tabs" | "checkout">("tabs");
   const [isCopied, setIsCopied] = useState(false);
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   const dragControls = useDragControls();
+
+  if (!mounted) return null;
 
   const drawerVariants = {
     open: {
