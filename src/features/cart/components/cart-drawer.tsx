@@ -713,24 +713,33 @@ export function CartDrawer() {
               {view === "tabs" && activeTab === "cart" && cartItems.length > 0 ? (
                 <motion.div
                   key="cart-footer"
-                  variants={cartItemVariants}
+                  variants={containerVariants}
                   initial="hidden"
                   animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"
-                    className="shrink-0 p-6 border-t border-hairline bg-canvas space-y-4"
+                  className="shrink-0 p-6 border-t border-hairline bg-canvas space-y-4"
                 >
                   {/* Total */}
-                  <div className="flex items-center justify-between">
+                  <motion.div 
+                    variants={cartItemVariants}
+                    className="flex items-center justify-between"
+                  >
                     <span className="font-mono text-sm uppercase tracking-[2px] text-primary">Subtotal</span>
                     {renderAnimatedPrice(cartSubtotal)}
-                  </div>
+                  </motion.div>
                   
-                  <p className="font-serif text-base text-primary leading-tight">
+                  <motion.p 
+                    variants={cartItemVariants}
+                    className="font-serif text-base text-primary leading-tight"
+                  >
                     Tax included. Shipping calculated at checkout.
-                  </p>
+                  </motion.p>
 
                   {/* Main Action Buttons - Inline Row layout */}
-                  <div className="flex flex-row gap-3 w-full">
+                  <motion.div 
+                    variants={cartItemVariants}
+                    className="flex flex-row gap-3 w-full"
+                  >
                     <button
                       onClick={() => setView("checkout")}
                       className="w-[50%] md:w-[60%] min-h-11 border border-primary bg-primary text-canvas font-mono text-xs uppercase tracking-[2px] py-3.5 px-4 rounded-pill hover:bg-canvas hover:text-primary transition-colors duration-300 outline-none text-center cursor-pointer flex items-center justify-center gap-1.5"
@@ -746,18 +755,21 @@ export function CartDrawer() {
                     >
                       View cart
                     </Link>
-                  </div>
+                  </motion.div>
                 </motion.div>
               ) : view === "checkout" ? (
                 <motion.div
                   key="checkout-footer"
-                  variants={cartItemVariants}
+                  variants={containerVariants}
                   initial="hidden"
                   animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"
-                    className="shrink-0 p-6 border-t border-hairline bg-canvas"
+                  className="shrink-0 p-6 border-t border-hairline bg-canvas"
                 >
-                  <div className="flex flex-row gap-2 w-full justify-between items-center shrink-0">
+                  <motion.div 
+                    variants={cartItemVariants}
+                    className="flex flex-row gap-2 w-full justify-between items-center shrink-0"
+                  >
                     <button
                       onClick={handleDownload}
                       className="flex-1 flex items-center justify-center gap-1.5 border border-primary text-primary font-mono text-[9px] md:text-xs uppercase tracking-[1px] md:tracking-[2px] py-3.5 px-1 rounded-pill hover:bg-primary hover:text-canvas transition-colors outline-none cursor-pointer truncate"
@@ -810,7 +822,7 @@ export function CartDrawer() {
                       <MessageCircle size={12} className="shrink-0" />
                       <span className="truncate">FACEBOOK</span>
                     </button>
-                  </div>
+                  </motion.div>
                 </motion.div>
               ) : null}
             </AnimatePresence>
