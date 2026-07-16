@@ -33,17 +33,17 @@ export const TOP_BANNERS: InfoBannerItem[] = [
   { 
     icon: MessageCircle, 
     title: navigationContent.banners.customerService.title,
-    desc: "Reach out to our team if you need any help." 
+    desc: navigationContent.banners.customerService.description
   },
   { 
     icon: Truck, 
     title: navigationContent.banners.shipping.title,
-    desc: "Free shipping on orders above ฿5,000." 
+    desc: navigationContent.banners.shipping.description
   },
   { 
     icon: ShieldCheck, 
     title: navigationContent.banners.orderSupport.title,
-    desc: "Your payment information is processed securely." 
+    desc: navigationContent.banners.orderSupport.description
   }
 ];
 

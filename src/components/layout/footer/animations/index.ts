@@ -1,5 +1,5 @@
 /**
- * @file src/components/layout/footer/animations.ts
+ * @file index.ts
  * @description Centralized Framer Motion animation configurations and variant constants for the Footer module.
  */
 

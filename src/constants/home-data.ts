@@ -3,7 +3,7 @@
  * @description Static datasets and imagery URLs for the storefront Home Page.
  */
 
-import { AwardData, TechItem } from '@/src/types/home';
+import { AwardData, TechItem } from '@/src/features/home/types';
 import { externalImages } from '@/src/lib/media';
 
 /**

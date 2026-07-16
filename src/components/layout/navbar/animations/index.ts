@@ -1,5 +1,5 @@
 /**
- * @file src/components/layout/navbar/animations.ts
+ * @file index.ts
  * @description Centralized Framer Motion animations and variant definitions for the Navbar component and its sub-drawers.
  */
 

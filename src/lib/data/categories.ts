@@ -4,12 +4,12 @@
  *              performance stats comparison layouts, and metadata definitions.
  */
 
-import { CategoryConfig, type CategoryModelItem } from '@/src/features/products/types/Category';
+import { CategoryConfig, type CategoryModelItem } from '@/src/types/category';
 import {
   formatCatalogAmount,
   getCatalogProduct,
   type CatalogProductId,
-} from '@/src/features/products/data/catalog';
+} from './catalog';
 import { externalImages } from '@/src/lib/media';
 
 const CATEGORY_DESKTOP_IMAGE = externalImages.catalog.categoryBackground.desktop;

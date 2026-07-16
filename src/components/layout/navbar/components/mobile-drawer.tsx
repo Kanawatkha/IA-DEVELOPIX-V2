@@ -8,8 +8,9 @@ import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { EASE, fastParentVariants, drawerOpenTransition, drawerCloseTransition, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
 import { LanguageToggleSelector } from "@/src/components/layout/shared/language-toggle-selector";
 import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
-import { MobileDrawerProps } from "../types";
-import { drawerItemVariants, fadeBlurVariants } from "../animations";
+import { MobileDrawerProps } from "../types/index";
+import { drawerItemVariants, fadeBlurVariants } from "../animations/index";
+import { navigationContent } from "@/src/content";
 
 /**
  * Mobile responsive navigation drawer.
@@ -148,7 +149,7 @@ export function MobileDrawer({
                         <span>
                           {link.label}
                           {link.isComingSoon && (
-                            <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>
+                            <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">({navigationContent.comingSoon})</span>
                           )}
                         </span>
                         <ChevronRight className="text-primary/70 group-hover:text-primary transition-colors md:scale-125 md:origin-center md:ml-4" size={18} />
@@ -161,7 +162,7 @@ export function MobileDrawer({
                       >
                         {link.label}
                         {link.isComingSoon && (
-                          <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">(COMING SOON)</span>
+                          <span className="text-[10px] text-primary/40 ml-2 tracking-widest font-normal">({navigationContent.comingSoon})</span>
                         )}
                       </Link>
                     )}
@@ -204,7 +205,7 @@ export function MobileDrawer({
                       {isModelComingSoon(subpage) ? (
                         <>
                           {formatModelName(subpage)}{" "}
-                          <span className="text-[10px] text-primary/40 block tracking-widest">(COMING SOON)</span>
+                          <span className="text-[10px] text-primary/40 block tracking-widest">({navigationContent.comingSoon})</span>
                         </>
                       ) : (
                         formatModelName(subpage)

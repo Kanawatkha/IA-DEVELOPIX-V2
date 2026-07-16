@@ -19,8 +19,8 @@ import { Facebook, Twitter, Instagram, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { childVariants, parentVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
-import { useCart } from '@/src/context/cart-context';
-import { getCatalogProduct, type CatalogProductId } from '@/src/features/products/data/catalog';
+import { useCart } from '@/src/features/cart';
+import { getCatalogProduct, type CatalogProductId } from '@/src/lib/data/catalog';
 
 interface ProductInfoFormProps {
   productId: CatalogProductId;

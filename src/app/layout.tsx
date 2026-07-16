@@ -1,6 +1,6 @@
 import type {Metadata} from 'next';
 import { Saira_Condensed, EB_Garamond, Space_Mono } from 'next/font/google';
-import { ScrollToTop } from '@/src/components/layout/scroll-to-top';
+import { ScrollToTop } from '@/src/components/layout/shared/scroll-to-top';
 import './globals.css';
 import { commonContent } from '@/src/content';
 import { brandImages } from '@/src/lib/media';

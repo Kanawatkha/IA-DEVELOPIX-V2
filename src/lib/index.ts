@@ -25,6 +25,8 @@ export * from './design/typography';
 export * from './data/products';
 export * from './data/achievements';
 export * from './data/spare-parts';
+export * from './data/categories';
+export * from './data/catalog';
 
 // Utilities
 export { cn } from './utils/cn';

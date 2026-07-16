@@ -1,10 +1,11 @@
 /**
- * @file src/components/layout/footer/utils/helpers.tsx
+ * @file index.tsx
  * @description Centralized pure rendering helpers and label processors for the Footer module.
  */
 
 import React from "react";
 import { formatModelName, isModelComingSoon, CATEGORIES } from "@/src/lib/data/products";
+import { navigationContent } from "@/src/content";
 
 /**
  * Parses and processes link labels for display inside Footer lists.
@@ -25,7 +26,7 @@ export const renderFooterLinkLabel = (label: string) => {
       <div className="flex flex-row items-center gap-1.5 flex-wrap">
         <span className="leading-tight text-[13px] whitespace-nowrap hover-underline-expand">{formatModelName(label)}</span>
         <span className="text-[13px] md:text-[9px] text-primary/40 tracking-widest font-normal whitespace-nowrap">
-          (COMING SOON)
+          ({navigationContent.comingSoon})
         </span>
       </div>
     );

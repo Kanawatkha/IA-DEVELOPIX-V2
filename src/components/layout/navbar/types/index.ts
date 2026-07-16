@@ -1,5 +1,5 @@
 /**
- * @file src/components/layout/navbar/types.ts
+ * @file index.ts
  * @description Centralized TypeScript prop interfaces and types for the Navbar layout module.
  */
 

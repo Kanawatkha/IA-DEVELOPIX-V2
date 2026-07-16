@@ -5,7 +5,7 @@ import {
   formatCatalogPrice,
   type CatalogFilter,
   type CatalogProduct,
-} from "@/src/features/products/data/catalog";
+} from "./catalog";
 import { externalImages } from "@/src/lib/media";
 
 export type ShopModel = CatalogProduct & {

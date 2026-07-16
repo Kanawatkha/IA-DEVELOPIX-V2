@@ -5,11 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Undo2, Lock, ChevronLeft, Download, Copy, Check, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/src/context/cart-context";
+import { useCart } from "../hooks/use-cart";
 import { cartContent } from "@/src/content";
 import { exportQuoteImage, downloadQuoteImage } from "@/src/features/cart/services/quote-export-service";
 import { getMessengerUrl } from "@/src/features/cart/services/messenger-service";
 import { parentVariants, childVariants } from "@/src/lib/design/variants";
+import { drawQuoteToCanvas } from "../services/quote-renderer";
+import { AnimatedPrice } from "./animated-price";
+import { CartItemRow } from "./cart-item-row";
 
 export function CartView() {
   const { 
@@ -62,136 +65,10 @@ export function CartView() {
     return `฿${amount.toLocaleString()} THB`;
   };
 
-  // Helper to query computed style for CSS Variables (resolving font names)
-  const getFontFamily = (varName: string, fallback: string) => {
-    if (typeof window === "undefined") return fallback;
-    const computed = window.getComputedStyle(document.body).getPropertyValue(varName);
-    return computed ? computed.trim() : fallback;
-  };
-
   // Render the Quote statement onto the HTML5 Canvas when the checkout view is active and canvas has mounted.
   useEffect(() => {
     if (view !== "checkout" || !canvasElement) return;
-
-    const canvas = canvasElement;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Set high resolution canvas dimensions
-    canvas.width = 800;
-    canvas.height = 1000;
-
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw luxury double borders
-    ctx.strokeStyle = "#262626";
-    ctx.lineWidth = 12;
-    ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
-    ctx.strokeStyle = "#3a3a3a";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
-
-    // Resolve font families from CSS variables
-    const sairaCondensed = getFontFamily("--font-saira-condensed", "'Saira Condensed', sans-serif");
-    const spaceMono = getFontFamily("--font-space-mono", "monospace");
-    const garamond = getFontFamily("--font-garamond", "serif");
-
-    // Render branding header
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.font = `normal 32px ${sairaCondensed}`;
-    ctx.fillText("IA DEVELOPIX", canvas.width / 2, 70);
-
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 14px ${spaceMono}`;
-    ctx.fillText("QUOTE STATEMENT", canvas.width / 2, 115);
-
-    // Date
-    const today = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    ctx.fillText(`DATE: ${today.toUpperCase()}`, canvas.width / 2, 140);
-
-    // Separator line
-    ctx.strokeStyle = "#262626";
-    ctx.beginPath();
-    ctx.moveTo(50, 180);
-    ctx.lineTo(canvas.width - 50, 180);
-    ctx.stroke();
-
-    // Table column headers
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `normal 12px ${spaceMono}`;
-    ctx.fillText("PRODUCT DESCRIPTION", 60, 210);
-    
-    ctx.textAlign = "center";
-    ctx.fillText("QTY", 480, 210);
-    
-    ctx.textAlign = "right";
-    ctx.fillText("UNIT PRICE", 610, 210);
-    ctx.fillText("TOTAL", 740, 210);
-
-    // Table divider line
-    ctx.strokeStyle = "#3a3a3a";
-    ctx.beginPath();
-    ctx.moveTo(50, 235);
-    ctx.lineTo(canvas.width - 50, 235);
-    ctx.stroke();
-
-    // Render quote products list
-    let currentY = 260;
-    ctx.fillStyle = "#cccccc";
-    ctx.font = `normal 16px ${garamond}`;
-
-    cartItems.forEach((item) => {
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText(item.name.toUpperCase(), 60, currentY);
-
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#cccccc";
-      ctx.fillText(item.quantity.toString(), 480, currentY);
-
-      ctx.textAlign = "right";
-      ctx.fillText(formatPrice(item.price), 610, currentY);
-      ctx.fillText(formatPrice(item.price * item.quantity), 740, currentY);
-
-      currentY += 45;
-    });
-
-    // Subtotal divider line
-    ctx.strokeStyle = "#262626";
-    ctx.beginPath();
-    ctx.moveTo(50, currentY + 10);
-    ctx.lineTo(canvas.width - 50, currentY + 10);
-    ctx.stroke();
-
-    // Subtotal layout summary
-    currentY += 40;
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 14px ${spaceMono}`;
-    ctx.fillText("SUBTOTAL", 60, currentY);
-
-    ctx.textAlign = "right";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `bold 22px ${spaceMono}`;
-    ctx.fillText(formatPrice(cartSubtotal), 740, currentY);
-
-    // Outbox instruction info
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 11px ${spaceMono}`;
-    ctx.fillText("PLEASE SEND THIS QUOTE IMAGE TO OUTBOX VIA FACEBOOK PAGE", canvas.width / 2, 870);
-
-    ctx.fillStyle = "#666666";
-    ctx.font = `italic 14px ${garamond}`;
-    ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 920);
+    drawQuoteToCanvas(canvasElement, cartItems, cartSubtotal);
   }, [view, canvasElement, cartItems, cartSubtotal]);
 
   const handleDownload = async () => {
@@ -222,62 +99,6 @@ export function CartView() {
 
   const handleSendFacebook = async () => {
     window.open(getMessengerUrl(), "_blank", "noopener,noreferrer");
-  };
-
-  const renderAnimatedPrice = (value: number, className = "font-mono text-lg uppercase text-primary font-bold") => {
-    const formatPriceString = (amount: number) => {
-      return `฿${amount.toLocaleString()} THB`;
-    };
-
-    const priceStr = formatPriceString(value);
-    const chars = priceStr.split("");
-
-    return (
-      <span className={`${className} inline-flex items-center h-[1.5em] overflow-hidden`}>
-        {chars.map((char, index) => {
-          const isDigit = /\d/.test(char);
-          if (!isDigit) {
-            return (
-              <span key={index} className="inline-block whitespace-pre">
-                {char}
-              </span>
-            );
-          }
-
-          const digit = parseInt(char, 10);
-
-          return (
-            <span
-              key={index}
-              className="relative inline-block w-[0.62em] h-[1.5em] overflow-hidden"
-              style={{ verticalAlign: "bottom" }}
-            >
-              <motion.span
-                initial={{ y: 0 }}
-                animate={{ y: `-${digit * 10}%` }}
-                transition={{
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 14,
-                  mass: 0.8,
-                }}
-                className="absolute left-0 top-0 flex flex-col w-full h-[1000%]"
-              >
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                  <span
-                    key={num}
-                    className="h-[10%] flex items-center justify-center font-mono"
-                    style={{ height: "1.5em", lineHeight: "1.5em" }}
-                  >
-                    {num}
-                  </span>
-                ))}
-              </motion.span>
-            </span>
-          );
-        })}
-      </span>
-    );
   };
 
   if (!mounted) {
@@ -367,134 +188,18 @@ export function CartView() {
 
                 {/* Items */}
                 <div className="divide-y divide-hairline">
-                  {cartItems.map((item) => (
-                    <motion.div 
-                      key={item.id} 
-                      variants={childVariants}
-                      className="py-6 w-full"
-                    >
-                      {/* Desktop & Tablet Layout */}
-                      <div className="hidden md:grid grid-cols-12 gap-4 items-center w-full">
-                        {/* Product Detail Card */}
-                        <div className="col-span-6 flex gap-4 items-center">
-                          <Link 
-                            href={item.href || "#"} 
-                            className="relative w-[120px] h-[120px] border border-hairline bg-white shrink-0 rounded-md overflow-hidden block group"
-                          >
-                            <Image
-                              src={item.image} 
-                              alt={item.name} 
-                              fill
-                              sizes="120px"
-                              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                            />
-                          </Link>
-                          <div className="min-w-0 max-w-[calc(100%-136px)]">
-                            <h4 className="font-display text-lg tracking-[2px] uppercase text-primary break-words">
-                              <Link 
-                                href={item.href || "#"} 
-                                className="hover-underline-expand inline-block max-w-full pb-0.5"
-                              >
-                                {item.name}
-                              </Link>
-                            </h4>
-                            <p className="font-mono text-sm text-primary mt-1">
-                              {formatPrice(item.price)}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Quantity Controls & Remove Action */}
-                        <div className="col-span-2 flex items-center justify-center gap-4">
-                          <div className="flex items-center border border-hairline py-1.5 px-3.5 space-x-4 rounded-full bg-surface-soft">
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="text-muted hover:text-primary transition-colors text-xs font-mono"
-                            >
-                              -
-                            </button>
-                            <span className="font-mono text-xs text-primary w-4 text-center font-bold">{item.quantity}</span>
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="text-muted hover:text-primary transition-colors text-xs font-mono"
-                            >
-                              +
-                            </button>
-                          </div>
-                          <button
-                            onClick={() => removeFromCart(item.id)}
-                            className="font-mono text-[10px] uppercase text-primary whitespace-nowrap cursor-pointer hover-underline-collapse leading-none outline-none"
-                          >
-                            Remove
-                          </button>
-                        </div>
-
-                        {/* Total price for this item */}
-                        <div className="col-span-4 text-right">
-                          {renderAnimatedPrice(item.price * item.quantity, "font-mono text-base text-primary font-bold")}
-                        </div>
-                      </div>
-
-                      {/* Mobile Layout */}
-                      <div className="flex md:hidden w-full gap-4 items-start">
-                        {/* Left: Product Image */}
-                        <Link 
-                          href={item.href || "#"} 
-                          className="relative w-[90px] h-[90px] border border-hairline bg-white shrink-0 rounded-md overflow-hidden block"
-                        >
-                          <Image
-                            src={item.image} 
-                            alt={item.name} 
-                            fill
-                            sizes="90px"
-                            className="w-full h-full object-cover"
-                          />
-                        </Link>
-
-                        {/* Right: Info & Actions Grid */}
-                        <div className="flex-1 flex flex-col justify-center gap-2.5 min-h-[90px]">
-                          {/* Row 1: Name (Left) and Quantity Selector (Right) */}
-                          <div className="flex items-start justify-between w-full">
-                            <h4 className="font-display text-sm tracking-[1px] uppercase text-primary break-words pr-2 max-w-[60%]">
-                              <Link href={item.href || "#"} className="inline-block max-w-full">
-                                {item.name}
-                              </Link>
-                            </h4>
-                            
-                            {/* Quantity box inline with name */}
-                            <div className="flex items-center border border-hairline py-1 px-2.5 space-x-2.5 rounded-full bg-surface-soft shrink-0">
-                              <button
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="text-muted hover:text-primary transition-colors text-[10px] font-mono"
-                              >
-                                -
-                              </button>
-                              <span className="font-mono text-[10px] text-primary w-3 text-center font-bold">{item.quantity}</span>
-                              <button
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="text-muted hover:text-primary transition-colors text-[10px] font-mono"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Row 2: Price (Left) and Remove Button (Right) */}
-                          <div className="flex items-center justify-between w-full">
-                            <p className="font-mono text-xs text-primary font-bold">
-                              {formatPrice(item.price)}
-                            </p>
-                            <button
-                              onClick={() => removeFromCart(item.id)}
-                              className="font-mono text-[9px] uppercase text-primary underline underline-offset-2 hover:text-muted transition-colors outline-none cursor-pointer"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+              {cartItems.map((item) => (
+                <motion.div 
+                  key={item.id} 
+                  variants={childVariants}
+                >
+                  <CartItemRow
+                    item={item}
+                    updateQuantity={updateQuantity}
+                    removeFromCart={removeFromCart}
+                  />
+                </motion.div>
+              ))}
                 </div>
 
               </div>
@@ -526,7 +231,7 @@ export function CartView() {
                         >
                           <div className="flex items-center justify-between gap-4">
                             <span className="font-display text-2xl tracking-[2px] uppercase text-primary">Subtotal</span>
-                            {renderAnimatedPrice(cartSubtotal, "font-mono text-2xl max-[375px]:text-lg uppercase text-primary font-bold whitespace-nowrap")}
+                            <AnimatedPrice value={cartSubtotal} className="font-mono text-2xl max-[375px]:text-lg uppercase text-primary font-bold whitespace-nowrap" />
                           </div>
                           
                           <p className="font-serif text-xs text-primary leading-tight">

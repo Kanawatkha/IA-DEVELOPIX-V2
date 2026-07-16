@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { LaurelAward } from './laurel-award';
 import { AWARDS_DATA } from '@/src/constants/home-data';
+import { homeContent } from '@/src/content';
 import {
   awardsParentVariants,
   awardsChildVariants,
@@ -33,7 +34,7 @@ export function AwardsSection() {
           <div className="inline-block border-b border-hairline pb-4 mb-6 lg:mb-8 min-[2000px]:pb-8 min-[2000px]:mb-20 min-[2000px]:border-b-4 text-center">
             {/* Medals and Achievements Section Title */}
             <h2 className={`${displayLg} text-[30px] sm:text-[42px] md:text-[50px] lg:text-[80px] text-primary min-[2000px]:text-[100px]`}>
-              PROVEN ON THE TRACK
+              {homeContent.awards.title}
             </h2>
           </div>
         </motion.div>

@@ -6,5 +6,5 @@
 
 export * from './components';
 export * from './types';
-export * from './data/catalog';
+export * from '@/src/lib/data/catalog';
 export * from './content';

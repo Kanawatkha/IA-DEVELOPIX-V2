@@ -1,12 +1,9 @@
-"use client";
+/**
+ * @file use-cart.ts
+ * @description Custom React hook wrapping Zustand store selectors for Cart feature states and operations.
+ */
 
-import React from "react";
-import { useCartStore, getCartTotals } from "@/src/features/cart/store/cart-store";
-export type { CartItem } from "@/src/features/cart/schemas/cart-schema";
-
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
-}
+import { useCartStore, getCartTotals } from "../store/cart-store";
 
 export function useCart() {
   const cartItems = useCartStore((state) => state.cartItems);

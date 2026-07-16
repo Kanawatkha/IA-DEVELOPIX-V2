@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TOP_BANNERS } from "@/src/constants";
-import { sliderVariants } from "../animations";
+import { sliderVariants } from "../animations/index";
 
 /**
  * Renders the top value proposition banners.

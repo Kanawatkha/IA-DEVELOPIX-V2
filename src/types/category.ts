@@ -1,5 +1,5 @@
 /**
- * @file src/features/products/types/Category.ts
+ * @file category.ts
  * @description Standardized type definitions and interfaces for IA DEVELOPIX
  *              product categories, performance stat matchups, and series catalog structures.
  */

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { storeContent } from '@/src/content';
 
 export function EngineeringGrid({ children, title }: { children: React.ReactNode, title: string }) {
   return (
@@ -98,7 +99,7 @@ export function EngineeringFeature({ title, description, isLast = false, delayIn
         className="mt-16 w-full h-[160px] border border-hairline bg-surface-soft flex items-center justify-center relative overflow-hidden group-hover:border-primary/50 transition-colors"
       >
         <span className="font-mono text-[10px] tracking-[1.4px] text-muted/50 uppercase border border-muted/10 p-2 z-10 mix-blend-difference">
-          [ TECH GRAPHIC PLACEHOLDER ]
+          {storeContent.common.placeholderTech}
         </span>
         {/* Subtle grid pattern background to feel technical */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_30%,transparent_100%)]"></div>

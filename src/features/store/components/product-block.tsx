@@ -12,6 +12,7 @@
 
 import Link from 'next/link';
 import * as ty from '@/src/lib/design/typography';
+import { storeContent } from '@/src/content';
 
 interface ProductBlockProps {
   title: string;
@@ -50,7 +51,7 @@ export function ProductBlock({
           {isComingSoon && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-canvas/20">
               <span className="bg-canvas px-6 py-3 border border-primary/20 font-mono text-[11px] text-primary uppercase tracking-[2px]">
-                COMING SOON
+                {storeContent.common.comingSoon}
               </span>
             </div>
           )}
@@ -73,7 +74,7 @@ export function ProductBlock({
             isComingSoon ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:text-primary'
           }`}
         >
-          Learn more
+          {storeContent.common.learnMore}
           {!isComingSoon && (
             <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           )}
@@ -82,7 +83,7 @@ export function ProductBlock({
 
       {/* Price Row */}
       <p className="font-mono text-sm tracking-[2px] text-primary mb-8">
-        {isComingSoon ? 'THB ??' : `THB ${price}`}
+        {isComingSoon ? `${storeContent.common.thb} ??` : `${storeContent.common.thb} ${price}`}
       </p>
 
       {/* Action Buttons */}
@@ -95,7 +96,7 @@ export function ProductBlock({
               : 'hover:bg-primary hover:text-canvas focus:ring-1 focus:ring-primary'
           }`}
         >
-          ADD TO CART
+          {storeContent.common.addToCart}
         </button>
         <button
           disabled={isComingSoon}
@@ -105,7 +106,7 @@ export function ProductBlock({
               : 'hover:bg-primary hover:text-canvas focus:ring-1 focus:ring-primary'
           }`}
         >
-          ORDER NOW
+          {storeContent.common.orderNow}
         </button>
       </div>
     </div>

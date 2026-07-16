@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import { displayLg, displayMd, captionUpper } from '@/src/lib/design/typography';
 import { CATEGORIES, getCategoryPath } from '@/src/lib/data/products';
+import { homeContent } from '@/src/content';
 
 /**
  * Renders the robotics fleet section on the landing page.
@@ -27,7 +28,7 @@ export function FleetSection() {
           {/* Section Section Header */}
           <div className="inline-block border-b border-hairline pb-4">
             <h2 className={`${displayLg} text-[30px] sm:text-[42px] md:text-[50px] lg:text-[80px] min-[2000px]:text-[100px] min-[2000px]:leading-tight whitespace-nowrap lg:whitespace-normal`}>
-              OUR ROBOTICS FLEET
+              {homeContent.fleet.title}
             </h2>
           </div>
         </motion.div>
@@ -64,7 +65,7 @@ export function FleetSection() {
                   {isComingSoon && (
                     <div className="absolute inset-0 z-30 flex items-center justify-center">
                       <span className="text-white font-normal text-base sm:text-xl md:text-2xl lg:text-3xl tracking-widest border border-white/20 px-4 py-2 sm:px-6 sm:py-2.5 md:px-8 md:py-3 bg-black/20 backdrop-blur-sm">
-                        COMING SOON
+                        {homeContent.fleet.comingSoon}
                       </span>
                     </div>
                   )}
@@ -77,7 +78,7 @@ export function FleetSection() {
 
                   <div className="absolute bottom-6 left-0 right-0 flex justify-center z-20">
                     <span className={`${captionUpper} text-body hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] relative pb-1 transition-all duration-300 group/text cursor-pointer`}>
-                      EXPLORE SERIES
+                      {homeContent.fleet.exploreSeries}
                       <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-primary/40 group-hover/text:bg-white group-hover/text:-translate-y-[2px] transition-all duration-300 ease-out" />
                     </span>
                   </div>

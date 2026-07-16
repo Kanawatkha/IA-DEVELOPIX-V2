@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ScrollIndicator } from '@/src/components/ui';
+import { ScrollIndicator } from './scroll-indicator';
 import {
   parentVariants,
   childVariants,
@@ -16,6 +16,7 @@ import {
   ctaButton,
 } from '@/src/lib/design/typography';
 import { HERO_BG_IMAGES } from '@/src/constants/home-data';
+import { homeContent } from '@/src/content';
 
 /**
  * Landing page top Hero showcase component.
@@ -85,13 +86,13 @@ export function HeroSection() {
               variants={childVariants}
               className={`${displayXl} text-[8.2vw] sm:text-[52px] md:text-[68px] lg:text-[100px] xl:text-[140px] whitespace-nowrap lg:whitespace-normal mb-4 md:mb-8 mt-[-2vw] max-w-2xl md:max-w-none lg:max-w-2xl min-[2000px]:text-[130px] min-[2000px]:leading-[0.9]`}
             >
-              AUTONOMOUS <br className="hidden lg:block" /> ROBOTICS
+              {homeContent.hero.titleautonomous} <br className="hidden lg:block" /> {homeContent.hero.titlerobotics}
             </motion.h1>
             <motion.p 
               variants={childVariants}
               className={`${bodyMd} w-full min-w-0 md:text-[20px] mb-12 max-w-lg min-[2000px]:text-[24px] min-[2000px]:max-w-[700px]`}
             >
-              High-speed line followers, mission-based robots, and elite competition hardware. From advanced sensors to specialized mechanical parts — everything you need to win.
+              {homeContent.hero.description}
             </motion.p>
             
             <motion.div variants={childVariants}>
@@ -99,7 +100,7 @@ export function HeroSection() {
                 href="/store"
                 className="inline-flex min-h-11 items-center justify-center border border-primary rounded-pill bg-primary text-canvas font-mono font-normal text-button uppercase transition-colors duration-300 px-8 py-3.5 hover:bg-transparent hover:text-primary w-max min-[2000px]:text-lg min-[2000px]:px-10 min-[2000px]:py-4"
               >
-                ENTER THE STORE
+                {homeContent.hero.cta}
               </Link>
             </motion.div>
           </motion.div>

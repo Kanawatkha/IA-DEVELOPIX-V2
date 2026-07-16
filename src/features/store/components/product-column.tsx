@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { Product } from '@/src/features/products/types';
 import * as ty from '@/src/lib/design/typography';
+import { storeContent } from '@/src/content';
 
 const SceneWrapper = dynamic(
   () => import('@/src/components/canvas').then((mod) => mod.SceneWrapper),
@@ -43,7 +44,7 @@ export function ProductColumn({ product, title, isRight = false }: ProductColumn
              </SceneWrapper>
           </div>
           <div className="pointer-events-none z-10 bg-[rgba(0,0,0,0.6)] px-4 py-2 backdrop-blur-sm border border-hairline mt-auto mb-4 absolute bottom-4">
-             <span className={`${ty.captionUpper} text-muted`}>[ 3D MODEL PLACEHOLDER ]</span>
+             <span className={`${ty.captionUpper} text-muted`}>{storeContent.common.placeholder3d}</span>
           </div>
         </div>
  
@@ -68,7 +69,7 @@ export function ProductColumn({ product, title, isRight = false }: ProductColumn
       </div>
       
       <button className={`${ty.ctaButton} w-full hover:bg-white hover:text-canvas mt-auto relative z-10`}>
-        EXPLORE {title}
+        {storeContent.common.explore} {title}
       </button>
     </div>
   );

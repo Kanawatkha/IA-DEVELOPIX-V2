@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight, Facebook, Instagram, Youtube } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { FOOTER_LINKS } from "@/src/constants";
-import { renderFooterLinkLabel } from "../utils/helpers";
+import { renderFooterLinkLabel } from "../utils/index";
+import { NewsletterForm } from "./newsletter-form";
+import { navigationContent } from "@/src/content";
 
 /**
  * Renders the links navigation grid and mailing list subscription form.
@@ -18,6 +20,12 @@ export function FooterLinks() {
     setOpenAccordion(openAccordion === title ? null : title);
   };
 
+  const getLocalizedTitle = (title: string) => {
+    if (title === "ROBOTICS FLEET") return navigationContent.footer.fleet;
+    if (title === "ROBOT MODELS") return navigationContent.footer.models;
+    return title;
+  };
+
   return (
     <div className="flex flex-col md:flex-row justify-center py-4 md:py-16 min-[1920px]:py-24 gap-y-10 md:gap-y-12">
       {/* Footer Navigation Columns */}
@@ -27,7 +35,7 @@ export function FooterLinks() {
           {FOOTER_LINKS.map((col) => (
             <div key={col.title} className="flex flex-col space-y-6 min-[1920px]:space-y-10">
               <h4 className="font-mono text-[11px] md:text-xs min-[1920px]:text-sm xl:text-base font-normal text-primary tracking-[2px] uppercase">
-                {col.title}
+                {getLocalizedTitle(col.title)}
               </h4>
               <ul className="flex flex-col space-y-3 min-[1920px]:space-y-6">
                 {col.links.map((link) => (
@@ -54,7 +62,7 @@ export function FooterLinks() {
                 className="flex items-center justify-between w-full py-3 text-left outline-none cursor-pointer"
               >
                 <span className="font-mono text-xs font-normal text-primary tracking-[2px] uppercase">
-                  {col.title}
+                  {getLocalizedTitle(col.title)}
                 </span>
                 <motion.div animate={{ rotate: openAccordion === col.title ? 180 : 0 }}>
                   <ChevronDown size={16} className="text-muted" />
@@ -89,64 +97,7 @@ export function FooterLinks() {
       </div>
 
       {/* Mailing List Input Form & Social Link Integrations */}
-      <div className="w-full md:w-[350px] lg:w-[450px] min-[1920px]:w-[700px] flex flex-col space-y-4 md:space-y-6 min-[1920px]:space-y-12 shrink-0">
-        <h2 className="font-display text-xl md:text-2xl min-[1920px]:text-4xl uppercase tracking-[2px] text-primary leading-tight font-normal">
-          JOIN OUR MAILING LIST FOR EXCLUSIVE UPDATES
-        </h2>
-        <div className="flex items-center border-b border-hairline-strong pb-2 md:pb-3 min-[1920px]:pb-6 group hover:border-primary transition-colors">
-          <input
-            type="email"
-            placeholder="ENTER YOUR EMAIL"
-            className="bg-transparent flex-1 outline-none font-serif text-xs md:text-sm min-[1920px]:text-lg text-primary placeholder:text-muted tracking-normal uppercase"
-            aria-label="Email Address"
-          />
-          <button
-            className="text-muted group-focus-within:text-primary hover:text-primary transition-colors pl-4 outline-none cursor-pointer"
-            aria-label="Submit Email"
-          >
-            <ArrowRight strokeWidth={1.5} className="min-[1920px]:w-8 min-[1920px]:h-8" />
-          </button>
-        </div>
-
-        <div className="hidden md:flex items-center space-x-6 min-[1920px]:space-x-10 pt-4 min-[1920px]:pt-8">
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook Profile"
-          >
-            <Facebook
-              strokeWidth={1}
-              className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-muted hover:text-primary transition-colors cursor-pointer"
-            />
-          </a>
-          <span className="font-display font-normal text-lg min-[1920px]:text-2xl text-muted hover:text-primary transition-colors cursor-pointer">
-            X
-          </span>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram Profile"
-          >
-            <Instagram
-              strokeWidth={1}
-              className="w-5 h-5 min-[1920px]:w-8 min-[1920px]:h-8 text-muted hover:text-primary transition-colors cursor-pointer"
-            />
-          </a>
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="YouTube Channel"
-          >
-            <Youtube
-              strokeWidth={1}
-              className="w-6 h-6 min-[1920px]:w-10 min-[1920px]:h-10 text-muted hover:text-primary transition-colors cursor-pointer"
-            />
-          </a>
-        </div>
-      </div>
+      <NewsletterForm />
     </div>
   );
 }

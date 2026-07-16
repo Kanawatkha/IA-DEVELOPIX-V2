@@ -1,2 +1,2 @@
 export * from './Product';
-export * from './Category';
+export * from '@/src/types/category';

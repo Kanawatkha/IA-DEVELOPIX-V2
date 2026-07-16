@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import * as ty from '@/src/lib/design/typography';
 import { StatBar } from '../detail-view/stat-bar';
-import { PerformanceComparison } from '@/src/features/products/types/Category';
+import { PerformanceComparison } from '@/src/types/category';
 
 interface PerformanceMatchupProps {
   title?: string;

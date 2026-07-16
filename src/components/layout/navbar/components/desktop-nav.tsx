@@ -3,12 +3,12 @@
 import React, { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, User, ShoppingCart, Menu, ShoppingBag } from "lucide-react";
-import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
+import { Globe, ShoppingCart, Menu } from "lucide-react";
+import { MAIN_NAVIGATION } from "@/src/constants";
 import { LanguageSelector } from "./language-selector";
-import { formatModelName, isModelComingSoon } from "@/src/lib/data/products";
-import { DesktopNavProps } from "../types";
-import { submenuVariants, itemVariants } from "../animations";
+import { DesktopNavProps } from "../types/index";
+import { SubmenuDropdown } from "./submenu-dropdown";
+import { navigationContent } from "@/src/content";
 
 /**
  * Top desktop viewport navigation banner.
@@ -145,52 +145,19 @@ export function DesktopNav({
                       {link.label}
                       {link.isComingSoon && (
                         <span className="text-[9px] text-primary/40 ml-2 tracking-widest font-normal">
-                          (COMING SOON)
+                          ({navigationContent.comingSoon})
                         </span>
                       )}
                     </span>
                   </Link>
 
                   <AnimatePresence>
-                    {isHovered && link.hasSubmenu && !isMultiRow && (
-                      <motion.div
-                        key={link.label}
-                        className={`absolute top-full left-1/2 -translate-x-1/2 z-[110] hidden min-[950px]:block origin-top mt-0 pt-2 ${
-                          link.label === "LINEFOLLOWER"
-                            ? "w-[190px] min-[2000px]:w-[240px]"
-                            : link.label === "MISSION"
-                            ? "w-[190px] min-[2000px]:w-[210px]"
-                            : "w-[200px] min-[2000px]:w-[230px]"
-                        }`}
-                        variants={submenuVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                      >
-                        <div className="bg-[#0d0d0d] border border-hairline rounded-2xl shadow-lg">
-                          <div className="flex flex-col items-start text-left p-2 min-[2000px]:p-3 w-full">
-                            {link.subpages?.map((sub) => (
-                              <motion.div key={sub} variants={itemVariants} className="w-full">
-                                <Link
-                                  href={getVariantHref(link.label, sub)}
-                                  className="block px-4 py-2.5 text-xs font-normal uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 rounded-xl transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-3.5 w-full text-left whitespace-nowrap"
-                                >
-                                  {isModelComingSoon(sub) ? (
-                                    <>
-                                      {formatModelName(sub)}
-                                      <div className="text-[9px] text-primary/40 mt-1 tracking-widest">
-                                        (COMING SOON)
-                                      </div>
-                                    </>
-                                  ) : (
-                                    formatModelName(sub)
-                                  )}
-                                </Link>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
+                    {isHovered && link.hasSubmenu && link.subpages && (
+                      <SubmenuDropdown
+                        label={link.label}
+                        subpages={link.subpages}
+                        isMultiRow={isMultiRow}
+                      />
                     )}
                   </AnimatePresence>
                 </div>

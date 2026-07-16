@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { parentVariants, childVariants } from '@/src/lib/design/variants';
 import { displayXl, displayLg } from '@/src/lib/design/typography';
 import { TECH_ITEMS } from '@/src/constants/home-data';
+import { homeContent } from '@/src/content';
 
 /**
  * Renders the development environments and engineering tech stack tools section.
@@ -13,7 +14,7 @@ import { TECH_ITEMS } from '@/src/constants/home-data';
  */
 export function TechStackSection() {
   return (
-    <section className="section-layout section-py section-px bg-[#000000] overflow-hidden relative">
+    <section className="section-layout section-py section-px bg-canvas overflow-hidden relative">
       <motion.div 
         initial="hidden"
         whileInView="visible"
@@ -25,10 +26,10 @@ export function TechStackSection() {
         <motion.div variants={childVariants}>
           <div className="text-center mb-4 md:mb-5 min-[2000px]:mb-8">
             <h2 className={`${displayXl} text-[32px] sm:text-[46px] md:text-[55px] lg:text-[80px] text-primary mb-2 min-[2000px]:text-[100px] whitespace-nowrap`}>
-              DISCOVER OUR
+              {homeContent.techStack.title}
             </h2>
             <h2 className={`${displayLg} text-[22px] sm:text-[34px] md:text-[40px] lg:text-[50px] text-muted min-[2000px]:text-[60px] whitespace-nowrap lg:whitespace-normal`}>
-              DEVELOPMENT ENVIRONMENTS
+              {homeContent.techStack.subtitle}
             </h2>
           </div>
         </motion.div>

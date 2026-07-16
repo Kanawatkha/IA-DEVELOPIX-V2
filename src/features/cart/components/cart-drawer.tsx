@@ -5,12 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { X, ArrowRight, ChevronLeft, Download, Copy, MessageCircle, Lock, Check, Trash2 } from "lucide-react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
-import { useCart } from "@/src/context/cart-context";
+import { useCart } from "../hooks/use-cart";
 import { useWindowSize } from "@/src/hooks";
-import { drawerOpenTransition, drawerCloseTransition, EASE, DURATION, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
+import { EASE, DURATION, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
 import { exportQuoteImage, downloadQuoteImage } from "@/src/features/cart/services/quote-export-service";
 import { getMessengerUrl } from "@/src/features/cart/services/messenger-service";
 import { externalImages } from "@/src/lib/media";
+import { drawQuoteToCanvas } from "../services/quote-renderer";
+import { AnimatedPrice } from "./animated-price";
+import { CartItemRow } from "./cart-item-row";
+import { drawerVariants, containerVariants, footerContainerVariants, cartItemVariants } from "../animations/index";
 
 const RECENTLY_VIEWED_IMAGE = externalImages.catalog.productBlueprint;
 
@@ -60,74 +64,7 @@ export function CartDrawer() {
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   const dragControls = useDragControls();
 
-  const drawerVariants = {
-    open: {
-      x: 0,
-      y: 0,
-      transition: drawerOpenTransition,
-    },
-    closedRight: {
-      x: "100%",
-      y: 0,
-      transition: drawerCloseTransition,
-    },
-    closedBottom: {
-      x: 0,
-      y: "100%",
-      transition: drawerCloseTransition,
-    },
-  };
 
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.15,
-      },
-    },
-  };
-
-  const footerContainerVariants = {
-    hidden: {
-      opacity: 0,
-      filter: "blur(12px)",
-      transition: {
-        duration: 0.2,
-        ease: "easeIn" as const,
-      },
-    },
-    visible: {
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        duration: 0.5,
-        ease: EASE.luxury,
-        staggerChildren: 0.05,
-        delayChildren: 0.1,
-        delay: 0.05,
-      },
-    },
-  };
-
-  const cartItemVariants = {
-    hidden: {
-      opacity: 0,
-      filter: "blur(12px)",
-      transition: {
-        duration: 0.3,
-        ease: "easeIn" as const,
-      },
-    },
-    visible: {
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        duration: DURATION.fast,
-        ease: EASE.luxury,
-      },
-    },
-  };
 
   const closeDrawer = () => {
     setIsCartOpen(false);
@@ -135,63 +72,6 @@ export function CartDrawer() {
 
   const formatPrice = (amount: number) => {
     return `฿${amount.toLocaleString()} THB`;
-  };
-
-  // Component to render price counts with smooth rolling numeric animation (money flow / slot machine style).
-  const renderAnimatedPrice = (value: number) => {
-    const formatPriceString = (amount: number) => {
-      return `฿${amount.toLocaleString()} THB`;
-    };
-
-    const priceStr = formatPriceString(value);
-    const chars = priceStr.split("");
-
-    return (
-      <span className="font-mono text-lg uppercase text-primary font-bold inline-flex items-center h-7 overflow-hidden">
-        {chars.map((char, index) => {
-          const isDigit = /\d/.test(char);
-          if (!isDigit) {
-            return (
-              <span key={index} className="inline-block whitespace-pre">
-                {char}
-              </span>
-            );
-          }
-
-          const digit = parseInt(char, 10);
-
-          return (
-            <span
-              key={index}
-              className="relative inline-block w-[0.62em] h-[1.5em] overflow-hidden"
-              style={{ verticalAlign: "bottom" }}
-            >
-              <motion.span
-                initial={{ y: 0 }}
-                animate={{ y: `-${digit * 10}%` }}
-                transition={{
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 14,
-                  mass: 0.8,
-                }}
-                className="absolute left-0 top-0 flex flex-col w-full h-[1000%]"
-              >
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                  <span
-                    key={num}
-                    className="h-[10%] flex items-center justify-center font-mono"
-                    style={{ height: "1.5em", lineHeight: "1.5em" }}
-                  >
-                    {num}
-                  </span>
-                ))}
-              </motion.span>
-            </span>
-          );
-        })}
-      </span>
-    );
   };
 
   const handleAddFromRecommendations = (item: typeof RECENTLY_VIEWED_ITEMS[number]) => {
@@ -205,136 +85,10 @@ export function CartDrawer() {
     setActiveTab("cart");
   };
 
-  // Helper to query computed style for CSS Variables (resolving font names)
-  const getFontFamily = (varName: string, fallback: string) => {
-    if (typeof window === "undefined") return fallback;
-    const computed = window.getComputedStyle(document.body).getPropertyValue(varName);
-    return computed ? computed.trim() : fallback;
-  };
-
   // Render the Quote statement onto the HTML5 Canvas when the checkout view is active and canvas has mounted.
   useEffect(() => {
     if (view !== "checkout" || !canvasElement) return;
-
-    const canvas = canvasElement;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Set high resolution canvas dimensions
-    canvas.width = 800;
-    canvas.height = 1000;
-
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw luxury double borders
-    ctx.strokeStyle = "#262626";
-    ctx.lineWidth = 12;
-    ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
-    ctx.strokeStyle = "#3a3a3a";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
-
-    // Resolve font families from CSS variables
-    const sairaCondensed = getFontFamily("--font-saira-condensed", "'Saira Condensed', sans-serif");
-    const spaceMono = getFontFamily("--font-space-mono", "monospace");
-    const garamond = getFontFamily("--font-garamond", "serif");
-
-    // Render branding header
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.font = `normal 32px ${sairaCondensed}`;
-    ctx.fillText("IA DEVELOPIX", canvas.width / 2, 70);
-
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 14px ${spaceMono}`;
-    ctx.fillText("QUOTE STATEMENT", canvas.width / 2, 115);
-
-    // Date
-    const today = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    ctx.fillText(`DATE: ${today.toUpperCase()}`, canvas.width / 2, 140);
-
-    // Separator line
-    ctx.strokeStyle = "#262626";
-    ctx.beginPath();
-    ctx.moveTo(50, 180);
-    ctx.lineTo(canvas.width - 50, 180);
-    ctx.stroke();
-
-    // Table column headers
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `normal 12px ${spaceMono}`;
-    ctx.fillText("PRODUCT DESCRIPTION", 60, 210);
-    
-    ctx.textAlign = "center";
-    ctx.fillText("QTY", 480, 210);
-    
-    ctx.textAlign = "right";
-    ctx.fillText("UNIT PRICE", 610, 210);
-    ctx.fillText("TOTAL", 740, 210);
-
-    // Table divider line
-    ctx.strokeStyle = "#3a3a3a";
-    ctx.beginPath();
-    ctx.moveTo(50, 235);
-    ctx.lineTo(canvas.width - 50, 235);
-    ctx.stroke();
-
-    // Render quote products list
-    let currentY = 260;
-    ctx.fillStyle = "#cccccc";
-    ctx.font = `normal 16px ${garamond}`;
-
-    cartItems.forEach((item) => {
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText(item.name.toUpperCase(), 60, currentY);
-
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#cccccc";
-      ctx.fillText(item.quantity.toString(), 480, currentY);
-
-      ctx.textAlign = "right";
-      ctx.fillText(formatPrice(item.price), 610, currentY);
-      ctx.fillText(formatPrice(item.price * item.quantity), 740, currentY);
-
-      currentY += 45;
-    });
-
-    // Subtotal divider line
-    ctx.strokeStyle = "#262626";
-    ctx.beginPath();
-    ctx.moveTo(50, currentY + 10);
-    ctx.lineTo(canvas.width - 50, currentY + 10);
-    ctx.stroke();
-
-    // Subtotal layout summary
-    currentY += 40;
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 14px ${spaceMono}`;
-    ctx.fillText("SUBTOTAL", 60, currentY);
-
-    ctx.textAlign = "right";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `bold 22px ${spaceMono}`;
-    ctx.fillText(formatPrice(cartSubtotal), 740, currentY);
-
-    // Outbox instruction info
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#999999";
-    ctx.font = `normal 11px ${spaceMono}`;
-    ctx.fillText("PLEASE SEND THIS QUOTE IMAGE TO OUTBOX VIA FACEBOOK PAGE", canvas.width / 2, 870);
-
-    ctx.fillStyle = "#666666";
-    ctx.font = `italic 14px ${garamond}`;
-    ctx.fillText("Thank you for choosing IA DEVELOPIX.", canvas.width / 2, 920);
+    drawQuoteToCanvas(canvasElement, cartItems, cartSubtotal);
   }, [view, canvasElement, cartItems, cartSubtotal]);
 
   const handleDownload = async () => {
@@ -581,64 +335,13 @@ export function CartDrawer() {
                               {/* Items List - Enlarge elements layout */}
                               <div className="divide-y divide-hairline">
                                 {cartItems.map((item) => (
-                                  <motion.div key={item.id} variants={cartItemVariants} className="flex py-4 md:py-5 gap-3 md:gap-5 items-start">
-                                    {/* Product Image - Responsive scaling */}
-                                    <Link 
-                                      href={item.href || "#"} 
-                                      onClick={closeDrawer}
-                                      className="relative w-[80px] h-[80px] md:w-[110px] md:h-[110px] border border-hairline bg-primary overflow-hidden shrink-0 rounded-xl block group"
-                                    >
-                                      <Image
-                                        src={item.image} 
-                                        alt={item.name} 
-                                        fill
-                                        sizes="(min-width: 768px) 110px, 80px"
-                                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                                      />
-                                    </Link>
-
-                                    {/* Details - Scaled font sizes */}
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className="font-display text-sm md:text-base tracking-[2px] uppercase text-primary break-words">
-                                        <Link 
-                                          href={item.href || "#"} 
-                                          onClick={closeDrawer}
-                                          className="hover-underline-expand inline-block"
-                                        >
-                                          {item.name}
-                                        </Link>
-                                      </h4>
-                                      <p className="font-mono text-[11px] md:text-xs text-primary mt-1.5">
-                                        {formatPrice(item.price)}
-                                      </p>
-
-                                      {/* Remove & Adjust - Responsive controls */}
-                                      <div className="flex items-center justify-between mt-4">
-                                        <div className="flex items-center border border-hairline py-1 px-2.5 space-x-3 md:py-1.5 md:px-3.5 md:space-x-4 rounded-full bg-surface-soft">
-                                          <button
-                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                            className="text-muted hover:text-primary transition-colors text-sm font-mono cursor-pointer"
-                                          >
-                                            -
-                                          </button>
-                                          <span className="font-mono text-xs text-primary w-4 text-center font-bold">{item.quantity}</span>
-                                          <button
-                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                            className="text-muted hover:text-primary transition-colors text-sm font-mono cursor-pointer"
-                                          >
-                                            +
-                                          </button>
-                                        </div>
-                                        
-                                        <button
-                                          onClick={() => removeFromCart(item.id)}
-                                          className="group font-mono text-[10px] uppercase text-primary cursor-pointer flex items-center gap-1.5 outline-none"
-                                        >
-                                          <Trash2 size={11} strokeWidth={1.5} />
-                                          <span className="hover-underline-collapse leading-none">Remove</span>
-                                        </button>
-                                      </div>
-                                    </div>
+                                  <motion.div key={item.id} variants={cartItemVariants}>
+                                    <CartItemRow
+                                      item={item}
+                                      updateQuantity={updateQuantity}
+                                      removeFromCart={removeFromCart}
+                                      onItemClick={closeDrawer}
+                                    />
                                   </motion.div>
                                 ))}
                               </div>
@@ -758,7 +461,7 @@ export function CartDrawer() {
                     className="flex items-center justify-between"
                   >
                     <span className="font-mono text-sm uppercase tracking-[2px] text-primary">Subtotal</span>
-                    {renderAnimatedPrice(cartSubtotal)}
+                    <AnimatedPrice value={cartSubtotal} />
                   </motion.div>
                   
                   <motion.p 

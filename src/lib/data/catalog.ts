@@ -1,4 +1,9 @@
-import type { CategoryKey } from "../types/Category";
+/**
+ * @file catalog.ts
+ * @description Single source of truth for all product catalog mock database records, helper retrieval utilities, and price formatters.
+ */
+
+import type { CategoryKey } from "@/src/types/category";
 import { externalImages, getProductMedia } from "@/src/lib/media";
 
 export type CatalogProductId =

@@ -25,5 +25,9 @@ export const navigationContent = {
     models: "ROBOT MODELS",
     company: "COMPANY",
     connect: "CONNECT",
+    newsletter: {
+      title: "JOIN OUR MAILING LIST FOR EXCLUSIVE UPDATES",
+      placeholder: "ENTER YOUR EMAIL",
+    },
   },
 } as const;
