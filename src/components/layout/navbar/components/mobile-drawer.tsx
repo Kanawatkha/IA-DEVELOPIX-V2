@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X, ChevronRight, ChevronLeft, ChevronDown, Globe, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { MAIN_NAVIGATION, getVariantHref } from "@/src/constants";
 import { EASE, fastParentVariants, drawerOpenTransition, drawerCloseTransition, drawerGlowClass, drawerSurfaceClass } from "@/src/lib/design/variants";
-import { LanguageSelector } from "./language-selector";
+import { LanguageToggleSelector } from "@/src/components/layout/shared/language-toggle-selector";
 import { formatModelName, isModelComingSoon, getCategoryPath } from "@/src/lib/data/products";
 import { MobileDrawerProps } from "../types";
 import { drawerItemVariants, fadeBlurVariants } from "../animations";
@@ -223,33 +223,12 @@ export function MobileDrawer({
         variants={fadeBlurVariants}
         className="flex items-center justify-between w-full px-6 pb-6 pt-6 border-t border-hairline mb-safe md:mb-0 md:shrink-0 md:mt-auto"
       >
-        <div className="relative w-auto" ref={langDropdownRef as any}>
-          <AnimatePresence>
-            {isLanguagePopupOpen && (
-              <LanguageSelector
-                isOpen={isLanguagePopupOpen}
-                onClose={() => setIsLanguagePopupOpen(false)}
-                isMobile={true}
-              />
-            )}
-          </AnimatePresence>
-          <button
-            onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
-            className="flex items-center justify-between w-auto border border-hairline bg-canvas rounded-pill px-4 py-2 hover:bg-primary/5 transition-colors group whitespace-nowrap space-x-3 cursor-pointer"
-          >
-            <div className="flex items-center space-x-3">
-              <Globe size={18} className="text-muted" />
-              <span className="text-xs text-primary whitespace-nowrap font-mono tracking-[2px]">EN - ENGLISH</span>
-            </div>
-            <motion.div
-              animate={{ rotate: isLanguagePopupOpen ? 180 : 0 }}
-              transition={{ duration: 0.3, ease: EASE.luxury }}
-              className="flex items-center justify-center"
-            >
-              <ChevronDown size={16} className="text-muted" />
-            </motion.div>
-          </button>
-        </div>
+        <LanguageToggleSelector
+          isOpen={isLanguagePopupOpen}
+          onToggle={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
+          onClose={() => setIsLanguagePopupOpen(false)}
+          langDropdownRef={langDropdownRef}
+        />
 
         <div className="flex items-center space-x-5 w-auto [@media(max-height:500px)]:scale-90 [@media(max-height:500px)]:origin-right md:transform md:scale-110 md:origin-right">
           <Instagram size={24} className="text-muted hover:text-primary transition-colors cursor-pointer" />

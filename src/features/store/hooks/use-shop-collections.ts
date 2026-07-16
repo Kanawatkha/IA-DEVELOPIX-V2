@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file use-shop-collections.ts
  * @description Hook managing filter active states, side-scrolling arrows, and viewport offsets in ShopCollections.

@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file use-store-hero.ts
  * @description Hook managing state, coordinates, and seamless infinite loops for StoreHero using a conveyor belt concept.

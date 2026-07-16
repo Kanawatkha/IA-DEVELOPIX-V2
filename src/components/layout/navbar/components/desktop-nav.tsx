@@ -173,7 +173,7 @@ export function DesktopNav({
                               <motion.div key={sub} variants={itemVariants} className="w-full">
                                 <Link
                                   href={getVariantHref(link.label, sub)}
-                                  className="block px-4 py-2.5 text-xs font-normal uppercase tracking-[2px] text-primary hover:opacity-70 hover:bg-primary/5 rounded-none transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-3.5 w-full text-left whitespace-nowrap"
+                                  className="block px-4 py-2.5 text-xs font-normal uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 rounded-xl transition-all duration-300 group/sub min-[2000px]:text-sm min-[2000px]:py-3.5 w-full text-left whitespace-nowrap"
                                 >
                                   {isModelComingSoon(sub) ? (
                                     <>

@@ -44,6 +44,17 @@ export function CartDrawer() {
   }, []);
 
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
+  const [showCartFooter, setShowCartFooter] = useState(activeTab === "cart");
+  useEffect(() => {
+    if (activeTab === "cart") {
+      const timer = setTimeout(() => {
+        setShowCartFooter(true);
+      }, 300);
+      return () => clearTimeout(timer);
+    } else {
+      setShowCartFooter(false);
+    }
+  }, [activeTab]);
   const [view, setView] = useState<"tabs" | "checkout">("tabs");
   const [isCopied, setIsCopied] = useState(false);
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
@@ -73,6 +84,28 @@ export function CartDrawer() {
       transition: {
         staggerChildren: 0.05,
         delayChildren: 0.15,
+      },
+    },
+  };
+
+  const footerContainerVariants = {
+    hidden: {
+      opacity: 0,
+      filter: "blur(12px)",
+      transition: {
+        duration: 0.2,
+        ease: "easeIn" as const,
+      },
+    },
+    visible: {
+      opacity: 1,
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.5,
+        ease: EASE.luxury,
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
+        delay: 0.05,
       },
     },
   };
@@ -710,10 +743,10 @@ export function CartDrawer() {
 
             {/* Sticky Footers (conditional on active view) */}
             <AnimatePresence mode="wait">
-              {view === "tabs" && activeTab === "cart" && cartItems.length > 0 ? (
+              {view === "tabs" && showCartFooter && cartItems.length > 0 ? (
                 <motion.div
                   key="cart-footer"
-                  variants={containerVariants}
+                  variants={footerContainerVariants}
                   initial="hidden"
                   animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"
@@ -760,7 +793,7 @@ export function CartDrawer() {
               ) : view === "checkout" ? (
                 <motion.div
                   key="checkout-footer"
-                  variants={containerVariants}
+                  variants={footerContainerVariants}
                   initial="hidden"
                   animate={isCartOpen ? "visible" : "hidden"}
                   exit="hidden"

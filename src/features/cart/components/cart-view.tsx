@@ -6,7 +6,6 @@ import Image from "next/image";
 import { ArrowRight, Undo2, Lock, ChevronLeft, Download, Copy, Check, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/src/context/cart-context";
-import { ShopCollections } from "@/src/features/store";
 import { cartContent } from "@/src/content";
 import { exportQuoteImage, downloadQuoteImage } from "@/src/features/cart/services/quote-export-service";
 import { getMessengerUrl } from "@/src/features/cart/services/messenger-service";
@@ -22,6 +21,10 @@ export function CartView() {
   } = useCart();
 
   const [view, setView] = useState<"summary" | "checkout">("summary");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [height, setHeight] = useState<number | "auto">("auto");
@@ -277,11 +280,17 @@ export function CartView() {
     );
   };
 
+  if (!mounted) {
+    return (
+      <div className="max-w-[3840px] mx-auto px-6 md:px-12 min-[2000px]:px-24 w-full flex flex-col justify-center items-center min-h-[65vh]">
+        <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full bg-canvas text-primary pt-8 md:pt-16 pb-0">
-      <div className="max-w-[3840px] mx-auto px-6 md:px-12 min-[2000px]:px-24 w-full flex flex-col">
-        
-        <AnimatePresence mode="wait">
+    <div className="max-w-[3840px] mx-auto px-6 md:px-12 min-[2000px]:px-24 w-full flex flex-col">
+      <AnimatePresence mode="wait">
           {cartItems.length === 0 ? (
             <motion.div 
               key="empty-cart"
@@ -644,13 +653,6 @@ export function CartView() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      </div>
-
-      {/* Section 2: Recommendation Carousel - Tightened vertical spacing */}
-      <div className="mt-8 md:mt-12">
-        <ShopCollections title="You may also like" defaultFilter="ALL" isCartPage={true} />
-      </div>
 
     </div>
   );

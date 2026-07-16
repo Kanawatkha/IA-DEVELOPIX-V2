@@ -39,13 +39,13 @@ export function LanguageSelector({
       }
     >
       <div className={isMobile ? "flex flex-col" : "bg-[#0d0d0d] border border-hairline rounded-2xl p-2 flex flex-col shadow-lg"}>
-        <div className={isMobile ? "flex flex-col space-y-4" : "flex flex-col"}>
+        <div className={isMobile ? "flex flex-col space-y-1" : "flex flex-col"}>
           {LANGUAGES.map((lang) => (
             <motion.button
               key={lang.code}
               variants={isMobile ? languageItemVariants : itemVariants}
               onClick={onClose}
-              className="text-left font-mono text-xs uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 p-3 rounded-none transition-colors whitespace-nowrap cursor-pointer"
+              className="text-left font-mono text-xs uppercase tracking-[2px] text-primary hover:text-primary/70 hover:bg-primary/10 transition-colors whitespace-nowrap cursor-pointer py-2.5 px-4 rounded-xl"
             >
               {lang.code} - {lang.label}
             </motion.button>

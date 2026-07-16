@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import { LANGUAGES } from "@/src/constants/navigation";
+import { LanguageToggleSelector } from "@/src/components/layout/shared/language-toggle-selector";
 
 /**
  * Renders the bottom footer bar containing metadata, copyright notices,
@@ -46,42 +47,13 @@ export function FooterBottom() {
           © 2026 IA DEVELOPIX. ALL RIGHTS RESERVED.
         </p>
 
-        {/* Premium Bottom Language Selector */}
-        <div className="relative order-2 flex flex-col items-center w-[190px] md:w-auto md:min-w-[190px]" ref={langRef}>
-          <AnimatePresence>
-            {isLangOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute bottom-full mb-2 left-0 w-full bg-[#0d0d0d] border border-hairline rounded-2xl p-2 z-50 flex flex-col space-y-1 shadow-lg"
-              >
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => setIsLangOpen(false)}
-                    className="text-left font-mono text-xs text-primary uppercase tracking-[2px] hover:bg-primary/5 p-2.5 rounded-none transition-colors whitespace-nowrap cursor-pointer"
-                  >
-                    {lang.code} - {lang.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <button
-            onClick={() => setIsLangOpen(!isLangOpen)}
-            className="flex items-center justify-between w-full border border-primary bg-primary rounded-pill px-5 py-2 hover:bg-transparent transition-colors outline-none cursor-pointer group"
-            aria-label="Toggle Language Options"
-          >
-            <Globe className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-canvas group-hover:text-muted transition-colors" strokeWidth={1.5} />
-            <span className="font-mono text-[10px] min-[1920px]:text-sm text-canvas group-hover:text-primary uppercase tracking-[2px] whitespace-nowrap mx-2 transition-colors">
-              THAI / ENGLISH
-            </span>
-            <ChevronDown className="w-4 h-4 min-[1920px]:w-6 min-[1920px]:h-6 text-canvas group-hover:text-muted transition-colors" strokeWidth={1.5} />
-          </button>
-        </div>
+        <LanguageToggleSelector
+          isOpen={isLangOpen}
+          onToggle={() => setIsLangOpen(!isLangOpen)}
+          onClose={() => setIsLangOpen(false)}
+          langDropdownRef={langRef}
+          className="relative order-2 flex flex-col items-center w-[190px] md:w-auto md:min-w-[190px]"
+        />
 
         {/* Accepted Payment badges */}
         <div className="flex items-center justify-center space-x-3 md:space-x-4 min-[1920px]:space-x-6 order-4 md:order-3 w-full md:w-auto">

@@ -134,7 +134,7 @@ export const containerVariants: Variants = {
 export const mobileContainerVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 12,
     filter: "blur(10px)",
     transition: {
       duration: 0.2,
@@ -160,7 +160,7 @@ export const mobileContainerVariants: Variants = {
 export const languageItemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 15,
+    y: 8,
     filter: "blur(8px)",
     transition: {
       duration: 0.2,
